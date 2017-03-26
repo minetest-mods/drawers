@@ -354,6 +354,7 @@ end
 
 drawers.register_drawer("drawers:wood", {
 	description = "Wooden Drawer",
-	groups = {choppy = 3},
+	groups = {choppy = 3, oddly_breakable_by_hand = 2},
+	sounds = default.node_sound_wood_defaults(),
 	drawer_stack_max_factor = 3 * 8 -- normal chest size
 })
