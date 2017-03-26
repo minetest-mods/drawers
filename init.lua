@@ -304,8 +304,26 @@ end
 
 -- drop all items
 local function drawer_on_dig(pos, node, player)
+	local meta = core.get_meta(pos)
+	local count = meta:get_int("count")
+	local name = meta:get_string("name")
+
+	-- remove node
 	core.node_dig(pos, node, player)
-	return
+
+	-- drop the items
+	local stack_max = ItemStack(name):get_stack_max()
+
+	local j = math.floor(count / stack_max) + 1
+	local i = 1
+	while i <= j do
+		if not (i == j) then
+			core.add_item(pos, name .. " " .. stack_max)
+		else
+			core.add_item(pos, name .. " " .. count % stack_max)
+		end
+		i = i + 1
+	end
 end
 
 function drawers.register_drawer(name, def)
