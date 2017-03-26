@@ -165,13 +165,19 @@ core.register_entity("drawers:visual", {
 			if add_name ~= name then return end
 		else -- is empty
 			name = add_name
-			meta:set_string("name", name)
 			count = 0
 
 			-- get new stack max
 			base_stack_max = ItemStack(name):get_stack_max()
-			meta:set_int("base_stack_max", base_stack_max)
 			max_count = base_stack_max * stack_max_factor
+
+			-- Don't add items stackable only to 1
+			if base_stack_max == 1 then
+				return
+			end
+
+			meta:set_string("name", name)
+			meta:set_int("base_stack_max", base_stack_max)
 			meta:set_int("max_count", max_count)
 		end
 
