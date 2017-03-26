@@ -256,6 +256,8 @@ core.register_entity("drawers:visual", {
 })
 
 local function spawn_visual(pos)
+	local node = core.get_node(pos)
+
 	-- data for the new visual
 	drawers.last_drawer_pos = pos
 
