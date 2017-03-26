@@ -255,6 +255,21 @@ core.register_entity("drawers:visual", {
 	end
 })
 
+local function spawn_visual(pos)
+	-- data for the new visual
+	drawers.last_drawer_pos = pos
+
+	local bdir = core.facedir_to_dir(node.param2)
+	local fdir = vector.new(-bdir.x, 0, -bdir.z)
+	local pos2 = vector.add(pos, vector.multiply(fdir, 0.438))
+
+	obj = core.add_entity(pos2, "drawers:visual")
+
+	if bdir.x < 0 then obj:setyaw(0.5 * math.pi) end
+	if bdir.z < 0 then obj:setyaw(math.pi) end
+	if bdir.x > 0 then obj:setyaw(1.5 * math.pi) end
+end
+
 -- construct drawer
 local function drawer_on_construct(pos)
 	local node = core.get_node(pos)
@@ -270,22 +285,10 @@ local function drawer_on_construct(pos)
 	meta:set_int("max_count", base_stack_max * stack_max_factor)
 	meta:set_int("stack_max_factor", stack_max_factor)
 	meta:set_int("base_stack_max", base_stack_max)
-	meta:set_string("ntt_infotext", gen_info_text("Empty", 0,
+	meta:set_string("entity_infotext", gen_info_text("Empty", 0,
 		stack_max_factor, base_stack_max))
 
-
-	-- data for the new visual
-	drawers.last_drawer_pos = pos
-
-	local bdir = core.facedir_to_dir(node.param2)
-	local fdir = vector.new(-bdir.x, 0, -bdir.z)
-	local pos2 = vector.add(pos, vector.multiply(fdir, 0.438))
-
-	obj = core.add_entity(pos2, "drawers:visual")
-
-	if bdir.x < 0 then obj:setyaw(0.5 * math.pi) end
-	if bdir.z < 0 then obj:setyaw(math.pi) end
-	if bdir.x > 0 then obj:setyaw(1.5 * math.pi) end
+	spawn_visual(pos)
 end
 
 -- destruct drawer
@@ -325,6 +328,26 @@ local function drawer_on_dig(pos, node, player)
 		i = i + 1
 	end
 end
+
+core.register_lbm({
+	name = "drawers:restore_visual",
+	nodenames = {"group:drawer"},
+	run_at_every_load = true,
+	action  = function(pos, node)
+		local objs = core.get_objects_inside_radius(pos, 0.5)
+		if objs then
+			for _, obj in pairs(objs) do
+				if obj and obj:get_luaentity() and
+						obj:get_luaentity().name == "drawers:visual" then
+					return
+				end
+			end
+		end
+
+		-- no visual found, create a new one
+		spawn_visual(pos)
+	end
+})
 
 function drawers.register_drawer(name, def)
 	def.description = def.description or "Drawer"
