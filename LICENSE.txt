@@ -2,9 +2,10 @@ Minetest Mod Storage Drawers
 ============================
 Version 0.1-dev
 
-License of source code (*.lua):
--------------------------------
+License of source code and media (everything):
+----------------------------------------------
 Copyright (C) 2017 LNJ <git@lnj.li>
+Copyright (C) 2016 Mango Tango <mtango688@gmail.com>
 
 MIT License
 
@@ -25,10 +26,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-
-License of media (sounds, textures, meshes):
---------------------------------------------
-files: textures/*
-copyright: (C) 2017 LNJ <git@lnj.li>
-license: CC0 1.0 Universal (CC0-1.0)
