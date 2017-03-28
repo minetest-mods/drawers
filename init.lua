@@ -40,6 +40,8 @@ else
 	CHEST_ITEMSTRING = "chest"
 end
 
+local DEFAULT_VISUAL_TEXTURE = "drawers_empty.png"
+
 drawers.node_box_simple = {
 	{-0.5, -0.5, -0.4375, 0.5, 0.5, 0.5},
 	{-0.5, -0.5, -0.5, -0.4375, 0.5, -0.4375},
@@ -62,13 +64,15 @@ local function gen_info_text(basename, count, factor, stack_max)
 end
 
 local function get_inv_image(name)
-	local texture = default_texture
-	local def = minetest.registered_items[name]
+	local texture = DEFAULT_VISUAL_TEXTURE
+	local def = core.registered_items[name]
 	if name ~= "air" and def then
 		if def.inventory_image and #def.inventory_image > 0 then
 			texture = def.inventory_image
 		else
-			local c = #def.tiles
+			if not def.tiles then return texture end
+
+			local c = #def.tiles or 0
 			local x = {}
 			for i, v in ipairs(def.tiles) do
 				if type(v) == "table" then
@@ -121,7 +125,7 @@ core.register_entity("drawers:visual", {
 			self.texture = data.texture
 		else
 			self.drawer_pos = drawers.last_drawer_pos
-			self.texture = "drawers_empty.png"
+			self.texture = drawers.last_texture or DEFAULT_VISUAL_TEXTURE
 		end
 
 
@@ -279,6 +283,7 @@ local function spawn_visual(pos)
 
 	-- data for the new visual
 	drawers.last_drawer_pos = pos
+	drawers.last_texture = get_inv_image(core.get_meta(pos):get_string("name"))
 
 	local bdir = core.facedir_to_dir(node.param2)
 	local fdir = vector.new(-bdir.x, 0, -bdir.z)
@@ -289,6 +294,8 @@ local function spawn_visual(pos)
 	if bdir.x < 0 then obj:setyaw(0.5 * math.pi) end
 	if bdir.z < 0 then obj:setyaw(math.pi) end
 	if bdir.x > 0 then obj:setyaw(1.5 * math.pi) end
+
+	drawers.last_texture = nil
 end
 
 -- construct drawer
