@@ -1,5 +1,5 @@
 --[[
-Minetest Mod Drawers - A Mod adding storage drawers
+Minetest Mod Storage Drawers - A Mod adding storage drawers
 
 Copyright (C) 2017 LNJ <git@lnj.li>
 Copyright (C) 2016 Mango Tango <mtango688@gmail.com>
@@ -26,6 +26,19 @@ SOFTWARE.
 ]]
 
 drawers = {}
+
+-- TODO: Support other games than MTG/MTG-like  (e.g. MineClone2)
+local WOOD_SOUNDS
+local WOOD_ITEMSTRING
+local CHEST_ITEMSTRING
+if default then
+	WOOD_SOUNDS = default.node_sound_wood_defaults()
+	WOOD_ITEMSTRING = "default:wood"
+	CHEST_ITEMSTRING = "default:chest"
+else
+	WOOD_ITEMSTRING = "wood"
+	CHEST_ITEMSTRING = "chest"
+end
 
 drawers.node_box_simple = {
 	{-0.5, -0.5, -0.4375, 0.5, 0.5, 0.5},
@@ -381,11 +394,23 @@ function drawers.register_drawer(name, def)
 	end
 
 	core.register_node(name, def)
+
+	if (not def.no_craft) and def.material then
+		core.register_craft({
+			output = name,
+			recipe = {
+				{def.material, def.material, def.material},
+				{"", CHEST_ITEMSTRING, ""},
+				{def.material, def.material, def.material}
+			}
+		})
+	end
 end
 
 drawers.register_drawer("drawers:wood", {
 	description = "Wooden Drawer",
 	groups = {choppy = 3, oddly_breakable_by_hand = 2},
-	sounds = default.node_sound_wood_defaults(),
-	drawer_stack_max_factor = 3 * 8 -- normal chest size
+	sounds = WOOD_SOUNDS,
+	drawer_stack_max_factor = 3 * 8, -- normal chest size
+	material = WOOD_ITEMSTRING
 })
