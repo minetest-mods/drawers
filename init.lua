@@ -416,6 +416,8 @@ end
 
 drawers.register_drawer("drawers:wood", {
 	description = "Wooden Drawer",
+	tiles = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
+		"drawers_wood.png", "drawers_wood.png", "drawers_wood_front.png"},
 	groups = {choppy = 3, oddly_breakable_by_hand = 2},
 	sounds = WOOD_SOUNDS,
 	drawer_stack_max_factor = 3 * 8, -- normal chest size
