@@ -27,7 +27,6 @@ SOFTWARE.
 
 drawers = {}
 
--- TODO: Support other games than MTG/MTG-like  (e.g. MineClone2)
 local WOOD_SOUNDS
 local WOOD_ITEMSTRING
 local CHEST_ITEMSTRING
@@ -35,6 +34,12 @@ if default then
 	WOOD_SOUNDS = default.node_sound_wood_defaults()
 	WOOD_ITEMSTRING = "default:wood"
 	CHEST_ITEMSTRING = "default:chest"
+elseif mcl_core then -- MineClone 2
+	WOOD_ITEMSTRING = "mcl_core:wood"
+	CHEST_ITEMSTRING = "mcl_chests:chest"
+	if mcl_sounds then
+		WOOD_SOUNDS = mcl_sounds.node_sound_wood_defaults()
+	end
 else
 	WOOD_ITEMSTRING = "wood"
 	CHEST_ITEMSTRING = "chest"
@@ -383,7 +388,6 @@ function drawers.register_drawer(name, def)
 	def.node_box = {type = "fixed", fixed = drawers.node_box_simple}
 	def.collision_box = {type = "regular"}
 	def.selection_box = {type = "regular"}
-	def.tiles = def.tiles or {"default_wood.png"}
 	def.paramtype = "light"
 	def.paramtype2 = "facedir"
 	def.legacy_facedir_simple = true
