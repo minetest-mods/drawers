@@ -1,5 +1,5 @@
 # Minetest Mod Storage Drawers
-Version 0.1-dev, Status: alpha, License: MIT
+Version 0.1, Status: alpha, License: MIT
 
 ## Description
 This mod adds simple item storages showing the item's inventory image in the
@@ -11,6 +11,7 @@ This mod requires Minetest 0.4.14 or later. The `default` mod from MTG or the
 MineClone 2 mods are only optional dependencies for crafting recipes.
 
 ## To-Do
+- [x] Add usable 1x1 drawer
 - [ ] Add a drawer controller for auto-sorting items into a drawer-network
 - [ ] Add half-sized drawers
 - [ ] Add 2x2 and 1x2 drawers
