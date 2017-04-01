@@ -62,6 +62,12 @@ core.register_entity("drawers:visual", {
 			self.texture = drawers.last_texture or "drawers_empty.png"
 		end
 
+		-- add self to public drawer visuals
+		-- this is needed because there is no other way to get this class
+		-- only the underlying ObjectRef
+		-- PLEASE contact me, if this is wrong
+		drawers.drawer_visuals[core.serialize(self.drawer_pos)] = self
+
 
 		local node = core.get_node(self.drawer_pos)
 
@@ -87,77 +93,10 @@ core.register_entity("drawers:visual", {
 	end,
 
 	on_rightclick = function(self, clicker)
-		local node = core.get_node(self.drawer_pos)
-		local itemstack = clicker:get_wielded_item()
-		local add_count = itemstack:get_count()
-		local add_name = itemstack:get_name()
+		local leftover = self.try_insert_stack(self, clicker:get_wielded_item(),
+			not clicker:get_player_control().sneak)
 
-		local meta = core.get_meta(self.drawer_pos)
-		local name = meta:get_string("name")
-		local count = meta:get_int("count")
-		local max_count = meta:get_int("max_count")
-
-		local base_stack_max = meta:get_int("base_stack_max")
-		local stack_max_factor = meta:get_int("stack_max_factor")
-
-		-- if nothing to be added, return
-		if add_count <= 0 then return end
-		-- if no itemstring, return
-		if item_name == "" then return end
-
-		-- only add one, if player holding sneak key
-		if clicker:get_player_control().sneak then
-			add_count = 1
-		end
-
-		-- if current itemstring is not empty
-		if name ~= "" then
-			-- check if same item
-			if add_name ~= name then return end
-		else -- is empty
-			name = add_name
-			count = 0
-
-			-- get new stack max
-			base_stack_max = ItemStack(name):get_stack_max()
-			max_count = base_stack_max * stack_max_factor
-
-			-- Don't add items stackable only to 1
-			if base_stack_max == 1 then
-				return
-			end
-
-			meta:set_string("name", name)
-			meta:set_int("base_stack_max", base_stack_max)
-			meta:set_int("max_count", max_count)
-		end
-
-		-- set new counts:
-		-- if new count is more than max_count
-		if (count + add_count) > max_count then
-			count = max_count
-			itemstack:set_count((count + add_count) - max_count)
-		else -- new count fits
-			count = count + add_count
-			itemstack:set_count(itemstack:get_count() - add_count)
-		end
-		-- set new drawer count
-		meta:set_int("count", count)
-
-		-- update infotext
-		local infotext = drawers.gen_info_text(core.registered_items[name].description,
-			count, stack_max_factor, base_stack_max)
-		meta:set_string("entity_infotext", infotext)
-
-		-- texture
-		self.texture = drawers.get_inv_image(name)
-
-		self.object:set_properties({
-			infotext = infotext .. "\n\n\n\n\n",
-			textures = {self.texture}
-		})
-
-		clicker:set_wielded_item(itemstack)
+		clicker:set_wielded_item(leftover)
 	end,
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
@@ -209,6 +148,81 @@ core.register_entity("drawers:visual", {
 			infotext = infotext .. "\n\n\n\n\n",
 			textures = {self.texture}
 		})
+	end,
+
+	try_insert_stack = function(self, itemstack, insert_stack)
+		local node = core.get_node(self.drawer_pos)
+		local stackCount = itemstack:get_count()
+		local stackName = itemstack:get_name()
+
+		local meta = core.get_meta(self.drawer_pos)
+		local dName = meta:get_string("name")
+		local dCount = meta:get_int("count")
+		local dMaxCount = meta:get_int("max_count")
+
+		local dStackMax = meta:get_int("base_stack_max")
+		local dStackMaxFactor = meta:get_int("stack_max_factor")
+
+		-- if nothing to be added, return
+		if stackCount <= 0 then return itemstack end
+		-- if no itemstring, return
+		if stackName == "" then return itemstack end
+
+		-- only add one, if player holding sneak key
+		if not insert_stack then
+			stackCount = 1
+		end
+
+		-- if current itemstring is not empty
+		if dName ~= "" then
+			-- check if same item
+			if stackName ~= dName then return itemstack end
+		else -- is empty
+			dName = stackName
+			dCount = 0
+
+			-- get new stack max
+			dStackMax = ItemStack(dName):get_stack_max()
+			dMaxCount = dStackMax * dStackMaxFactor
+
+			-- Don't add items stackable only to 1
+			if dStackMax == 1 then
+				return itemstack
+			end
+
+			meta:set_string("name", stackName)
+			meta:set_int("base_stack_max", dStackMax)
+			meta:set_int("max_count", dStackMaxFactor)
+		end
+
+		-- set new counts:
+		-- if new count is more than max_count
+		if (dCount + stackCount) > dMaxCount then
+			dCount = dMaxCount
+			itemstack:set_count((dCount + stackCount) - dMaxCount)
+		else -- new count fits
+			dCount = dCount + stackCount
+			-- this is for only removing one
+			itemstack:set_count(itemstack:get_count() - stackCount)
+		end
+		-- set new drawer count
+		meta:set_int("count", dCount)
+
+		-- update infotext
+		local infotext = drawers.gen_info_text(core.registered_items[dName].description,
+			dCount, dStackMaxFactor, dStackMax)
+		meta:set_string("entity_infotext", infotext)
+
+		-- texture
+		self.texture = drawers.get_inv_image(dName)
+
+		self.object:set_properties({
+			infotext = infotext .. "\n\n\n\n\n",
+			textures = {self.texture}
+		})
+
+		if itemstack:get_count() == 0 then itemstack = ItemStack("") end
+		return itemstack
 	end
 })
 

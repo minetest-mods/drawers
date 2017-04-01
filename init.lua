@@ -25,6 +25,7 @@ SOFTWARE.
 ]]
 
 drawers = {}
+drawers.drawer_visuals = {}
 
 if default then
 	drawers.WOOD_SOUNDS = default.node_sound_wood_defaults()

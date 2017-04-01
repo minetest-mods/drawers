@@ -92,6 +92,14 @@ function drawers.drawer_on_dig(pos, node, player)
 	end
 end
 
+function drawers.drawer_insert_object(pos, node, stack, direction)
+	local drawer_visual = drawers.drawer_visuals[core.serialize(pos)]
+	if not drawer_visual then return stack end
+
+	local leftover = drawer_visual.try_insert_stack(drawer_visual, stack, true)
+	return leftover
+end
+
 function drawers.register_drawer(name, def)
 	def.description = def.description or "Drawer"
 	def.drawtype = "nodebox"
@@ -112,6 +120,18 @@ function drawers.register_drawer(name, def)
 
 	if screwdriver then
 		def.on_rotate = def.on_rotate or screwdriver.disallow
+	end
+
+	if pipeworks then
+		def.groups.tubedevice = 1
+		def.groups.tubedevice_receiver = 1
+		def.tube = def.tube or {}
+		def.tube.insert_object = def.tube.insert_object or
+			drawers.drawer_insert_object
+		def.tube.connect_sides = {left = 1, right = 1, back = 1, top = 1,
+			bottom = 1}
+		def.after_place_node = pipeworks.after_place
+		def.after_dig_node = pipeworks.after_dig
 	end
 
 	core.register_node(name, def)
