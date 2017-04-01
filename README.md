@@ -1,5 +1,5 @@
 # Minetest Mod Storage Drawers
-Version 0.1, Status: alpha, License: MIT
+Version 0.2, Status: alpha, License: MIT
 
 ## Description
 This mod adds simple item storages showing the item's inventory image in the
@@ -19,7 +19,8 @@ MineClone 2 mods are only optional dependencies for crafting recipes.
 - [ ] Add a key (or something similar) for locking the item (so the item is
 	also displayed at count 0)
 - [ ] Add duct tape to transport drawers
-- [ ] Support pipeworks
+- [x] Support pipeworks
+- [ ] Support hoppers
 
 ## Bug reports and suggestions
 You can report bugs and suggest ideas on [GitHub](http://github.com/lnj2/drawers/issues/new),
