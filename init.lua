@@ -61,7 +61,7 @@ drawers.register_drawer("drawers:wood", {
 	tiles = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
 		"drawers_wood.png", "drawers_wood.png", "drawers_wood_front.png"},
 	groups = {choppy = 3, oddly_breakable_by_hand = 2},
-	sounds = WOOD_SOUNDS,
+	sounds = drawers.WOOD_SOUNDS,
 	drawer_stack_max_factor = 3 * 8, -- normal chest size
-	material = WOOD_ITEMSTRING
+	material = drawers.WOOD_ITEMSTRING
 })
