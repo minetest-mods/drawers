@@ -138,7 +138,8 @@ core.register_entity("drawers:visual", {
 		end
 
 		if self.count <= 0 then
-			meta:set_string("name", "")
+			self.itemName = ""
+			meta:set_string("name", self.itemName)
 			self.texture = "drawers_empty.png"
 			itemDescription = "Empty"
 		end
