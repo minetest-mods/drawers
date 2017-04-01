@@ -18,7 +18,8 @@ MineClone 2 mods are only optional dependencies for crafting recipes.
 - [ ] Add compacting drawers for auto-crafting blocks/ingots/fragments
 - [ ] Add a key (or something similar) for locking the item (so the item is
 	also displayed at count 0)
-- [ ] Add duck tape to transport drawers
+- [ ] Add duct tape to transport drawers
+- [ ] Support pipeworks
 
 ## Bug reports and suggestions
 You can report bugs and suggest ideas on [GitHub](http://github.com/lnj2/drawers/issues/new),
