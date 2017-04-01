@@ -77,9 +77,16 @@ core.register_entity("drawers:visual", {
 			colbox = {0, -0.4374, -0.4374,  0, 0.4374, 0.4374}
 		end
 
+		-- drawer values
+		local meta = core.get_meta(self.drawer_pos)
+		self.count = meta:get_int("count")
+		self.itemName = meta:get_string("name")
+		self.maxCount = meta:get_int("max_count")
+		self.itemStackMax = meta:get_int("base_stack_max")
+		self.stackMaxFactor = meta:get_int("stack_max_factor")
+
 
 		-- infotext
-		local meta = core.get_meta(self.drawer_pos)
 		local infotext = meta:get_string("entity_infotext") .. "\n\n\n\n\n"
 
 		self.object:set_properties({
@@ -101,21 +108,19 @@ core.register_entity("drawers:visual", {
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
 		local meta = core.get_meta(self.drawer_pos)
-		local count = meta:get_int("count")
 
-		if count <= 0 then
+		if self.count <= 0 then
 			return
 		end
-		local name = meta:get_string("name")
 
-		local remove_count = 1
+		local removeCount = 1
 		if not puncher:get_player_control().sneak then
-			remove_count = ItemStack(name):get_stack_max()
+			removeCount = ItemStack(self.itemName):get_stack_max()
 		end
-		if remove_count > count then remove_count = count end
+		if removeCount > self.count then removeCount = self.count end
 
-		local stack = ItemStack(name)
-		stack:set_count(remove_count)
+		local stack = ItemStack(self.itemName)
+		stack:set_count(removeCount)
 
 		local inv = puncher:get_inventory()
 		if not inv:room_for_item("main", stack) then
@@ -123,25 +128,23 @@ core.register_entity("drawers:visual", {
 		end
 
 		inv:add_item("main", stack)
-		count = count - remove_count
-		meta:set_int("count", count)
+		self.count = self.count - removeCount
+		meta:set_int("count", self.count)
 
 		-- update infotext
-		local stack_max_factor = meta:get_int("stack_max_factor")
-		local base_stack_max = meta:get_int("base_stack_max")
-		local item_description = ""
-		if core.registered_items[name] then
-			item_description = core.registered_items[name].description
+		local itemDescription = ""
+		if core.registered_items[self.itemName] then
+			itemDescription = core.registered_items[self.itemName].description
 		end
 
-		if count <= 0 then
+		if self.count <= 0 then
 			meta:set_string("name", "")
 			self.texture = "drawers_empty.png"
-			item_description = "Empty"
+			itemDescription = "Empty"
 		end
 
-		local infotext = drawers.gen_info_text(item_description,
-			count, stack_max_factor, base_stack_max)
+		local infotext = drawers.gen_info_text(itemDescription,
+			self.count, self.stackMaxFactor, self.itemStackMax)
 		meta:set_string("entity_infotext", infotext)
 
 		self.object:set_properties({
@@ -151,17 +154,8 @@ core.register_entity("drawers:visual", {
 	end,
 
 	try_insert_stack = function(self, itemstack, insert_stack)
-		local node = core.get_node(self.drawer_pos)
 		local stackCount = itemstack:get_count()
 		local stackName = itemstack:get_name()
-
-		local meta = core.get_meta(self.drawer_pos)
-		local dName = meta:get_string("name")
-		local dCount = meta:get_int("count")
-		local dMaxCount = meta:get_int("max_count")
-
-		local dStackMax = meta:get_int("base_stack_max")
-		local dStackMaxFactor = meta:get_int("stack_max_factor")
 
 		-- if nothing to be added, return
 		if stackCount <= 0 then return itemstack end
@@ -174,55 +168,68 @@ core.register_entity("drawers:visual", {
 		end
 
 		-- if current itemstring is not empty
-		if dName ~= "" then
+		if self.itemName ~= "" then
 			-- check if same item
-			if stackName ~= dName then return itemstack end
+			if stackName ~= self.itemName then return itemstack end
 		else -- is empty
-			dName = stackName
-			dCount = 0
+			self.itemName = stackName
+			self.count = 0
 
 			-- get new stack max
-			dStackMax = ItemStack(dName):get_stack_max()
-			dMaxCount = dStackMax * dStackMaxFactor
+			self.itemStackMax = ItemStack(self.itemName):get_stack_max()
+			self.maxCount = self.itemStackMax * self.stackMaxFactor
 
 			-- Don't add items stackable only to 1
-			if dStackMax == 1 then
+			if self.itemStackMax == 1 then
 				return itemstack
 			end
-
-			meta:set_string("name", stackName)
-			meta:set_int("base_stack_max", dStackMax)
-			meta:set_int("max_count", dStackMaxFactor)
 		end
 
 		-- set new counts:
 		-- if new count is more than max_count
-		if (dCount + stackCount) > dMaxCount then
-			dCount = dMaxCount
-			itemstack:set_count((dCount + stackCount) - dMaxCount)
+		if (self.count + stackCount) > self.maxCount then
+			self.count = self.maxCount
+			itemstack:set_count((self.count + stackCount) - self.maxCount)
 		else -- new count fits
-			dCount = dCount + stackCount
+			self.count = self.count + stackCount
 			-- this is for only removing one
 			itemstack:set_count(itemstack:get_count() - stackCount)
 		end
-		-- set new drawer count
-		meta:set_int("count", dCount)
+
+		-- get meta
+		local meta = core.get_meta(self.drawer_pos)
 
 		-- update infotext
-		local infotext = drawers.gen_info_text(core.registered_items[dName].description,
-			dCount, dStackMaxFactor, dStackMax)
+		local itemDescription
+		if core.registered_items[self.itemName] then
+			itemDescription = core.registered_items[self.itemName].description
+		else
+			itemDescription = "Empty"
+		end
+		local infotext = drawers.gen_info_text(itemDescription,
+			self.count, self.stackMaxFactor, self.itemStackMax)
 		meta:set_string("entity_infotext", infotext)
 
 		-- texture
-		self.texture = drawers.get_inv_image(dName)
+		self.texture = drawers.get_inv_image(self.itemName)
 
 		self.object:set_properties({
 			infotext = infotext .. "\n\n\n\n\n",
 			textures = {self.texture}
 		})
 
+		self.saveMetaData(self, meta)
+
 		if itemstack:get_count() == 0 then itemstack = ItemStack("") end
 		return itemstack
+	end,
+
+	saveMetaData = function(self, meta)
+		meta:set_int("count", self.count)
+		meta:set_string("name", self.itemName)
+		meta:set_int("max_count", self.maxCount)
+		meta:set_int("base_stack_max", self.itemStackMax)
+		meta:set_int("stack_max_factor", self.stackMaxFactor)
 	end
 })
 
