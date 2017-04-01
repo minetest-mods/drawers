@@ -188,8 +188,8 @@ core.register_entity("drawers:visual", {
 		-- set new counts:
 		-- if new count is more than max_count
 		if (self.count + stackCount) > self.maxCount then
+			itemstack:set_count(self.count + stackCount - self.maxCount)
 			self.count = self.maxCount
-			itemstack:set_count((self.count + stackCount) - self.maxCount)
 		else -- new count fits
 			self.count = self.count + stackCount
 			-- this is for only removing one
