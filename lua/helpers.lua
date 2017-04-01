@@ -26,14 +26,12 @@ SOFTWARE.
 ]]
 
 function drawers.gen_info_text(basename, count, factor, stack_max)
-	-- in the end it should look like:
-	-- Sand [4x99+43 / 24x99]
-	local countstr = tostring(math.floor(count / stack_max)) .. "x" ..
-		stack_max
-	if count % stack_max ~= 0 then
-		countstr = countstr .. " + " .. count % stack_max
-	end
-	return basename .. " [" .. countstr .. " / " .. factor .. "x" .. stack_max .. "]"
+	local maxCount = stack_max * factor
+	local percent = count / maxCount * 100
+	-- round the number (float -> int)
+	percent = math.floor(percent + 0.5)
+
+	return tostring(count) .. " " .. basename .. " (" .. tostring(percent) .. "% full)"
 end
 
 function drawers.get_inv_image(name)
