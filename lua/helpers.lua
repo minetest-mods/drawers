@@ -31,7 +31,12 @@ function drawers.gen_info_text(basename, count, factor, stack_max)
 	-- round the number (float -> int)
 	percent = math.floor(percent + 0.5)
 
-	return tostring(count) .. " " .. basename .. " (" .. tostring(percent) .. "% full)"
+	if count == 0 then
+		return basename .. " (" .. tostring(percent) .. "% full)"
+	else
+		return tostring(count) .. " " .. basename .. " (" ..
+			tostring(percent) .. "% full)"
+	end
 end
 
 function drawers.get_inv_image(name)
