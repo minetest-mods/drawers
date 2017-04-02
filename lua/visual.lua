@@ -43,7 +43,9 @@ core.register_entity("drawers:visual", {
 			drawer_posx = self.drawer_pos.x,
 			drawer_posy = self.drawer_pos.y,
 			drawer_posz = self.drawer_pos.z,
-			texture = self.texture
+			texture = self.texture,
+			drawerType = self.drawerType,
+			visualId = self.visualId
 		})
 	end,
 
@@ -57,9 +59,13 @@ core.register_entity("drawers:visual", {
 				z = data.drawer_posz,
 			}
 			self.texture = data.texture
+			self.drawerType = data.drawerType or 1
+			self.visualId = data.visualId or ""
 		else
 			self.drawer_pos = drawers.last_drawer_pos
 			self.texture = drawers.last_texture or "drawers_empty.png"
+			self.visualId = drawers.last_visual_id
+			self.drawerType = drawers.last_drawer_type
 		end
 
 		-- add self to public drawer visuals
@@ -68,7 +74,6 @@ core.register_entity("drawers:visual", {
 		-- PLEASE contact me, if this is wrong
 		drawers.drawer_visuals[core.serialize(self.drawer_pos)] = self
 
-
 		local node = core.get_node(self.drawer_pos)
 
 		-- collisionbox
@@ -76,23 +81,39 @@ core.register_entity("drawers:visual", {
 		if node.param2 == 1 or node.param2 == 3 then
 			colbox = {0, -0.4374, -0.4374,  0, 0.4374, 0.4374}
 		end
+		-- only half the size if it's a small drawer
+		if self.drawerType >= 2 then
+			for i,j in pairs(colbox) do
+				colbox[i] = j * 0.5
+			end
+		end
+
+		-- visual size
+		local visual_size = {x = 0.6, y = 0.6}
+		if self.drawerType >= 2 then
+			core.chat_send_all("small")
+			visual_size = {x = 0.3, y = 0.3}
+		end
+
 
 		-- drawer values
 		local meta = core.get_meta(self.drawer_pos)
-		self.count = meta:get_int("count")
-		self.itemName = meta:get_string("name")
-		self.maxCount = meta:get_int("max_count")
-		self.itemStackMax = meta:get_int("base_stack_max")
-		self.stackMaxFactor = meta:get_int("stack_max_factor")
+		local vid = self.visualId
+		self.count = meta:get_int("count"..vid)
+		self.itemName = meta:get_string("name"..vid)
+		self.maxCount = meta:get_int("max_count"..vid)
+		self.itemStackMax = meta:get_int("base_stack_max"..vid)
+		self.stackMaxFactor = meta:get_int("stack_max_factor"..vid)
 
 
 		-- infotext
-		local infotext = meta:get_string("entity_infotext") .. "\n\n\n\n\n"
+		local infotext = meta:get_string("entity_infotext"..vid) .. "\n\n\n\n\n"
 
 		self.object:set_properties({
 			collisionbox = colbox,
 			infotext = infotext,
-			textures = {self.texture}
+			textures = {self.texture},
+			visual_size = visual_size
 		})
 
 		-- make entity undestroyable
@@ -129,7 +150,7 @@ core.register_entity("drawers:visual", {
 
 		inv:add_item("main", stack)
 		self.count = self.count - removeCount
-		meta:set_int("count", self.count)
+		meta:set_int("count"..self.visualId, self.count)
 
 		-- update infotext
 		local itemDescription = ""
@@ -139,14 +160,14 @@ core.register_entity("drawers:visual", {
 
 		if self.count <= 0 then
 			self.itemName = ""
-			meta:set_string("name", self.itemName)
+			meta:set_string("name"..self.visualId, self.itemName)
 			self.texture = "drawers_empty.png"
 			itemDescription = "Empty"
 		end
 
 		local infotext = drawers.gen_info_text(itemDescription,
 			self.count, self.stackMaxFactor, self.itemStackMax)
-		meta:set_string("entity_infotext", infotext)
+		meta:set_string("entity_infotext"..self.visualId, infotext)
 
 		self.object:set_properties({
 			infotext = infotext .. "\n\n\n\n\n",
@@ -209,7 +230,7 @@ core.register_entity("drawers:visual", {
 		end
 		local infotext = drawers.gen_info_text(itemDescription,
 			self.count, self.stackMaxFactor, self.itemStackMax)
-		meta:set_string("entity_infotext", infotext)
+		meta:set_string("entity_infotext"..self.visualId, infotext)
 
 		-- texture
 		self.texture = drawers.get_inv_image(self.itemName)
@@ -226,11 +247,11 @@ core.register_entity("drawers:visual", {
 	end,
 
 	saveMetaData = function(self, meta)
-		meta:set_int("count", self.count)
-		meta:set_string("name", self.itemName)
-		meta:set_int("max_count", self.maxCount)
-		meta:set_int("base_stack_max", self.itemStackMax)
-		meta:set_int("stack_max_factor", self.stackMaxFactor)
+		meta:set_int("count"..self.visualId, self.count)
+		meta:set_string("name"..self.visualId, self.itemName)
+		meta:set_int("max_count"..self.visualId, self.maxCount)
+		meta:set_int("base_stack_max"..self.visualId, self.itemStackMax)
+		meta:set_int("stack_max_factor"..self.visualId, self.stackMaxFactor)
 	end
 })
 
@@ -239,7 +260,7 @@ core.register_lbm({
 	nodenames = {"group:drawer"},
 	run_at_every_load = true,
 	action  = function(pos, node)
-		local objs = core.get_objects_inside_radius(pos, 0.5)
+		local objs = core.get_objects_inside_radius(pos, 0.537)
 		if objs then
 			for _, obj in pairs(objs) do
 				if obj and obj:get_luaentity() and

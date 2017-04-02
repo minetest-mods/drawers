@@ -37,33 +37,40 @@ drawers.node_box_simple = {
 function drawers.drawer_on_construct(pos)
 	local node = core.get_node(pos)
 	local ndef = core.registered_nodes[node.name]
+	local drawerType = ndef.groups.drawer
 
 	local base_stack_max = core.nodedef_default.stack_max or 99
 	local stack_max_factor = ndef.drawer_stack_max_factor or 24 -- 3x8
+	stack_max_factor = math.floor(stack_max_factor / drawerType) -- drawerType => number of drawers in node
 
 	-- meta
 	local meta = core.get_meta(pos)
-	meta:set_string("name", "")
-	meta:set_int("count", 0)
-	meta:set_int("max_count", base_stack_max * stack_max_factor)
-	meta:set_int("stack_max_factor", stack_max_factor)
-	meta:set_int("base_stack_max", base_stack_max)
-	meta:set_string("entity_infotext", drawers.gen_info_text("Empty", 0,
-		stack_max_factor, base_stack_max))
+
+	i = 1
+	while i <= drawerType do
+		meta:set_string("name"..i, "")
+		meta:set_int("count"..i, 0)
+		meta:set_int("max_count"..i, base_stack_max * stack_max_factor)
+		meta:set_int("base_stack_max"..i, base_stack_max)
+		meta:set_string("entity_infotext"..i, drawers.gen_info_text("Empty", 0,
+			stack_max_factor, base_stack_max))
+		meta:set_int("stack_max_factor"..i, stack_max_factor)
+
+		i = i + 1
+	end
 
 	drawers.spawn_visual(pos)
 end
 
 -- destruct drawer
 function drawers.drawer_on_destruct(pos)
-	local objs = core.get_objects_inside_radius(pos, 0.5)
-	if objs then
-		for _, obj in pairs(objs) do
-			if obj and obj:get_luaentity() and
-					obj:get_luaentity().name == "drawers:visual" then
-				obj:remove()
-				return
-			end
+	local objs = core.get_objects_inside_radius(pos, 0.537)
+	if not objs then return end
+
+	for _, obj in pairs(objs) do
+		if obj and obj:get_luaentity() and
+				obj:get_luaentity().name == "drawers:visual" then
+			obj:remove()
 		end
 	end
 end
@@ -110,7 +117,6 @@ function drawers.register_drawer(name, def)
 	def.paramtype2 = "facedir"
 	def.legacy_facedir_simple = true
 	def.groups = def.groups or {}
-	def.groups.drawer = def.groups.drawer or 1
 	def.drawer_stack_max_factor = def.drawer_stack_max_factor or 24
 
 	-- events
@@ -134,7 +140,23 @@ function drawers.register_drawer(name, def)
 		def.after_dig_node = pipeworks.after_dig
 	end
 
-	core.register_node(name, def)
+	-- normal drawer 1x1 = 1
+	def1 = table.copy(def)
+	def1.tiles = def.tiles or def.tiles1
+	def1.tiles1 = nil
+	def1.tiles4 = nil
+	def1.groups.drawer = 1
+	core.register_node(name .. "1", def1)
+	core.register_alias(name, name .. "1") -- 1x1 drawer is the default one
+
+	-- 2x2 = 4
+	def4 = table.copy(def)
+	def4.description = def4.description .. " (2x2)"
+	def4.tiles = def.tiles4
+	def4.tiles1 = nil
+	def4.tiles4 = nil
+	def4.groups.drawer = 4
+	core.register_node(name .. "4", def4)
 
 	if (not def.no_craft) and def.material then
 		core.register_craft({

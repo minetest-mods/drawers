@@ -59,8 +59,10 @@ dofile(modpath .. "/lua/api.lua")
 
 drawers.register_drawer("drawers:wood", {
 	description = "Wooden Drawer",
-	tiles = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
-		"drawers_wood.png", "drawers_wood.png", "drawers_wood_front.png"},
+	tiles1 = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
+		"drawers_wood.png", "drawers_wood.png", "drawers_wood_front_1.png"},
+	tiles4 = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
+		"drawers_wood.png", "drawers_wood.png", "drawers_wood_front_4.png"},
 	groups = {choppy = 3, oddly_breakable_by_hand = 2},
 	sounds = drawers.WOOD_SOUNDS,
 	drawer_stack_max_factor = 3 * 8, -- normal chest size

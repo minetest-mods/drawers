@@ -32,7 +32,8 @@ License of media:
 -----------------
 Copyright (C) 2014 Justin Aquadro (MIT):
   textures/drawers_wood.png
-  textures/drawers_wood_front.png
+  textures/drawers_wood_front_1.png
+  textures/drawers_wood_front_4.png
 
 Everything not listed in here:
 Copyright (C) 2017 LNJ <git@lnj.li> (CC0 1.0)

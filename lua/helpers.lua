@@ -68,20 +68,84 @@ end
 
 function drawers.spawn_visual(pos)
 	local node = core.get_node(pos)
+	local ndef = core.registered_nodes[node.name]
+	local drawerType = ndef.groups.drawer
 
 	-- data for the new visual
 	drawers.last_drawer_pos = pos
-	drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name"))
+	drawers.last_drawer_type = drawerType
 
-	local bdir = core.facedir_to_dir(node.param2)
-	local fdir = vector.new(-bdir.x, 0, -bdir.z)
-	local pos2 = vector.add(pos, vector.multiply(fdir, 0.438))
+	if drawerType == 1 then -- 1x1 drawer
+		drawers.last_visual_id = ""
+		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name"))
 
-	obj = core.add_entity(pos2, "drawers:visual")
+		local bdir = core.facedir_to_dir(node.param2)
+		local fdir = vector.new(-bdir.x, 0, -bdir.z)
+		local pos2 = vector.add(pos, vector.multiply(fdir, 0.438))
 
-	if bdir.x < 0 then obj:setyaw(0.5 * math.pi) end
-	if bdir.z < 0 then obj:setyaw(math.pi) end
-	if bdir.x > 0 then obj:setyaw(1.5 * math.pi) end
+		obj = core.add_entity(pos2, "drawers:visual")
 
-	drawers.last_texture = nil
+		if bdir.x < 0 then obj:setyaw(0.5 * math.pi) end
+		if bdir.z < 0 then obj:setyaw(math.pi) end
+		if bdir.x > 0 then obj:setyaw(1.5 * math.pi) end
+
+		drawers.last_texture = nil
+	else -- 2x2 drawer
+		local bdir = core.facedir_to_dir(node.param2)
+
+		local fdir1
+		local fdir2
+		local fdir3
+		local fdir4
+		if node.param2 == 2 then
+			fdir1 = vector.new(-bdir.x + 0.5, 0.5, -bdir.z)
+			fdir2 = vector.new(-bdir.x - 0.5, 0.5, -bdir.z)
+			fdir3 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
+			fdir4 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
+		elseif node.param2 == 0 then
+			fdir1 = vector.new(-bdir.x - 0.5, 0.5, -bdir.z)
+			fdir2 = vector.new(-bdir.x + 0.5, 0.5, -bdir.z)
+			fdir3 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
+			fdir4 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
+		elseif node.param2 == 1 then
+			fdir1 = vector.new(-bdir.x, 0.5, -bdir.z + 0.5)
+			fdir2 = vector.new(-bdir.x, 0.5, -bdir.z - 0.5)
+			fdir3 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
+			fdir4 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
+		else
+			fdir1 = vector.new(-bdir.x, 0.5, -bdir.z - 0.5)
+			fdir2 = vector.new(-bdir.x, 0.5, -bdir.z + 0.5)
+			fdir3 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
+			fdir4 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
+		end
+
+		objs = {}
+
+		drawers.last_visual_id = 1
+		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name1"))
+		local pos1 = vector.add(pos, vector.multiply(fdir1, 0.438))
+		objs[1] = core.add_entity(pos1, "drawers:visual")
+
+		drawers.last_visual_id = 2
+		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name2"))
+		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.438))
+		objs[2] = core.add_entity(pos2, "drawers:visual")
+
+		drawers.last_visual_id = 3
+		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name3"))
+		local pos3 = vector.add(pos, vector.multiply(fdir3, 0.438))
+		objs[3] = core.add_entity(pos3, "drawers:visual")
+
+		drawers.last_visual_id = 4
+		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name4"))
+		local pos4 = vector.add(pos, vector.multiply(fdir4, 0.438))
+		objs[4] = core.add_entity(pos4, "drawers:visual")
+
+
+		for i,obj in pairs(objs) do
+			if bdir.x < 0 then obj:setyaw(0.5 * math.pi) end
+			if bdir.z < 0 then obj:setyaw(math.pi) end
+			if bdir.x > 0 then obj:setyaw(1.5 * math.pi) end
+		end
+	end
 end
