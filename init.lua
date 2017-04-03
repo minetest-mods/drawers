@@ -29,10 +29,10 @@ drawers.drawer_visuals = {}
 
 if default then
 	drawers.WOOD_SOUNDS = default.node_sound_wood_defaults()
-	drawers.WOOD_ITEMSTRING = "default:wood"
+	drawers.WOOD_ITEMSTRING = "group:wood"
 	drawers.CHEST_ITEMSTRING = "default:chest"
 elseif mcl_core then -- MineClone 2
-	drawers.WOOD_ITEMSTRING = "mcl_core:wood"
+	drawers.WOOD_ITEMSTRING = "group:wood"
 	drawers.CHEST_ITEMSTRING = "mcl_chests:chest"
 	if mcl_sounds then
 		drawers.WOOD_SOUNDS = mcl_sounds.node_sound_wood_defaults()
