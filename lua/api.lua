@@ -98,10 +98,11 @@ function drawers.drawer_on_dig(pos, node, player)
 		local j = math.floor(count / stack_max) + 1
 		local i = 1
 		while i <= j do
+			rndpos = drawers.randomize_pos(pos)
 			if not (i == j) then
-				core.add_item(pos, name .. " " .. stack_max)
+				core.add_item(rndpos, name .. " " .. stack_max)
 			else
-				core.add_item(pos, name .. " " .. count % stack_max)
+				core.add_item(rndpos, name .. " " .. count % stack_max)
 			end
 			i = i + 1
 		end

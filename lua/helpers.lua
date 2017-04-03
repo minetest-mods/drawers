@@ -149,3 +149,13 @@ function drawers.spawn_visual(pos)
 		end
 	end
 end
+
+function drawers.randomize_pos(pos)
+	local rndpos = table.copy(pos)
+	local x = math.random(-50, 50) * 0.01
+	local z = math.random(-50, 50) * 0.01
+	rndpos.x = rndpos.x + x
+	rndpos.y = rndpos.y + 0.25
+	rndpos.z = rndpos.z + z
+	return rndpos
+end
