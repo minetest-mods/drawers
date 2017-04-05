@@ -85,14 +85,24 @@ core.register_entity("drawers:visual", {
 		local node = core.get_node(self.drawer_pos)
 
 		-- collisionbox
-		local colbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0} -- for param2 = 0 or 2
-		if node.param2 == 1 or node.param2 == 3 then
-			colbox = {0, -0.4374, -0.4374,  0, 0.4374, 0.4374}
-		end
-		-- only half the size if it's a small drawer
-		if self.drawerType >= 2 then
-			for i,j in pairs(colbox) do
-				colbox[i] = j * 0.5
+		local colbox
+		if self.drawerType ~= 2 then
+			if node.param2 == 1 or node.param2 == 3 then
+				colbox = {0, -0.4374, -0.4374,  0, 0.4374, 0.4374}
+			else
+				colbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0} -- for param2 = 0 or 2
+			end
+			-- only half the size if it's a small drawer
+			if self.drawerType > 1 then
+				for i,j in pairs(colbox) do
+					colbox[i] = j * 0.5
+				end
+			end
+		else
+			if node.param2 == 1 or node.param2 == 3 then
+				colbox = {0, -0.2187, -0.4374,  0, 0.2187, 0.4374}
+			else
+				colbox = {-0.4374, -0.2187, 0,  0.4374, 0.2187, 0} -- for param2 = 0 or 2
 			end
 		end
 

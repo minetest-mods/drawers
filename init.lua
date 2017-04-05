@@ -61,6 +61,8 @@ drawers.register_drawer("drawers:wood", {
 	description = "Wooden",
 	tiles1 = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
 		"drawers_wood.png", "drawers_wood.png", "drawers_wood_front_1.png"},
+	tiles2 = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
+		"drawers_wood.png", "drawers_wood.png", "drawers_wood_front_2.png"},
 	tiles4 = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
 		"drawers_wood.png", "drawers_wood.png", "drawers_wood_front_4.png"},
 	groups = {choppy = 3, oddly_breakable_by_hand = 2},
