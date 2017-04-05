@@ -21,6 +21,7 @@ MineClone 2 mods are only optional dependencies for crafting recipes.
 - [ ] Add duct tape to transport drawers
 - [x] Support pipeworks
 - [ ] Support hoppers (needs hoppers mod change)
+- [ ] Make drawers upgradable
 
 ## Bug reports and suggestions
 You can report bugs and suggest ideas on [GitHub](http://github.com/lnj2/drawers/issues/new),
