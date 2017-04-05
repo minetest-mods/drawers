@@ -66,7 +66,7 @@ function drawers.get_inv_image(name)
 	return texture
 end
 
-function drawers.spawn_visual(pos)
+function drawers.spawn_visuals(pos)
 	local node = core.get_node(pos)
 	local ndef = core.registered_nodes[node.name]
 	local drawerType = ndef.groups.drawer
@@ -146,6 +146,18 @@ function drawers.spawn_visual(pos)
 			if bdir.x < 0 then obj:setyaw(0.5 * math.pi) end
 			if bdir.z < 0 then obj:setyaw(math.pi) end
 			if bdir.x > 0 then obj:setyaw(1.5 * math.pi) end
+		end
+	end
+end
+
+function drawers.remove_visuals(pos)
+	local objs = core.get_objects_inside_radius(pos, 0.537)
+	if not objs then return end
+
+	for _, obj in pairs(objs) do
+		if obj and obj:get_luaentity() and
+				obj:get_luaentity().name == "drawers:visual" then
+			obj:remove()
 		end
 	end
 end

@@ -59,20 +59,12 @@ function drawers.drawer_on_construct(pos)
 		i = i + 1
 	end
 
-	drawers.spawn_visual(pos)
+	drawers.spawn_visuals(pos)
 end
 
 -- destruct drawer
 function drawers.drawer_on_destruct(pos)
-	local objs = core.get_objects_inside_radius(pos, 0.537)
-	if not objs then return end
-
-	for _, obj in pairs(objs) do
-		if obj and obj:get_luaentity() and
-				obj:get_luaentity().name == "drawers:visual" then
-			obj:remove()
-		end
-	end
+	drawers.remove_visuals(pos)
 end
 
 -- drop all items

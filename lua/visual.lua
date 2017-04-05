@@ -260,17 +260,24 @@ core.register_lbm({
 	nodenames = {"group:drawer"},
 	run_at_every_load = true,
 	action  = function(pos, node)
+		local drawerType = core.registered_nodes[node.name].groups.drawer
+		local foundVisuals = 0
 		local objs = core.get_objects_inside_radius(pos, 0.537)
 		if objs then
 			for _, obj in pairs(objs) do
 				if obj and obj:get_luaentity() and
 						obj:get_luaentity().name == "drawers:visual" then
-					return
+					foundVisuals = foundVisuals + 1
 				end
 			end
 		end
+		-- if all drawer visuals were found, return
+		if foundVisuals == drawerType then
+			return
+		end
 
-		-- no visual found, create a new one
-		drawers.spawn_visual(pos)
+		-- not enough visuals found, remove existing and create new ones
+		drawers.remove_visuals(pos)
+		drawers.spawn_visuals(pos)
 	end
 })
