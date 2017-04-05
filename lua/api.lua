@@ -120,7 +120,7 @@ function drawers.drawer_insert_object(pos, node, stack, direction)
 end
 
 function drawers.register_drawer(name, def)
-	def.description = def.description or "Drawer"
+	def.description = def.description or "Wooden"
 	def.drawtype = "nodebox"
 	def.node_box = {type = "fixed", fixed = drawers.node_box_simple}
 	def.collision_box = {type = "regular"}
@@ -154,6 +154,7 @@ function drawers.register_drawer(name, def)
 
 	-- normal drawer 1x1 = 1
 	def1 = table.copy(def)
+	def1.description = def.description .. " Drawer"
 	def1.tiles = def.tiles or def.tiles1
 	def1.tiles1 = nil
 	def1.tiles4 = nil
@@ -163,7 +164,7 @@ function drawers.register_drawer(name, def)
 
 	-- 2x2 = 4
 	def4 = table.copy(def)
-	def4.description = def4.description .. " (2x2)"
+	def4.description = def.description .. " Drawers (2x2)"
 	def4.tiles = def.tiles4
 	def4.tiles1 = nil
 	def4.tiles4 = nil

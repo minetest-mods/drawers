@@ -58,7 +58,7 @@ dofile(modpath .. "/lua/api.lua")
 --
 
 drawers.register_drawer("drawers:wood", {
-	description = "Wooden Drawer",
+	description = "Wooden",
 	tiles1 = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
 		"drawers_wood.png", "drawers_wood.png", "drawers_wood_front_1.png"},
 	tiles4 = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
