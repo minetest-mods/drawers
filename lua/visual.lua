@@ -91,7 +91,6 @@ core.register_entity("drawers:visual", {
 		-- visual size
 		local visual_size = {x = 0.6, y = 0.6}
 		if self.drawerType >= 2 then
-			core.chat_send_all("small")
 			visual_size = {x = 0.3, y = 0.3}
 		end
 

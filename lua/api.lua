@@ -48,13 +48,16 @@ function drawers.drawer_on_construct(pos)
 
 	i = 1
 	while i <= drawerType do
-		meta:set_string("name"..i, "")
-		meta:set_int("count"..i, 0)
-		meta:set_int("max_count"..i, base_stack_max * stack_max_factor)
-		meta:set_int("base_stack_max"..i, base_stack_max)
-		meta:set_string("entity_infotext"..i, drawers.gen_info_text("Empty", 0,
+		local vid = i
+		-- 1x1 drawers don't have numbers in the meta fields
+		if drawerType == 1 then vid = "" end
+		meta:set_string("name"..vid, "")
+		meta:set_int("count"..vid, 0)
+		meta:set_int("max_count"..vid, base_stack_max * stack_max_factor)
+		meta:set_int("base_stack_max"..vid, base_stack_max)
+		meta:set_string("entity_infotext"..vid, drawers.gen_info_text("Empty", 0,
 			stack_max_factor, base_stack_max))
-		meta:set_int("stack_max_factor"..i, stack_max_factor)
+		meta:set_int("stack_max_factor"..vid, stack_max_factor)
 
 		i = i + 1
 	end
