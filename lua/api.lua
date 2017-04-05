@@ -109,10 +109,13 @@ function drawers.drawer_on_dig(pos, node, player)
 end
 
 function drawers.drawer_insert_object(pos, node, stack, direction)
-	local drawer_visual = drawers.drawer_visuals[core.serialize(pos)]
-	if not drawer_visual then return stack end
+	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
+	if not drawer_visuals then return stack end
 
-	local leftover = drawer_visual.try_insert_stack(drawer_visual, stack, true)
+	local leftover = stack
+	for _, visual in pairs(drawer_visuals) do
+		leftover = visual.try_insert_stack(visual, leftover, true)
+	end
 	return leftover
 end
 

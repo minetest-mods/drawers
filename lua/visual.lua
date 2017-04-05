@@ -70,9 +70,17 @@ core.register_entity("drawers:visual", {
 
 		-- add self to public drawer visuals
 		-- this is needed because there is no other way to get this class
-		-- only the underlying ObjectRef
+		-- only the underlying LuaEntitySAO
 		-- PLEASE contact me, if this is wrong
-		drawers.drawer_visuals[core.serialize(self.drawer_pos)] = self
+		local vId = self.visualId
+		if vId == "" then vId = 1 end
+		local posstr = core.serialize(self.drawer_pos)
+		if not drawers.drawer_visuals[posstr] then
+			drawers.drawer_visuals[posstr] = {[vId] = self}
+		else
+			drawers.drawer_visuals[posstr][vId] = self
+		end
+
 
 		local node = core.get_node(self.drawer_pos)
 
