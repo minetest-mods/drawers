@@ -129,7 +129,7 @@ function drawers.register_drawer(name, def)
 	def.drawtype = "nodebox"
 	def.node_box = {type = "fixed", fixed = drawers.node_box_simple}
 	def.collision_box = {type = "regular"}
-	def.selection_box = {type = "regular"}
+	def.selection_box = {type = "fixed", fixed = drawers.node_box_simple}
 	def.paramtype = "light"
 	def.paramtype2 = "facedir"
 	def.legacy_facedir_simple = true
