@@ -157,61 +157,73 @@ function drawers.register_drawer(name, def)
 		def.after_dig_node = pipeworks.after_dig
 	end
 
-	-- normal drawer 1x1 = 1
-	def1 = table.copy(def)
-	def1.description = def.description .. " Drawer"
-	def1.tiles = def.tiles or def.tiles1
-	def1.tiles1 = nil
-	def1.tiles2 = nil
-	def1.tiles4 = nil
-	def1.groups.drawer = 1
-	core.register_node(name .. "1", def1)
-	core.register_alias(name, name .. "1") -- 1x1 drawer is the default one
+	if drawers.enable_1x1 then
+		-- normal drawer 1x1 = 1
+		def1 = table.copy(def)
+		def1.description = def.description .. " Drawer"
+		def1.tiles = def.tiles or def.tiles1
+		def1.tiles1 = nil
+		def1.tiles2 = nil
+		def1.tiles4 = nil
+		def1.groups.drawer = 1
+		core.register_node(name .. "1", def1)
+		core.register_alias(name, name .. "1") -- 1x1 drawer is the default one
+	end
 
-	-- 1x2 = 2
-	def2 = table.copy(def)
-	def2.description = def.description .. " Drawers (1x2)"
-	def2.tiles = def.tiles2
-	def2.tiles1 = nil
-	def2.tiles2 = nil
-	def2.tiles4 = nil
-	def2.groups.drawer = 2
-	core.register_node(name .. "2", def2)
+	if drawers.enable_1x2 then
+		-- 1x2 = 2
+		def2 = table.copy(def)
+		def2.description = def.description .. " Drawers (1x2)"
+		def2.tiles = def.tiles2
+		def2.tiles1 = nil
+		def2.tiles2 = nil
+		def2.tiles4 = nil
+		def2.groups.drawer = 2
+		core.register_node(name .. "2", def2)
+	end
 
-	-- 2x2 = 4
-	def4 = table.copy(def)
-	def4.description = def.description .. " Drawers (2x2)"
-	def4.tiles = def.tiles4
-	def4.tiles1 = nil
-	def4.tiles2 = nil
-	def4.tiles4 = nil
-	def4.groups.drawer = 4
-	core.register_node(name .. "4", def4)
+	if drawers.enable_2x2 then
+		-- 2x2 = 4
+		def4 = table.copy(def)
+		def4.description = def.description .. " Drawers (2x2)"
+		def4.tiles = def.tiles4
+		def4.tiles1 = nil
+		def4.tiles2 = nil
+		def4.tiles4 = nil
+		def4.groups.drawer = 4
+		core.register_node(name .. "4", def4)
+	end
 
 	if (not def.no_craft) and def.material then
-		core.register_craft({
-			output = name .. "1",
-			recipe = {
-				{def.material, def.material, def.material},
-				{    "", drawers.CHEST_ITEMSTRING,  ""   },
-				{def.material, def.material, def.material}
-			}
-		})
-		core.register_craft({
-			output = name .. "2 2",
-			recipe = {
-				{def.material, drawers.CHEST_ITEMSTRING, def.material},
-				{def.material,       def.material,       def.material},
-				{def.material, drawers.CHEST_ITEMSTRING, def.material}
-			}
-		})
-		core.register_craft({
-			output = name .. "4 4",
-			recipe = {
-				{drawers.CHEST_ITEMSTRING, def.material, drawers.CHEST_ITEMSTRING},
-				{      def.material,       def.material,       def.material      },
-				{drawers.CHEST_ITEMSTRING, def.material, drawers.CHEST_ITEMSTRING}
-			}
-		})
+		if drawers.enable_1x1 then
+			core.register_craft({
+				output = name .. "1",
+				recipe = {
+					{def.material, def.material, def.material},
+					{    "", drawers.CHEST_ITEMSTRING,  ""   },
+					{def.material, def.material, def.material}
+				}
+			})
+		end
+		if drawers.enable_1x2 then
+			core.register_craft({
+				output = name .. "2 2",
+				recipe = {
+					{def.material, drawers.CHEST_ITEMSTRING, def.material},
+					{def.material,       def.material,       def.material},
+					{def.material, drawers.CHEST_ITEMSTRING, def.material}
+				}
+			})
+		end
+		if drawers.enable_2x2 then
+			core.register_craft({
+				output = name .. "4 4",
+				recipe = {
+					{drawers.CHEST_ITEMSTRING, def.material, drawers.CHEST_ITEMSTRING},
+					{      def.material,       def.material,       def.material      },
+					{drawers.CHEST_ITEMSTRING, def.material, drawers.CHEST_ITEMSTRING}
+				}
+			})
+		end
 	end
 end

@@ -43,6 +43,10 @@ else
 end
 
 
+drawers.enable_1x1 = not core.setting_getbool("drawers_disable_1x1")
+drawers.enable_1x2 = not core.setting_getbool("drawers_disable_1x2")
+drawers.enable_2x2 = not core.setting_getbool("drawers_disable_2x2")
+
 --
 -- Load files
 --
