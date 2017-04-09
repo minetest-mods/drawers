@@ -46,7 +46,7 @@ function drawers.drawer_on_construct(pos)
 	-- meta
 	local meta = core.get_meta(pos)
 
-	i = 1
+	local i = 1
 	while i <= drawerType do
 		local vid = i
 		-- 1x1 drawers don't have numbers in the meta fields
@@ -84,7 +84,7 @@ function drawers.drawer_on_dig(pos, node, player)
 
 	local meta = core.get_meta(pos)
 
-	k = 1
+	local k = 1
 	while k <= drawerType do
 		-- don't add a number in meta fields for 1x1 drawers
 		local vid = tostring(k)
@@ -98,7 +98,7 @@ function drawers.drawer_on_dig(pos, node, player)
 		local j = math.floor(count / stack_max) + 1
 		local i = 1
 		while i <= j do
-			rndpos = drawers.randomize_pos(pos)
+			local rndpos = drawers.randomize_pos(pos)
 			if not (i == j) then
 				core.add_item(rndpos, name .. " " .. stack_max)
 			else
@@ -141,11 +141,11 @@ function drawers.register_drawer(name, def)
 	def.on_destruct = drawers.drawer_on_destruct
 	def.on_dig = drawers.drawer_on_dig
 
-	if screwdriver then
+	if minetest.get_modpath("screwdriver") and screwdriver then
 		def.on_rotate = def.on_rotate or screwdriver.disallow
 	end
 
-	if pipeworks then
+	if minetest.get_modpath("pipeworks") and pipeworks then
 		def.groups.tubedevice = 1
 		def.groups.tubedevice_receiver = 1
 		def.tube = def.tube or {}
@@ -159,7 +159,7 @@ function drawers.register_drawer(name, def)
 
 	if drawers.enable_1x1 then
 		-- normal drawer 1x1 = 1
-		def1 = table.copy(def)
+		local def1 = table.copy(def)
 		def1.description = def.description .. " Drawer"
 		def1.tiles = def.tiles or def.tiles1
 		def1.tiles1 = nil
@@ -172,7 +172,7 @@ function drawers.register_drawer(name, def)
 
 	if drawers.enable_1x2 then
 		-- 1x2 = 2
-		def2 = table.copy(def)
+		local def2 = table.copy(def)
 		def2.description = def.description .. " Drawers (1x2)"
 		def2.tiles = def.tiles2
 		def2.tiles1 = nil
@@ -184,7 +184,7 @@ function drawers.register_drawer(name, def)
 
 	if drawers.enable_2x2 then
 		-- 2x2 = 4
-		def4 = table.copy(def)
+		local def4 = table.copy(def)
 		def4.description = def.description .. " Drawers (2x2)"
 		def4.tiles = def.tiles4
 		def4.tiles1 = nil

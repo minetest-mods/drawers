@@ -51,7 +51,7 @@ core.register_entity("drawers:visual", {
 
 	on_activate = function(self, staticdata, dtime_s)
 		-- Restore data
-		data = core.deserialize(staticdata)
+		local data = core.deserialize(staticdata)
 		if data then
 			self.drawer_pos = {
 				x = data.drawer_posx,

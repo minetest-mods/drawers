@@ -83,7 +83,7 @@ function drawers.spawn_visuals(pos)
 		local fdir = vector.new(-bdir.x, 0, -bdir.z)
 		local pos2 = vector.add(pos, vector.multiply(fdir, 0.438))
 
-		obj = core.add_entity(pos2, "drawers:visual")
+		local obj = core.add_entity(pos2, "drawers:visual")
 
 		if bdir.x < 0 then obj:setyaw(0.5 * math.pi) end
 		if bdir.z < 0 then obj:setyaw(math.pi) end
@@ -103,7 +103,7 @@ function drawers.spawn_visuals(pos)
 			fdir2 = vector.new(-bdir.x, -0.5, -bdir.z)
 		end
 
-		objs = {}
+		local objs = {}
 
 		drawers.last_visual_id = 1
 		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name1"))
@@ -149,7 +149,7 @@ function drawers.spawn_visuals(pos)
 			fdir4 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
 		end
 
-		objs = {}
+		local objs = {}
 
 		drawers.last_visual_id = 1
 		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name1"))
