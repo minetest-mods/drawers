@@ -204,3 +204,7 @@ function drawers.randomize_pos(pos)
 	rndpos.z = rndpos.z + z
 	return rndpos
 end
+
+function drawers.node_tiles_front_other(front, other)
+	return {other, other, other, other, other, front}
+end

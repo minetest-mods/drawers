@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-11 12:56+0200\n"
+"POT-Creation-Date: 2017-04-14 16:06+0200\n"
 "PO-Revision-Date: 2017-04-11 13:04+0200\n"
 "Last-Translator: LNJ <git@lnj.li>\n"
 "Language-Team: German\n"
@@ -44,3 +44,35 @@ msgstr "@1schubfächer (2x2)"
 #: lua/visual.lua
 msgid "Empty"
 msgstr "Leer"
+
+#: init.lua
+msgid "Acacia Wood"
+msgstr ""
+
+#: init.lua
+msgid "Aspen Wood"
+msgstr ""
+
+#: init.lua
+msgid "Junglewood"
+msgstr ""
+
+#: init.lua
+msgid "Pine Wood"
+msgstr ""
+
+#: init.lua
+msgid "Oak Wood"
+msgstr ""
+
+#: init.lua
+msgid "Birch Wood"
+msgstr ""
+
+#: init.lua
+msgid "Dark Oak Wood"
+msgstr ""
+
+#: init.lua
+msgid "Spruce Wood"
+msgstr ""

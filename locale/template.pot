@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-11 13:18+0200\n"
+"POT-Creation-Date: 2017-04-14 16:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,4 +43,36 @@ msgstr ""
 
 #: lua/visual.lua
 msgid "Empty"
+msgstr ""
+
+#: init.lua
+msgid "Acacia Wood"
+msgstr ""
+
+#: init.lua
+msgid "Aspen Wood"
+msgstr ""
+
+#: init.lua
+msgid "Junglewood"
+msgstr ""
+
+#: init.lua
+msgid "Pine Wood"
+msgstr ""
+
+#: init.lua
+msgid "Oak Wood"
+msgstr ""
+
+#: init.lua
+msgid "Birch Wood"
+msgstr ""
+
+#: init.lua
+msgid "Dark Oak Wood"
+msgstr ""
+
+#: init.lua
+msgid "Spruce Wood"
 msgstr ""
