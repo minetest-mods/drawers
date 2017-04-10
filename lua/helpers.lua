@@ -40,7 +40,7 @@ function drawers.gen_info_text(basename, count, factor, stack_max)
 end
 
 function drawers.get_inv_image(name)
-	local texture = "drawers_empty.png"
+	local texture = "blank.png"
 	local def = core.registered_items[name]
 	if name ~= "air" and def then
 		if def.inventory_image and #def.inventory_image > 0 then

@@ -32,7 +32,7 @@ core.register_entity("drawers:visual", {
 		collisionbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0}, -- for param2 0, 2
 		visual = "upright_sprite", -- "wielditem" for items without inv img?
 		visual_size = {x = 0.6, y = 0.6},
-		textures = {"drawers_empty.png"},
+		textures = {"blank.png"},
 		spritediv = {x = 1, y = 1},
 		initial_sprite_basepos = {x = 0, y = 0},
 		is_visible = true,
@@ -63,7 +63,7 @@ core.register_entity("drawers:visual", {
 			self.visualId = data.visualId or ""
 		else
 			self.drawer_pos = drawers.last_drawer_pos
-			self.texture = drawers.last_texture or "drawers_empty.png"
+			self.texture = drawers.last_texture or "blank.png"
 			self.visualId = drawers.last_visual_id
 			self.drawerType = drawers.last_drawer_type
 		end
@@ -178,7 +178,7 @@ core.register_entity("drawers:visual", {
 		if self.count <= 0 then
 			self.itemName = ""
 			meta:set_string("name"..self.visualId, self.itemName)
-			self.texture = "drawers_empty.png"
+			self.texture = "blank.png"
 			itemDescription = "Empty"
 		end
 
