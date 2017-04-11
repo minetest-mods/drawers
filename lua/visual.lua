@@ -65,6 +65,11 @@ core.register_entity("drawers:visual", {
 			self.texture = data.texture
 			self.drawerType = data.drawerType or 1
 			self.visualId = data.visualId or ""
+
+			-- backwards compatibility
+			if self.texture == "drawers_empty.png" then
+				self.texture = "blank.png"
+			end
 		else
 			self.drawer_pos = drawers.last_drawer_pos
 			self.texture = drawers.last_texture or "blank.png"
