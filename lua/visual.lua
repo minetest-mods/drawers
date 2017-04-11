@@ -24,6 +24,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
+-- Load support for intllib.
+local MP = core.get_modpath(core.get_current_modname())
+local S, NS = dofile(MP.."/intllib.lua")
+
 core.register_entity("drawers:visual", {
 	initial_properties = {
 		hp_max = 1,
@@ -179,7 +183,7 @@ core.register_entity("drawers:visual", {
 			self.itemName = ""
 			meta:set_string("name"..self.visualId, self.itemName)
 			self.texture = "blank.png"
-			itemDescription = "Empty"
+			itemDescription = S("Empty")
 		end
 
 		local infotext = drawers.gen_info_text(itemDescription,
@@ -243,7 +247,7 @@ core.register_entity("drawers:visual", {
 		if core.registered_items[self.itemName] then
 			itemDescription = core.registered_items[self.itemName].description
 		else
-			itemDescription = "Empty"
+			itemDescription = S("Empty")
 		end
 		local infotext = drawers.gen_info_text(itemDescription,
 			self.count, self.stackMaxFactor, self.itemStackMax)

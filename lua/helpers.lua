@@ -25,6 +25,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
+-- Load support for intllib.
+local MP = core.get_modpath(core.get_current_modname())
+local S, NS = dofile(MP.."/intllib.lua")
+
 function drawers.gen_info_text(basename, count, factor, stack_max)
 	local maxCount = stack_max * factor
 	local percent = count / maxCount * 100
@@ -32,10 +36,9 @@ function drawers.gen_info_text(basename, count, factor, stack_max)
 	percent = math.floor(percent + 0.5)
 
 	if count == 0 then
-		return basename .. " (" .. tostring(percent) .. "% full)"
+		return S("@1 (@2% full)", basename, tostring(percent))
 	else
-		return tostring(count) .. " " .. basename .. " (" ..
-			tostring(percent) .. "% full)"
+		return S("@1 @2 (@3% full)", tostring(count), basename, tostring(percent))
 	end
 end
 

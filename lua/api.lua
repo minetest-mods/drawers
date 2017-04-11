@@ -25,6 +25,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
+-- Load support for intllib.
+local MP = core.get_modpath(core.get_current_modname())
+local S, NS = dofile(MP.."/intllib.lua")
+
 drawers.node_box_simple = {
 	{-0.5, -0.5, -0.4375, 0.5, 0.5, 0.5},
 	{-0.5, -0.5, -0.5, -0.4375, 0.5, -0.4375},
@@ -125,7 +129,7 @@ function drawers.drawer_insert_object(pos, node, stack, direction)
 end
 
 function drawers.register_drawer(name, def)
-	def.description = def.description or "Wooden"
+	def.description = def.description or S("Wooden")
 	def.drawtype = "nodebox"
 	def.node_box = {type = "fixed", fixed = drawers.node_box_simple}
 	def.collision_box = {type = "regular"}
@@ -160,7 +164,7 @@ function drawers.register_drawer(name, def)
 	if drawers.enable_1x1 then
 		-- normal drawer 1x1 = 1
 		local def1 = table.copy(def)
-		def1.description = def.description .. " Drawer"
+		def1.description = S("@1 Drawer", def.description)
 		def1.tiles = def.tiles or def.tiles1
 		def1.tiles1 = nil
 		def1.tiles2 = nil
@@ -173,7 +177,7 @@ function drawers.register_drawer(name, def)
 	if drawers.enable_1x2 then
 		-- 1x2 = 2
 		local def2 = table.copy(def)
-		def2.description = def.description .. " Drawers (1x2)"
+		def2.description = S("@1 Drawers (1x2)", def.description)
 		def2.tiles = def.tiles2
 		def2.tiles1 = nil
 		def2.tiles2 = nil
@@ -185,7 +189,7 @@ function drawers.register_drawer(name, def)
 	if drawers.enable_2x2 then
 		-- 2x2 = 4
 		local def4 = table.copy(def)
-		def4.description = def.description .. " Drawers (2x2)"
+		def4.description = S("@1 Drawers (2x2)", def.description)
 		def4.tiles = def.tiles4
 		def4.tiles1 = nil
 		def4.tiles2 = nil

@@ -24,6 +24,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
+-- Load support for intllib.
+local MP = core.get_modpath(core.get_current_modname())
+local S, NS = dofile(MP.."/intllib.lua")
+
 drawers = {}
 drawers.drawer_visuals = {}
 
@@ -51,10 +55,9 @@ drawers.enable_2x2 = not core.setting_getbool("drawers_disable_2x2")
 -- Load files
 --
 
-local modpath = core.get_modpath("drawers")
-dofile(modpath .. "/lua/helpers.lua")
-dofile(modpath .. "/lua/visual.lua")
-dofile(modpath .. "/lua/api.lua")
+dofile(MP .. "/lua/helpers.lua")
+dofile(MP .. "/lua/visual.lua")
+dofile(MP .. "/lua/api.lua")
 
 
 --
@@ -62,7 +65,7 @@ dofile(modpath .. "/lua/api.lua")
 --
 
 drawers.register_drawer("drawers:wood", {
-	description = "Wooden",
+	description = S("Wooden"),
 	tiles1 = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
 		"drawers_wood.png", "drawers_wood.png", "drawers_wood_front_1.png"},
 	tiles2 = {"drawers_wood.png", "drawers_wood.png", "drawers_wood.png",
