@@ -45,27 +45,31 @@ end
 function drawers.get_inv_image(name)
 	local texture = "blank.png"
 	local def = core.registered_items[name]
-	if name ~= "air" and def then
-		if def.inventory_image and #def.inventory_image > 0 then
-			texture = def.inventory_image
-		else
-			if not def.tiles then return texture end
+	if not def then return end
 
-			local c = #def.tiles or 0
-			local x = {}
-			for i, v in ipairs(def.tiles) do
-				if type(v) == "table" then
-					x[i] = v.name
-				else
-					x[i] = v
-				end
-				i = i + 1
+	if def.inventory_image and #def.inventory_image > 0 then
+		texture = def.inventory_image
+	else
+		if not def.tiles then return texture end
+		local tiles = table.copy(def.tiles)
+
+		for k,v in pairs(tiles) do
+			if type(v) == "table" then
+				tiles[k] = v.name
 			end
-			if not x[3] then x[3] = x[1] end
-			if not x[4] then x[4] = x[3] end
-			texture = core.inventorycube(x[1], x[3], x[4])
+		end
+
+		-- tiles: up, down, right, left, back, front
+		-- inventorycube: up, front, right
+		if #tiles <= 2 then
+			texture = core.inventorycube(tiles[1], tiles[1], tiles[1])
+		elseif #tiles <= 5 then
+			texture = core.inventorycube(tiles[1], tiles[3], tiles[3])
+		else -- full tileset
+			texture = core.inventorycube(tiles[1], tiles[6], tiles[3])
 		end
 	end
+
 	return texture
 end
 
