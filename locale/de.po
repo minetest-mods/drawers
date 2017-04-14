@@ -47,32 +47,32 @@ msgstr "Leer"
 
 #: init.lua
 msgid "Acacia Wood"
-msgstr ""
+msgstr "Akazienholz"
 
 #: init.lua
 msgid "Aspen Wood"
-msgstr ""
+msgstr "Espenholz"
 
 #: init.lua
 msgid "Junglewood"
-msgstr ""
+msgstr "Tropenholz"
 
 #: init.lua
 msgid "Pine Wood"
-msgstr ""
+msgstr "Kiefernholz"
 
 #: init.lua
 msgid "Oak Wood"
-msgstr ""
+msgstr "Eichenholz"
 
 #: init.lua
 msgid "Birch Wood"
-msgstr ""
+msgstr "Birkenholz"
 
 #: init.lua
 msgid "Dark Oak Wood"
-msgstr ""
+msgstr "Dunkeleichenholz"
 
 #: init.lua
 msgid "Spruce Wood"
-msgstr ""
+msgstr "Fichtenholz"
