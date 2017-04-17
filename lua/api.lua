@@ -37,6 +37,14 @@ drawers.node_box_simple = {
 	{-0.4375, -0.5, -0.5, 0.4375, -0.4375, -0.4375},
 }
 
+drawers.drawer_formspec = "size[9,7]" ..
+	"list[context;upgrades;2,0.5;5,1;]" ..
+	"list[current_player;main;0,3;9,4;]" ..
+	drawers.gui_bg ..
+	drawers.gui_bg_img ..
+	drawers.gui_slots ..
+	drawers.get_upgrade_slots_bg(2, 0.5)
+
 -- construct drawer
 function drawers.drawer_on_construct(pos)
 	local node = core.get_node(pos)
@@ -66,7 +74,14 @@ function drawers.drawer_on_construct(pos)
 		i = i + 1
 	end
 
+	-- spawn all visuals
 	drawers.spawn_visuals(pos)
+
+	-- create drawer upgrade inventory
+	meta:get_inventory():set_size("upgrades", 5)
+
+	-- set the formspec
+	meta:set_string("formspec", drawers.drawer_formspec)
 end
 
 -- destruct drawer
@@ -113,8 +128,46 @@ function drawers.drawer_on_dig(pos, node, player)
 		k = k + 1
 	end
 
+	-- drop all drawer upgrades
+	local upgrades = meta:get_inventory():get_list("upgrades")
+	if upgrades then
+		for _,itemStack in pairs(upgrades) do
+			if itemStack:get_count() > 0 then
+				local rndpos = drawers.randomize_pos(pos)
+				core.add_item(rndpos, itemStack:get_name())
+			end
+		end
+	end
+
 	-- remove node
 	core.node_dig(pos, node, player)
+end
+
+function drawers.drawer_allow_metadata_inventory_put(pos, listname, index, stack, player)
+	if listname ~= "upgrades" then
+		return 0
+	end
+	if stack:get_count() > 1 then
+		return 0
+	end
+	if core.get_item_group(stack:get_name(), "drawer_upgrade") < 1 then
+		return 0
+	end
+	return 1
+end
+
+function drawers.add_drawer_upgrade(pos, listname, index, stack, player)
+	-- only do anything if adding to upgrades
+	if listname ~= "upgrades" then return end
+
+	drawers.update_drawer_upgrades(pos)
+end
+
+function drawers.remove_drawer_upgrade(pos, listname, index, stack, player)
+	-- only do anything if adding to upgrades
+	if listname ~= "upgrades" then return end
+
+	drawers.update_drawer_upgrades(pos)
 end
 
 function drawers.drawer_insert_object(pos, node, stack, direction)
@@ -123,7 +176,7 @@ function drawers.drawer_insert_object(pos, node, stack, direction)
 
 	local leftover = stack
 	for _, visual in pairs(drawer_visuals) do
-		leftover = visual.try_insert_stack(visual, leftover, true)
+		leftover = visual:try_insert_stack(leftover, true)
 	end
 	return leftover
 end
@@ -144,6 +197,9 @@ function drawers.register_drawer(name, def)
 	def.on_construct = drawers.drawer_on_construct
 	def.on_destruct = drawers.drawer_on_destruct
 	def.on_dig = drawers.drawer_on_dig
+	def.allow_metadata_inventory_put = drawers.drawer_allow_metadata_inventory_put
+	def.on_metadata_inventory_put = drawers.add_drawer_upgrade
+	def.on_metadata_inventory_take = drawers.remove_drawer_upgrade
 
 	if minetest.get_modpath("screwdriver") and screwdriver then
 		def.on_rotate = def.on_rotate or screwdriver.disallow
@@ -229,5 +285,28 @@ function drawers.register_drawer(name, def)
 				}
 			})
 		end
+	end
+end
+
+function drawers.register_drawer_upgrade(name, def)
+	def.groups = def.groups or {}
+	def.groups.drawer_upgrade = def.groups.drawer_upgrade or 100
+	def.inventory_image = def.inventory_image or "drawers_upgrade_template.png"
+	def.stack_max = 1
+
+	local recipe_item = def.recipe_item or "air"
+	def.recipe_item = nil
+
+	core.register_craftitem(name, def)
+
+	if not def.no_craft then
+		core.register_craft({
+			output = name,
+			recipe = {
+				{recipe_item, "group:stick", recipe_item},
+				{"group:stick", "drawers:upgrade_template", "group:stick"},
+				{recipe_item, "group:stick", recipe_item}
+			}
+		})
 	end
 end

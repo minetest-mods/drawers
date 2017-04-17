@@ -29,6 +29,15 @@ SOFTWARE.
 local MP = core.get_modpath(core.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
+-- GUI
+function drawers.get_upgrade_slots_bg(x,y)
+	local out = ""
+	for i = 0, 4, 1 do
+		out = out .."image["..x+i..","..y..";1,1;drawers_upgrade_slot_bg.png]"
+	end
+	return out
+end
+
 function drawers.gen_info_text(basename, count, factor, stack_max)
 	local maxCount = stack_max * factor
 	local percent = count / maxCount * 100
@@ -196,6 +205,41 @@ function drawers.remove_visuals(pos)
 				obj:get_luaentity().name == "drawers:visual" then
 			obj:remove()
 		end
+	end
+end
+
+function drawers.update_drawer_upgrades(pos)
+	local node = core.get_node(pos)
+	local ndef = core.registered_nodes[node.name]
+	local drawerType = ndef.groups.drawer
+
+	-- default number of slots/stacks
+	local stackMaxFactor = ndef.drawer_stack_max_factor
+
+	-- storage percent with all upgrades
+	local storagePercent = 100
+
+	-- get info of all upgrades
+	local inventory = core.get_meta(pos):get_inventory():get_list("upgrades")
+	for _,itemStack in pairs(inventory) do
+		local iname = itemStack:get_name()
+		local idef = core.registered_items[iname]
+		local addPercent = idef.groups.drawer_upgrade or 0
+
+		storagePercent = storagePercent + addPercent
+	end
+
+	--						i.e.: 150% / 100 => 1.50
+	stackMaxFactor = math.floor(stackMaxFactor * (storagePercent / 100))
+	-- calculate stack_max factor for a single drawer
+	stackMaxFactor = stackMaxFactor / drawerType
+
+	-- set the new stack max factor in all visuals
+	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
+	if not drawer_visuals then return end
+
+	for _,visual in pairs(drawer_visuals) do
+		visual:setStackMaxFactor(stackMaxFactor)
 	end
 end
 

@@ -90,10 +90,11 @@ core.register_entity("drawers:visual", {
 			drawers.drawer_visuals[posstr][vId] = self
 		end
 
-
-		local node = core.get_node(self.drawer_pos)
+		-- get meta
+		self.meta = core.get_meta(self.drawer_pos)
 
 		-- collisionbox
+		local node = core.get_node(self.drawer_pos)
 		local colbox
 		if self.drawerType ~= 2 then
 			if node.param2 == 1 or node.param2 == 3 then
@@ -123,17 +124,16 @@ core.register_entity("drawers:visual", {
 
 
 		-- drawer values
-		local meta = core.get_meta(self.drawer_pos)
 		local vid = self.visualId
-		self.count = meta:get_int("count"..vid)
-		self.itemName = meta:get_string("name"..vid)
-		self.maxCount = meta:get_int("max_count"..vid)
-		self.itemStackMax = meta:get_int("base_stack_max"..vid)
-		self.stackMaxFactor = meta:get_int("stack_max_factor"..vid)
+		self.count = self.meta:get_int("count"..vid)
+		self.itemName = self.meta:get_string("name"..vid)
+		self.maxCount = self.meta:get_int("max_count"..vid)
+		self.itemStackMax = self.meta:get_int("base_stack_max"..vid)
+		self.stackMaxFactor = self.meta:get_int("stack_max_factor"..vid)
 
 
 		-- infotext
-		local infotext = meta:get_string("entity_infotext"..vid) .. "\n\n\n\n\n"
+		local infotext = self.meta:get_string("entity_infotext"..vid) .. "\n\n\n\n\n"
 
 		self.object:set_properties({
 			collisionbox = colbox,
@@ -200,35 +200,10 @@ core.register_entity("drawers:visual", {
 
 		-- update the drawer count
 		self.count = self.count - removeCount
-		-- clean up drawer, if empty
-		if self.count <= 0 then
-			self.itemName = ""
-			meta:set_string("name"..self.visualId, self.itemName)
-			self.texture = "blank.png"
-		end
 
-
-
-		-- build info
-		local itemDescription = ""
-		if self.count <= 0 then
-			itemDescription = S("Empty")
-		elseif core.registered_items[self.itemName] then
-			itemDescription = core.registered_items[self.itemName].description
-		end
-
-		local infotext = drawers.gen_info_text(itemDescription,
-			self.count, self.stackMaxFactor, self.itemStackMax)
-
-		-- set new infotext and texture
-		self.object:set_properties({
-			infotext = infotext .. "\n\n\n\n\n",
-			textures = {self.texture}
-		})
-
-		-- save everything to meta
-		meta:set_string("entity_infotext"..self.visualId, infotext)
-		meta:set_int("count"..self.visualId, self.count)
+		self:updateInfotext()
+		self:updateTexture()
+		self:saveMetaData()
 
 		-- return the stack that was removed from the drawer
 		return stack
@@ -277,32 +252,93 @@ core.register_entity("drawers:visual", {
 			itemstack:set_count(itemstack:get_count() - stackCount)
 		end
 
-		-- get meta
-		local meta = core.get_meta(self.drawer_pos)
+		-- update infotext, texture
+		self:updateInfotext()
+		self:updateTexture()
 
-		-- update infotext
-		local itemDescription
+		self:saveMetaData()
+
+		if itemstack:get_count() == 0 then itemstack = ItemStack("") end
+		return itemstack
+	end,
+
+	updateInfotext = function(self)
+		local itemDescription = ""
 		if core.registered_items[self.itemName] then
 			itemDescription = core.registered_items[self.itemName].description
-		else
+		end
+
+		if self.count <= 0 then
+			self.itemName = ""
+			self.meta:set_string("name"..self.visualId, self.itemName)
+			self.texture = "blank.png"
 			itemDescription = S("Empty")
 		end
+
 		local infotext = drawers.gen_info_text(itemDescription,
 			self.count, self.stackMaxFactor, self.itemStackMax)
-		meta:set_string("entity_infotext"..self.visualId, infotext)
+		self.meta:set_string("entity_infotext"..self.visualId, infotext)
 
+		self.object:set_properties({
+			infotext = infotext .. "\n\n\n\n\n"
+		})
+	end,
+
+	updateTexture = function(self)
 		-- texture
 		self.texture = drawers.get_inv_image(self.itemName)
 
 		self.object:set_properties({
-			infotext = infotext .. "\n\n\n\n\n",
 			textures = {self.texture}
 		})
+	end,
 
-		self.saveMetaData(self, meta)
+	dropStack = function(self, itemStack)
+		-- print warning if dropping higher stack counts than allowed
+		if itemStack:get_count() > itemStack:get_stack_max() then
+			core.log("warning", "[drawers] Dropping item stack with higher count than allowed")
+		end
+		-- find a position containing air
+		local dropPos = core.find_node_near(self.drawer_pos, 1, {"air"}, false)
+		-- if no pos found then drop on the top of the drawer
+		if not dropPos then
+			dropPos = self.pos
+			dropPos.y = dropPos.y + 1
+		end
+		-- drop the item stack
+		core.item_drop(itemStack, nil, dropPos)
+	end,
 
-		if itemstack:get_count() == 0 then itemstack = ItemStack("") end
-		return itemstack
+	dropItemOverload = function(self)
+		-- drop stacks until there are no more items than allowed
+		while self.count > self.maxCount do
+			-- remove the overflow
+			local removeCount = self.count - self.maxCount
+			-- if this is too much for a single stack, only take the
+			-- stack limit
+			if removeCount > self.itemStackMax then
+				removeCount = self.itemStackMax
+			end
+			-- remove this count from the drawer
+			self.count = self.count - removeCount
+			-- create a new item stack having the size of the remove
+			-- count
+			local stack = ItemStack(self.itemName)
+			stack:set_count(removeCount)
+			print(stack:to_string())
+			-- drop the stack
+			self:dropStack(stack)
+		end
+	end,
+
+	setStackMaxFactor = function(self, stackMaxFactor)
+		self.stackMaxFactor = stackMaxFactor
+		self.maxCount = self.stackMaxFactor * self.itemStackMax
+
+		-- will drop possible overflowing items
+		self:dropItemOverload()
+		self:updateInfotext()
+		self:saveMetaData()
 	end,
 
 	play_interact_sound = function(self)
@@ -314,11 +350,11 @@ core.register_entity("drawers:visual", {
 	end,
 
 	saveMetaData = function(self, meta)
-		meta:set_int("count"..self.visualId, self.count)
-		meta:set_string("name"..self.visualId, self.itemName)
-		meta:set_int("max_count"..self.visualId, self.maxCount)
-		meta:set_int("base_stack_max"..self.visualId, self.itemStackMax)
-		meta:set_int("stack_max_factor"..self.visualId, self.stackMaxFactor)
+		self.meta:set_int("count"..self.visualId, self.count)
+		self.meta:set_string("name"..self.visualId, self.itemName)
+		self.meta:set_int("max_count"..self.visualId, self.maxCount)
+		self.meta:set_int("base_stack_max"..self.visualId, self.itemStackMax)
+		self.meta:set_int("stack_max_factor"..self.visualId, self.stackMaxFactor)
 	end
 })
 

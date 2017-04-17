@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-14 16:13+0200\n"
+"POT-Creation-Date: 2017-06-03 17:04+0200\n"
 "PO-Revision-Date: 2017-05-19 07:17+0000\n"
-"Last-Translator: Muhammad Nur Hidayat Yasuyoshi <muhdnurhidayat96@yahoo.com>"
-"\n"
+"Last-Translator: Muhammad Nur Hidayat Yasuyoshi <muhdnurhidayat96@yahoo."
+"com>\n"
 "Language-Team: Malay <https://hosted.weblate.org/projects/minetest/mod-"
 "storage-drawers/ms/>\n"
 "Language: ms\n"
@@ -20,13 +20,9 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2.14\n"
 
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% penuh)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@2 @1 (@3% penuh)"
+#: lua/visual.lua
+msgid "Empty"
+msgstr "Kosong"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
@@ -44,9 +40,13 @@ msgstr "Laci @1 (1x2)"
 msgid "@1 Drawers (2x2)"
 msgstr "Laci @1 (2x2)"
 
-#: lua/visual.lua
-msgid "Empty"
-msgstr "Kosong"
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% penuh)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@2 @1 (@3% penuh)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -79,3 +79,32 @@ msgstr "Papan Kayu Oak Gelap"
 #: init.lua
 msgid "Spruce Wood"
 msgstr "Papan Kayu Fir"
+
+#: init.lua
+msgid "Steel Drawer Upgrade (x2)"
+msgstr ""
+
+#: init.lua
+msgid "Gold Drawer Upgrade (x3)"
+msgstr ""
+
+#: init.lua
+msgid "Obsidian Drawer Upgrade (x5)"
+msgstr ""
+
+#: init.lua
+msgid "Diamond Drawer Upgrade (x8)"
+msgstr ""
+
+#: init.lua
+#, fuzzy
+msgid "Iron Drawer Upgrade (x2)"
+msgstr "Laci @1 (1x2)"
+
+#: init.lua
+msgid "Emerald Drawer Upgrade (x13)"
+msgstr ""
+
+#: init.lua
+msgid "Drawer Upgrade Template"
+msgstr ""
