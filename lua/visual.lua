@@ -226,11 +226,11 @@ core.register_entity("drawers:visual", {
 			-- get new stack max
 			self.itemStackMax = ItemStack(self.itemName):get_stack_max()
 			self.maxCount = self.itemStackMax * self.stackMaxFactor
+		end
 
-			-- Don't add items stackable only to 1
-			if self.itemStackMax == 1 then
-				return itemstack
-			end
+		-- Don't add items stackable only to 1
+		if self.itemStackMax == 1 then
+			return itemstack
 		end
 
 		-- set new counts:
