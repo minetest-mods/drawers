@@ -1,5 +1,5 @@
 # Minetest Mod Storage Drawers
-Version 0.4.1, Status: alpha, License: MIT
+Version 0.4.2, Status: alpha, License: MIT
 
 ## Description
 This mod adds simple item storages showing the item's inventory image in the
