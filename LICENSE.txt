@@ -30,7 +30,7 @@ SOFTWARE.
 
 License of media:
 -----------------
-CC BY-NC 3.0. Creator Robinhood76 (https://www.freesound.org/people/Robinhood76/sounds/131772/), edited by tacotexmex
+CC BY 3.0. Creator ultradust (https://www.freesound.org/people/ultradust/), edited by tacotexmex
   sounds/drawers_openclose.1.ogg
   sounds/drawers_openclose.2.ogg
 
