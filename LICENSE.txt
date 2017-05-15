@@ -31,8 +31,8 @@ SOFTWARE.
 License of media:
 -----------------
 CC BY 3.0. Creator ultradust (https://www.freesound.org/people/ultradust/), edited by tacotexmex
-  sounds/drawers_openclose.1.ogg
-  sounds/drawers_openclose.2.ogg
+  sounds/drawers_interact.1.ogg
+  sounds/drawers_interact.2.ogg
 
 Copyright (C) 2014 Justin Aquadro (MIT):
   textures/drawers_acacia_wood_mcl_front_1.png
