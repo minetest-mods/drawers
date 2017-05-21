@@ -38,4 +38,6 @@ alternatively you can also [email](mailto:git@lnj.li) me.
 
 ## Links
 * [Minetest Forums](https://forum.minetest.net/viewtopic.php?f=9&t=17134)
+* [Weblate](https://hosted.weblate.org/projects/minetest/mod-storage-drawers/)
 * [GitHub](http://github.com/lnj2/drawers/)
+
