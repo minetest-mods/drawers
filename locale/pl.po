@@ -8,70 +8,89 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-14 16:13+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2017-05-31 18:21+0000\n"
+"Last-Translator: Jakub Mendel <jimikuba@o2.pl>\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/minetest/mod-"
+"storage-drawers/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 2.15-dev\n"
 
 #: lua/helpers.lua
+#, fuzzy
 msgid "@1 (@2% full)"
-msgstr ""
+msgstr "@1 (@2% napełnione)"
 
 #: lua/helpers.lua
+#, fuzzy
 msgid "@1 @2 (@3% full)"
-msgstr ""
+msgstr "@1 @2 (@3% napełnione)"
 
 #: lua/api.lua init.lua
+#, fuzzy
 msgid "Wooden"
-msgstr ""
+msgstr "Drewniany"
 
 #: lua/api.lua
+#, fuzzy
 msgid "@1 Drawer"
-msgstr ""
+msgstr "@1 Szuflada"
 
 #: lua/api.lua
+#, fuzzy
 msgid "@1 Drawers (1x2)"
-msgstr ""
+msgstr "@1 Szuflady (1x2)"
 
 #: lua/api.lua
+#, fuzzy
 msgid "@1 Drawers (2x2)"
-msgstr ""
+msgstr "@1 Szuflady (2x2)"
 
 #: lua/visual.lua
+#, fuzzy
 msgid "Empty"
-msgstr ""
+msgstr "Pusta"
 
 #: init.lua
+#, fuzzy
 msgid "Acacia Wood"
-msgstr ""
+msgstr "Drewno akacjowe"
 
 #: init.lua
+#, fuzzy
 msgid "Aspen Wood"
-msgstr ""
+msgstr "Drewno osikowe"
 
 #: init.lua
+#, fuzzy
 msgid "Junglewood"
-msgstr ""
+msgstr "Drewno jungli"
 
 #: init.lua
+#, fuzzy
 msgid "Pine Wood"
-msgstr ""
+msgstr "Drewno sosnowe"
 
 #: init.lua
+#, fuzzy
 msgid "Oak Wood"
-msgstr ""
+msgstr "Drewno dębowe"
 
 #: init.lua
+#, fuzzy
 msgid "Birch Wood"
-msgstr ""
+msgstr "Drewno brzozowe"
 
 #: init.lua
+#, fuzzy
 msgid "Dark Oak Wood"
-msgstr ""
+msgstr "Drewno ciemne dębowe"
 
 #: init.lua
+#, fuzzy
 msgid "Spruce Wood"
-msgstr ""
+msgstr "Drwno świerkowe"
