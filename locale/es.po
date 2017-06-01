@@ -8,70 +8,73 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-14 16:13+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2017-06-01 21:02+0000\n"
+"Last-Translator: Miguel Isaac <mineyoshist@protonmail.ch>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/minetest/mod-"
+"storage-drawers/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.15-dev\n"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
-msgstr ""
+msgstr "@1 (@2% lleno)"
 
 #: lua/helpers.lua
 msgid "@1 @2 (@3% full)"
-msgstr ""
+msgstr "@1 @2 (@3% lleno)"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
-msgstr ""
+msgstr "De Madera"
 
 #: lua/api.lua
 msgid "@1 Drawer"
-msgstr ""
+msgstr "@1 Gaveta"
 
 #: lua/api.lua
 msgid "@1 Drawers (1x2)"
-msgstr ""
+msgstr "@1 Gavetas (1x2)"
 
 #: lua/api.lua
 msgid "@1 Drawers (2x2)"
-msgstr ""
+msgstr "@1 Gavetas (2x2)"
 
 #: lua/visual.lua
 msgid "Empty"
-msgstr ""
+msgstr "Vacio"
 
 #: init.lua
 msgid "Acacia Wood"
-msgstr ""
+msgstr "Madera de Acacia"
 
 #: init.lua
 msgid "Aspen Wood"
-msgstr ""
+msgstr "Madera de Alamo"
 
 #: init.lua
 msgid "Junglewood"
-msgstr ""
+msgstr "Madera de Jungla"
 
 #: init.lua
 msgid "Pine Wood"
-msgstr ""
+msgstr "Madera de Pino"
 
 #: init.lua
 msgid "Oak Wood"
-msgstr ""
+msgstr "Madera de Roble"
 
 #: init.lua
 msgid "Birch Wood"
-msgstr ""
+msgstr "Madera de Abedul"
 
 #: init.lua
 msgid "Dark Oak Wood"
-msgstr ""
+msgstr "Madera de Roble Oscuro"
 
 #: init.lua
 msgid "Spruce Wood"
-msgstr ""
+msgstr "Madera de Pícea"
