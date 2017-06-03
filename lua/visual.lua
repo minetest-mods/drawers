@@ -150,10 +150,37 @@ core.register_entity("drawers:visual", {
 		local leftover = self.try_insert_stack(self, clicker:get_wielded_item(),
 			not clicker:get_player_control().sneak)
 
+		-- if smth. was added play the interact sound
+		if clicker:get_wielded_item():get_count() > leftover:get_count() then
+			self:play_interact_sound()
+		end
+		-- set the leftover as new wielded item for the player
 		clicker:set_wielded_item(leftover)
 	end,
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
+		local add_stack = not puncher:get_player_control().sneak
+
+		local inv = puncher:get_inventory()
+		local spaceChecker = ItemStack(self.itemName)
+		if add_stack then
+			spaceChecker:set_count(spaceChecker:get_stack_max())
+		end
+		if not inv:room_for_item("main", spaceChecker) then
+			return
+		end
+
+		stack = self:take_items(add_stack)
+		if stack ~= nil then
+			-- add removed stack to player's inventory
+			inv:add_item("main", stack)
+
+			-- play the interact sound
+			self:play_interact_sound()
+		end
+	end,
+
+	take_items = function(self, take_stack)
 		local meta = core.get_meta(self.drawer_pos)
 
 		if self.count <= 0 then
@@ -161,44 +188,50 @@ core.register_entity("drawers:visual", {
 		end
 
 		local removeCount = 1
-		if not puncher:get_player_control().sneak then
+		if take_stack then
 			removeCount = ItemStack(self.itemName):get_stack_max()
 		end
-		if removeCount > self.count then removeCount = self.count end
+		if removeCount > self.count then
+			removeCount = self.count
+		end
 
 		local stack = ItemStack(self.itemName)
 		stack:set_count(removeCount)
 
-		local inv = puncher:get_inventory()
-		if not inv:room_for_item("main", stack) then
-			return
-		end
-
-		inv:add_item("main", stack)
+		-- update the drawer count
 		self.count = self.count - removeCount
-		meta:set_int("count"..self.visualId, self.count)
-
-		-- update infotext
-		local itemDescription = ""
-		if core.registered_items[self.itemName] then
-			itemDescription = core.registered_items[self.itemName].description
-		end
-
+		-- clean up drawer, if empty
 		if self.count <= 0 then
 			self.itemName = ""
 			meta:set_string("name"..self.visualId, self.itemName)
 			self.texture = "blank.png"
+		end
+
+
+
+		-- build info
+		local itemDescription = ""
+		if self.count <= 0 then
 			itemDescription = S("Empty")
+		elseif core.registered_items[self.itemName] then
+			itemDescription = core.registered_items[self.itemName].description
 		end
 
 		local infotext = drawers.gen_info_text(itemDescription,
 			self.count, self.stackMaxFactor, self.itemStackMax)
-		meta:set_string("entity_infotext"..self.visualId, infotext)
 
+		-- set new infotext and texture
 		self.object:set_properties({
 			infotext = infotext .. "\n\n\n\n\n",
 			textures = {self.texture}
 		})
+
+		-- save everything to meta
+		meta:set_string("entity_infotext"..self.visualId, infotext)
+		meta:set_int("count"..self.visualId, self.count)
+
+		-- return the stack that was removed from the drawer
+		return stack
 	end,
 
 	try_insert_stack = function(self, itemstack, insert_stack)
@@ -270,6 +303,14 @@ core.register_entity("drawers:visual", {
 
 		if itemstack:get_count() == 0 then itemstack = ItemStack("") end
 		return itemstack
+	end,
+
+	play_interact_sound = function(self)
+		core.sound_play("drawers_interact", {
+			pos = self.pos,
+			max_hear_distance = 6,
+			gain = 2.0
+		})
 	end,
 
 	saveMetaData = function(self, meta)

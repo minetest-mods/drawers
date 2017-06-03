@@ -59,6 +59,10 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
 License of media:
 -----------------
+Copyright (C) 2012 ultradust (https://www.freesound.org/people/ultradust/) (CC BY 3.0):
+  sounds/drawers_interact.1.ogg (edited by tacotexmex)
+  sounds/drawers_interact.2.ogg (edited by tacotexmex)
+
 Copyright (C) 2014 Justin Aquadro (MIT):
   textures/drawers_acacia_wood_mcl_front_1.png
   textures/drawers_acacia_wood_mcl_front_2.png
