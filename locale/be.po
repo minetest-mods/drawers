@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-03 17:04+0200\n"
-"PO-Revision-Date: 2017-05-16 05:35+0000\n"
+"PO-Revision-Date: 2017-06-03 21:34+0000\n"
 "Last-Translator: Viktar Vauchkevich <victorenator@gmail.com>\n"
 "Language-Team: Belarusian <https://hosted.weblate.org/projects/minetest/mod-"
 "storage-drawers/be/>\n"
@@ -16,9 +16,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 2.14-dev\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 2.15-dev\n"
 
 #: lua/visual.lua
 msgid "Empty"
@@ -82,29 +82,28 @@ msgstr "Драўніна яліны"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Мадэрнізацыя сталёвай шуфляды (x2)"
 
 #: init.lua
 msgid "Gold Drawer Upgrade (x3)"
-msgstr ""
+msgstr "Мадэрнізацыя залатой шуфляды (x3)"
 
 #: init.lua
 msgid "Obsidian Drawer Upgrade (x5)"
-msgstr ""
+msgstr "Мадэрнізацыя абсідыянавай шуфляды (x5)"
 
 #: init.lua
 msgid "Diamond Drawer Upgrade (x8)"
-msgstr ""
+msgstr "Мадэрнізацыя алмазнай шуфляды (x8)"
 
 #: init.lua
-#, fuzzy
 msgid "Iron Drawer Upgrade (x2)"
-msgstr "@1 шуфляды (1x2)"
+msgstr "Мадэрнізацыя жалезнай шуфляды (x2)"
 
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
-msgstr ""
+msgstr "Мадэрнізацыя смарагдавай шуфляды (x13)"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
-msgstr ""
+msgstr "Шаблон мадэрнізацыі шуфляды"
