@@ -363,6 +363,13 @@ core.register_lbm({
 	nodenames = {"group:drawer"},
 	run_at_every_load = true,
 	action  = function(pos, node)
+		local meta = core.get_meta(pos)
+		-- create drawer upgrade inventory
+		meta:get_inventory():set_size("upgrades", 5)
+		-- set the formspec
+		meta:set_string("formspec", drawers.drawer_formspec)
+
+		-- count the drawer visuals
 		local drawerType = core.registered_nodes[node.name].groups.drawer
 		local foundVisuals = 0
 		local objs = core.get_objects_inside_radius(pos, 0.537)
