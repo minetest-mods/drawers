@@ -101,14 +101,13 @@ Copyright (C) 2014 Justin Aquadro (MIT):
   textures/drawers_upgrade_gold.png
   textures/drawers_upgrade_iron.png
   textures/drawers_upgrade_obsidian.png
-  textures/drawers_upgrade_slot_bg.png (edited by LNJ, 2017)
   textures/drawers_upgrade_steel.png
-  drawers_upgrade_template.png
+  textures/drawers_upgrade_slot_bg.png (extracted from gui/drawers_1.png by LNJ <git@lnj.li>)
+  textures/drawers_upgrade_template.png
   textures/drawers_wood_front_1.png
   textures/drawers_wood_front_2.png
   textures/drawers_wood_front_4.png
   textures/drawers_wood.png
-  textures/drawers_upgrade_slot_bg.png (extracted from gui/drawers_1.png by LNJ <git@lnj.li>)
 
 Everything not listed in here:
 Copyright (C) 2017 LNJ <git@lnj.li> (MIT)
