@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-14 16:13+0200\n"
+"POT-Creation-Date: 2017-06-03 17:04+0200\n"
 "PO-Revision-Date: 2017-05-16 22:41+0000\n"
 "Last-Translator: monolifed <monolifed@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/minetest/mod-"
@@ -19,13 +19,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 2.14-dev\n"
 
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (%@2 dolu)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (%@3 dolu)"
+#: lua/visual.lua
+msgid "Empty"
+msgstr "Boş"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
@@ -43,9 +39,13 @@ msgstr "@1 Çekmece (1x2)"
 msgid "@1 Drawers (2x2)"
 msgstr "@1 Çekmece (2x2)"
 
-#: lua/visual.lua
-msgid "Empty"
-msgstr "Boş"
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (%@2 dolu)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (%@3 dolu)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -78,3 +78,32 @@ msgstr "Koyu Meşe Ahşap"
 #: init.lua
 msgid "Spruce Wood"
 msgstr "Ladin Ahşap"
+
+#: init.lua
+msgid "Steel Drawer Upgrade (x2)"
+msgstr ""
+
+#: init.lua
+msgid "Gold Drawer Upgrade (x3)"
+msgstr ""
+
+#: init.lua
+msgid "Obsidian Drawer Upgrade (x5)"
+msgstr ""
+
+#: init.lua
+msgid "Diamond Drawer Upgrade (x8)"
+msgstr ""
+
+#: init.lua
+#, fuzzy
+msgid "Iron Drawer Upgrade (x2)"
+msgstr "@1 Çekmece (1x2)"
+
+#: init.lua
+msgid "Emerald Drawer Upgrade (x13)"
+msgstr ""
+
+#: init.lua
+msgid "Drawer Upgrade Template"
+msgstr ""

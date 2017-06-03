@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-14 16:06+0200\n"
+"POT-Creation-Date: 2017-06-03 17:04+0200\n"
 "PO-Revision-Date: 2017-04-11 13:04+0200\n"
 "Last-Translator: LNJ <git@lnj.li>\n"
 "Language-Team: German\n"
@@ -17,13 +17,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% voll)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% voll)"
+#: lua/visual.lua
+msgid "Empty"
+msgstr "Leer"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
@@ -41,9 +37,13 @@ msgstr "@1schubfächer (1x2)"
 msgid "@1 Drawers (2x2)"
 msgstr "@1schubfächer (2x2)"
 
-#: lua/visual.lua
-msgid "Empty"
-msgstr "Leer"
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% voll)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% voll)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -76,3 +76,32 @@ msgstr "Dunkeleichenholz"
 #: init.lua
 msgid "Spruce Wood"
 msgstr "Fichtenholz"
+
+#: init.lua
+msgid "Steel Drawer Upgrade (x2)"
+msgstr ""
+
+#: init.lua
+msgid "Gold Drawer Upgrade (x3)"
+msgstr ""
+
+#: init.lua
+msgid "Obsidian Drawer Upgrade (x5)"
+msgstr ""
+
+#: init.lua
+msgid "Diamond Drawer Upgrade (x8)"
+msgstr ""
+
+#: init.lua
+#, fuzzy
+msgid "Iron Drawer Upgrade (x2)"
+msgstr "@1schubfächer (1x2)"
+
+#: init.lua
+msgid "Emerald Drawer Upgrade (x13)"
+msgstr ""
+
+#: init.lua
+msgid "Drawer Upgrade Template"
+msgstr ""
