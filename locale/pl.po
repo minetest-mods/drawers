@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-14 16:13+0200\n"
-"PO-Revision-Date: 2017-05-31 18:21+0000\n"
-"Last-Translator: Jakub Mendel <jimikuba@o2.pl>\n"
+"PO-Revision-Date: 2017-06-04 23:03+0000\n"
+"Last-Translator: LNJ <git@lnj.li>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/minetest/mod-"
 "storage-drawers/pl/>\n"
 "Language: pl\n"
@@ -21,76 +21,61 @@ msgstr ""
 "X-Generator: Weblate 2.15-dev\n"
 
 #: lua/helpers.lua
-#, fuzzy
 msgid "@1 (@2% full)"
 msgstr "@1 (@2% napełnione)"
 
 #: lua/helpers.lua
-#, fuzzy
 msgid "@1 @2 (@3% full)"
 msgstr "@1 @2 (@3% napełnione)"
 
 #: lua/api.lua init.lua
-#, fuzzy
 msgid "Wooden"
 msgstr "Drewniany"
 
 #: lua/api.lua
-#, fuzzy
 msgid "@1 Drawer"
 msgstr "@1 Szuflada"
 
 #: lua/api.lua
-#, fuzzy
 msgid "@1 Drawers (1x2)"
 msgstr "@1 Szuflady (1x2)"
 
 #: lua/api.lua
-#, fuzzy
 msgid "@1 Drawers (2x2)"
 msgstr "@1 Szuflady (2x2)"
 
 #: lua/visual.lua
-#, fuzzy
 msgid "Empty"
 msgstr "Pusta"
 
 #: init.lua
-#, fuzzy
 msgid "Acacia Wood"
 msgstr "Drewno akacjowe"
 
 #: init.lua
-#, fuzzy
 msgid "Aspen Wood"
 msgstr "Drewno osikowe"
 
 #: init.lua
-#, fuzzy
 msgid "Junglewood"
 msgstr "Drewno jungli"
 
 #: init.lua
-#, fuzzy
 msgid "Pine Wood"
 msgstr "Drewno sosnowe"
 
 #: init.lua
-#, fuzzy
 msgid "Oak Wood"
 msgstr "Drewno dębowe"
 
 #: init.lua
-#, fuzzy
 msgid "Birch Wood"
 msgstr "Drewno brzozowe"
 
 #: init.lua
-#, fuzzy
 msgid "Dark Oak Wood"
 msgstr "Drewno ciemne dębowe"
 
 #: init.lua
-#, fuzzy
 msgid "Spruce Wood"
 msgstr "Drwno świerkowe"
