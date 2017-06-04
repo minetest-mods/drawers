@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-03 17:04+0200\n"
-"PO-Revision-Date: 2017-05-16 22:41+0000\n"
+"PO-Revision-Date: 2017-06-04 14:23+0000\n"
 "Last-Translator: monolifed <monolifed@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/minetest/mod-"
 "storage-drawers/tr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2.14-dev\n"
+"X-Generator: Weblate 2.15-dev\n"
 
 #: lua/visual.lua
 msgid "Empty"
@@ -81,29 +81,28 @@ msgstr "Ladin Ahşap"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Çelik Çekmece Yükseltme (x2)"
 
 #: init.lua
 msgid "Gold Drawer Upgrade (x3)"
-msgstr ""
+msgstr "Altın Çekmece Yükseltme (x3)"
 
 #: init.lua
 msgid "Obsidian Drawer Upgrade (x5)"
-msgstr ""
+msgstr "Obsidyen Çekmece Yükseltme (x5)"
 
 #: init.lua
 msgid "Diamond Drawer Upgrade (x8)"
-msgstr ""
+msgstr "Elmas Çekmece Yükseltme (x8)"
 
 #: init.lua
-#, fuzzy
 msgid "Iron Drawer Upgrade (x2)"
-msgstr "@1 Çekmece (1x2)"
+msgstr "Demir Çekmece Yükseltme (x2)"
 
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
-msgstr ""
+msgstr "Zümrüt Çekmece Yükseltme (x13)"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
-msgstr ""
+msgstr "Çekmece Yükseltme Şablonu"
