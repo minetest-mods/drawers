@@ -8,98 +8,123 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-03 17:04+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2017-06-18 20:07+0000\n"
+"Last-Translator: Jakub Vaněk <vanek.jakub4@seznam.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/minetest/mod-"
+"storage-drawers/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 2.15-dev\n"
 
 #: lua/visual.lua
+#, fuzzy
 msgid "Empty"
-msgstr ""
+msgstr "Prázdný"
 
 #: lua/api.lua init.lua
+#, fuzzy
 msgid "Wooden"
-msgstr ""
+msgstr "Dřevěný"
 
 #: lua/api.lua
+#, fuzzy
 msgid "@1 Drawer"
-msgstr ""
+msgstr "@1 Šuplík"
 
 #: lua/api.lua
+#, fuzzy
 msgid "@1 Drawers (1x2)"
-msgstr ""
+msgstr "@1 Šuplíky (1x2)"
 
 #: lua/api.lua
+#, fuzzy
 msgid "@1 Drawers (2x2)"
-msgstr ""
+msgstr "@1 Šuplíky (2x2)"
 
 #: lua/helpers.lua
+#, fuzzy
 msgid "@1 (@2% full)"
-msgstr ""
+msgstr "@1 (z @2 % plný)"
 
 #: lua/helpers.lua
+#, fuzzy
 msgid "@1 @2 (@3% full)"
-msgstr ""
+msgstr "@1 @2 (z @3 % plný)"
 
 #: init.lua
+#, fuzzy
 msgid "Acacia Wood"
-msgstr ""
+msgstr "Akáciové dřevo"
 
 #: init.lua
+#, fuzzy
 msgid "Aspen Wood"
-msgstr ""
+msgstr "Osikové dřevo"
 
 #: init.lua
+#, fuzzy
 msgid "Junglewood"
-msgstr ""
+msgstr "Džunglovníkové dřevo"
 
 #: init.lua
+#, fuzzy
 msgid "Pine Wood"
-msgstr ""
+msgstr "Borovicové dřevo"
 
 #: init.lua
+#, fuzzy
 msgid "Oak Wood"
-msgstr ""
+msgstr "Dubové dřevo"
 
 #: init.lua
+#, fuzzy
 msgid "Birch Wood"
-msgstr ""
+msgstr "Bukové dřevo"
 
 #: init.lua
+#, fuzzy
 msgid "Dark Oak Wood"
-msgstr ""
+msgstr "Tmavé dubové dřevo"
 
 #: init.lua
+#, fuzzy
 msgid "Spruce Wood"
-msgstr ""
+msgstr "Smrkové dřevo"
 
 #: init.lua
+#, fuzzy
 msgid "Steel Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Ocelové vylepšení šuplíku (x2)"
 
 #: init.lua
+#, fuzzy
 msgid "Gold Drawer Upgrade (x3)"
-msgstr ""
+msgstr "Zlaté vylepšení šuplíku (x3)"
 
 #: init.lua
+#, fuzzy
 msgid "Obsidian Drawer Upgrade (x5)"
-msgstr ""
+msgstr "Obsidiánové vylepšení šuplíku (x5)"
 
 #: init.lua
+#, fuzzy
 msgid "Diamond Drawer Upgrade (x8)"
-msgstr ""
+msgstr "Diamantové vylepšení šuplíku (x8)"
 
 #: init.lua
+#, fuzzy
 msgid "Iron Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Železné vylepšení šuplíku (x2)"
 
 #: init.lua
+#, fuzzy
 msgid "Emerald Drawer Upgrade (x13)"
-msgstr ""
+msgstr "Emeraldové vylepšení šuplíku (x13)"
 
 #: init.lua
+#, fuzzy
 msgid "Drawer Upgrade Template"
-msgstr ""
+msgstr "Šablona vylepšení šuplíku"
