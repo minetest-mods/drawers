@@ -8,98 +8,101 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-03 17:04+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2017-07-06 10:17+0000\n"
+"Last-Translator: Oscar <kingoscargames@gmail.com>\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/minetest/mod-"
+"storage-drawers/nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.16-dev\n"
 
 #: lua/visual.lua
 msgid "Empty"
-msgstr ""
+msgstr "Leeg"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
-msgstr ""
+msgstr "Houten"
 
 #: lua/api.lua
 msgid "@1 Drawer"
-msgstr ""
+msgstr "@1 Lade"
 
 #: lua/api.lua
 msgid "@1 Drawers (1x2)"
-msgstr ""
+msgstr "@1 Lades (1x2)"
 
 #: lua/api.lua
 msgid "@1 Drawers (2x2)"
-msgstr ""
+msgstr "@1 Lades (2x2)"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
-msgstr ""
+msgstr "@1 (@2% vol)"
 
 #: lua/helpers.lua
 msgid "@1 @2 (@3% full)"
-msgstr ""
+msgstr "@1 @2 (@3% vol)"
 
 #: init.lua
 msgid "Acacia Wood"
-msgstr ""
+msgstr "Acacia Hout"
 
 #: init.lua
 msgid "Aspen Wood"
-msgstr ""
+msgstr "Aspen Hout"
 
 #: init.lua
 msgid "Junglewood"
-msgstr ""
+msgstr "Junglehout"
 
 #: init.lua
 msgid "Pine Wood"
-msgstr ""
+msgstr "Dennenhout"
 
 #: init.lua
 msgid "Oak Wood"
-msgstr ""
+msgstr "Eikenhout"
 
 #: init.lua
 msgid "Birch Wood"
-msgstr ""
+msgstr "Berken hout"
 
 #: init.lua
 msgid "Dark Oak Wood"
-msgstr ""
+msgstr "Donker Eiken Hout"
 
 #: init.lua
 msgid "Spruce Wood"
-msgstr ""
+msgstr "Sparrenhout"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Stalen Lade Upgrade (x2)"
 
 #: init.lua
 msgid "Gold Drawer Upgrade (x3)"
-msgstr ""
+msgstr "Gouden Lade Upgrade (x3)"
 
 #: init.lua
 msgid "Obsidian Drawer Upgrade (x5)"
-msgstr ""
+msgstr "Obsidiaan Lade Upgrade (x5)"
 
 #: init.lua
 msgid "Diamond Drawer Upgrade (x8)"
-msgstr ""
+msgstr "Diamanten Lade Upgrade (x8)"
 
 #: init.lua
 msgid "Iron Drawer Upgrade (x2)"
-msgstr ""
+msgstr "ijzeren Lade Upgrade (x2)"
 
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
-msgstr ""
+msgstr "Smaragden Lade upgrade (x13)"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
-msgstr ""
+msgstr "Lade Upgrade Template"
