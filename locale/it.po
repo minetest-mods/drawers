@@ -8,49 +8,52 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-03 17:04+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2017-07-12 16:33+0000\n"
+"Last-Translator: Roberto Albano De Rosa <robertoalbano@protonmail.com>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/minetest/mod-"
+"storage-drawers/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.16-dev\n"
 
 #: lua/visual.lua
 msgid "Empty"
-msgstr ""
+msgstr "Vuoto"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
-msgstr ""
+msgstr "Di legno"
 
 #: lua/api.lua
 msgid "@1 Drawer"
-msgstr ""
+msgstr "@1 Cassetto"
 
 #: lua/api.lua
 msgid "@1 Drawers (1x2)"
-msgstr ""
+msgstr "@1 Cassetti (1x2)"
 
 #: lua/api.lua
 msgid "@1 Drawers (2x2)"
-msgstr ""
+msgstr "@1 Cassetti (2x2)"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
-msgstr ""
+msgstr "@1 (@2% pieno)"
 
 #: lua/helpers.lua
 msgid "@1 @2 (@3% full)"
-msgstr ""
+msgstr "@1 @2 (@3% pieno)"
 
 #: init.lua
 msgid "Acacia Wood"
-msgstr ""
+msgstr "Legno di acacia"
 
 #: init.lua
 msgid "Aspen Wood"
-msgstr ""
+msgstr "Legno di pioppo"
 
 #: init.lua
 msgid "Junglewood"
@@ -58,23 +61,23 @@ msgstr ""
 
 #: init.lua
 msgid "Pine Wood"
-msgstr ""
+msgstr "Legno di pino"
 
 #: init.lua
 msgid "Oak Wood"
-msgstr ""
+msgstr "Legno di quercia"
 
 #: init.lua
 msgid "Birch Wood"
-msgstr ""
+msgstr "Legno di betulla"
 
 #: init.lua
 msgid "Dark Oak Wood"
-msgstr ""
+msgstr "Legno di quercia scura"
 
 #: init.lua
 msgid "Spruce Wood"
-msgstr ""
+msgstr "Legno di abete rosso"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
