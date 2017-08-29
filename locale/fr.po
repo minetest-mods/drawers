@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-03 17:04+0200\n"
-"PO-Revision-Date: 2017-08-29 11:45+0000\n"
+"PO-Revision-Date: 2017-08-30 13:46+0000\n"
 "Last-Translator: fwhcat <fabienwang@free.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/minetest/mod-"
 "storage-drawers/fr/>\n"
@@ -25,7 +25,7 @@ msgstr "Vide"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
-msgstr "En bois"
+msgstr "en Bois"
 
 #: lua/api.lua
 msgid "@1 Drawer"
@@ -73,7 +73,7 @@ msgstr "Bois de Bouleau"
 
 #: init.lua
 msgid "Dark Oak Wood"
-msgstr "Bois de Chêne foncé"
+msgstr "Bois de Chêne Foncé"
 
 #: init.lua
 msgid "Spruce Wood"
@@ -81,11 +81,11 @@ msgstr "Bois d'Épicéa"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
-msgstr "Amélioration Tiroir en acier (x2)"
+msgstr "Amélioration Tiroir en Acier (x2)"
 
 #: init.lua
 msgid "Gold Drawer Upgrade (x3)"
-msgstr "Amélioration Tiroir en or (x3)"
+msgstr "Amélioration Tiroir en Or (x3)"
 
 #: init.lua
 msgid "Obsidian Drawer Upgrade (x5)"
