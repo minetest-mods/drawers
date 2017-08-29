@@ -8,98 +8,101 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-03 17:04+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2017-08-29 11:45+0000\n"
+"Last-Translator: fwhcat <fabienwang@free.fr>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/minetest/mod-"
+"storage-drawers/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 2.17-dev\n"
 
 #: lua/visual.lua
 msgid "Empty"
-msgstr ""
+msgstr "Vide"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
-msgstr ""
+msgstr "En bois"
 
 #: lua/api.lua
 msgid "@1 Drawer"
-msgstr ""
+msgstr "Tiroir @1"
 
 #: lua/api.lua
 msgid "@1 Drawers (1x2)"
-msgstr ""
+msgstr "Tiroirs (1x2) @1"
 
 #: lua/api.lua
 msgid "@1 Drawers (2x2)"
-msgstr ""
+msgstr "Tiroirs (2x2) @1"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
-msgstr ""
+msgstr "@1 (@2% plein)"
 
 #: lua/helpers.lua
 msgid "@1 @2 (@3% full)"
-msgstr ""
+msgstr "@1 @2 (@3% plein)"
 
 #: init.lua
 msgid "Acacia Wood"
-msgstr ""
+msgstr "Bois d'Acacia"
 
 #: init.lua
 msgid "Aspen Wood"
-msgstr ""
+msgstr "Bois de Tremble"
 
 #: init.lua
 msgid "Junglewood"
-msgstr ""
+msgstr "Bois de Jungle"
 
 #: init.lua
 msgid "Pine Wood"
-msgstr ""
+msgstr "Bois de Pin"
 
 #: init.lua
 msgid "Oak Wood"
-msgstr ""
+msgstr "Bois de Chêne"
 
 #: init.lua
 msgid "Birch Wood"
-msgstr ""
+msgstr "Bois de Bouleau"
 
 #: init.lua
 msgid "Dark Oak Wood"
-msgstr ""
+msgstr "Bois de Chêne foncé"
 
 #: init.lua
 msgid "Spruce Wood"
-msgstr ""
+msgstr "Bois d'Épicéa"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Amélioration Tiroir en acier (x2)"
 
 #: init.lua
 msgid "Gold Drawer Upgrade (x3)"
-msgstr ""
+msgstr "Amélioration Tiroir en or (x3)"
 
 #: init.lua
 msgid "Obsidian Drawer Upgrade (x5)"
-msgstr ""
+msgstr "Amélioration Tiroir en Obsidienne (x5)"
 
 #: init.lua
 msgid "Diamond Drawer Upgrade (x8)"
-msgstr ""
+msgstr "Amélioration Tiroir en Diamant (x8)"
 
 #: init.lua
 msgid "Iron Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Amélioration Tiroir en Fer (x2)"
 
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
-msgstr ""
+msgstr "Amélioration Tiroir en Émeraude (x13)"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
-msgstr ""
+msgstr "Amélioration Modèle de Tiroir"
