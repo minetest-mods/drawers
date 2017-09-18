@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-03 17:04+0200\n"
-"PO-Revision-Date: 2017-09-02 19:45+0000\n"
+"PO-Revision-Date: 2017-09-19 19:45+0000\n"
 "Last-Translator: Oscar <kingoscargames@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/minetest/mod-"
 "storage-drawers/nl/>\n"
@@ -105,6 +105,5 @@ msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Smaragden Lade upgrade (x13)"
 
 #: init.lua
-#, fuzzy
 msgid "Drawer Upgrade Template"
 msgstr "Lade Upgrade Template"
