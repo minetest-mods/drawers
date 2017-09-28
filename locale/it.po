@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-03 17:04+0200\n"
-"PO-Revision-Date: 2017-07-12 16:33+0000\n"
-"Last-Translator: Roberto Albano De Rosa <robertoalbano@protonmail.com>\n"
+"PO-Revision-Date: 2017-09-28 16:09+0000\n"
+"Last-Translator: Hamlet <h4mlet@riseup.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/minetest/mod-"
 "storage-drawers/it/>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.16-dev\n"
+"X-Generator: Weblate 2.17-dev\n"
 
 #: lua/visual.lua
 msgid "Empty"
@@ -57,7 +57,7 @@ msgstr "Legno di pioppo"
 
 #: init.lua
 msgid "Junglewood"
-msgstr ""
+msgstr "Legno della giungla"
 
 #: init.lua
 msgid "Pine Wood"
@@ -81,28 +81,28 @@ msgstr "Legno di abete rosso"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Miglioramento d'acciaio della cassettiera (x2)"
 
 #: init.lua
 msgid "Gold Drawer Upgrade (x3)"
-msgstr ""
+msgstr "Miglioramento d'oro della cassettiera (x3)"
 
 #: init.lua
 msgid "Obsidian Drawer Upgrade (x5)"
-msgstr ""
+msgstr "Miglioramento d'ossidiana della cassettiera (x5)"
 
 #: init.lua
 msgid "Diamond Drawer Upgrade (x8)"
-msgstr ""
+msgstr "Miglioramento di diamante della cassettiera (x8)"
 
 #: init.lua
 msgid "Iron Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Miglioramento di ferro della cassettiera (x3)"
 
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
-msgstr ""
+msgstr "Miglioramento di smeraldo della cassettiera (x13)"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
-msgstr ""
+msgstr "Modello di miglioramento della cassettiera"
