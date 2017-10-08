@@ -147,6 +147,10 @@ core.register_entity("drawers:visual", {
 	end,
 
 	on_rightclick = function(self, clicker)
+	        if core.is_protected(self.drawer_pos, clicker:get_player_name()) then
+		   core.record_protection_violation(self.drawer_pos, clicker:get_player_name())
+		   return
+		end
 		local leftover = self.try_insert_stack(self, clicker:get_wielded_item(),
 			not clicker:get_player_control().sneak)
 
@@ -160,7 +164,10 @@ core.register_entity("drawers:visual", {
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
 		local add_stack = not puncher:get_player_control().sneak
-
+		if core.is_protected(self.drawer_pos, puncher:get_player_name()) then
+		   core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
+		   return
+		end
 		local inv = puncher:get_inventory()
 		local spaceChecker = ItemStack(self.itemName)
 		if add_stack then
