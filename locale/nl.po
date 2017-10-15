@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-03 17:04+0200\n"
-"PO-Revision-Date: 2017-08-30 13:45+0000\n"
+"PO-Revision-Date: 2017-09-19 19:45+0000\n"
 "Last-Translator: Oscar <kingoscargames@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/minetest/mod-"
 "storage-drawers/nl/>\n"
@@ -88,8 +88,9 @@ msgid "Gold Drawer Upgrade (x3)"
 msgstr "Gouden Lade Upgrade (x3)"
 
 #: init.lua
+#, fuzzy
 msgid "Obsidian Drawer Upgrade (x5)"
-msgstr "Obsidiaan Lade Upgrade (x5)"
+msgstr "Obsidiaanse Lade Upgrade (x5)"
 
 #: init.lua
 msgid "Diamond Drawer Upgrade (x8)"
@@ -97,13 +98,12 @@ msgstr "Diamanten Lade Upgrade (x8)"
 
 #: init.lua
 msgid "Iron Drawer Upgrade (x2)"
-msgstr "ijzeren Lade Upgrade (x2)"
+msgstr "Ijzeren Lade Upgrade (x2)"
 
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Smaragden Lade upgrade (x13)"
 
 #: init.lua
-#, fuzzy
 msgid "Drawer Upgrade Template"
 msgstr "Lade Upgrade Template"
