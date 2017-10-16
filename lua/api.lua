@@ -144,6 +144,10 @@ function drawers.drawer_on_dig(pos, node, player)
 end
 
 function drawers.drawer_allow_metadata_inventory_put(pos, listname, index, stack, player)
+	if core.is_protected(pos,player:get_player_name()) then
+	   core.record_protection_violation(pos,player:get_player_name())
+	   return 0
+	end
 	if listname ~= "upgrades" then
 		return 0
 	end
@@ -198,6 +202,7 @@ function drawers.register_drawer(name, def)
 	def.on_destruct = drawers.drawer_on_destruct
 	def.on_dig = drawers.drawer_on_dig
 	def.allow_metadata_inventory_put = drawers.drawer_allow_metadata_inventory_put
+	def.allow_metadata_inventory_take = drawers.drawer_allow_metadata_inventory_put
 	def.on_metadata_inventory_put = drawers.add_drawer_upgrade
 	def.on_metadata_inventory_take = drawers.remove_drawer_upgrade
 
