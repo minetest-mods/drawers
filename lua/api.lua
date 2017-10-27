@@ -185,6 +185,17 @@ function drawers.drawer_insert_object(pos, node, stack, direction)
 	return leftover
 end
 
+function drawers.drawer_can_insert_object(pos, node, stack, direction)
+   	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
+	if not drawer_visuals then return false end
+
+	local leftover = stack
+	for _, visual in pairs(drawer_visuals) do
+		leftover = visual:try_insert_stack(leftover, true)
+	end
+	return not (leftover == stack)
+end
+
 function drawers.register_drawer(name, def)
 	def.description = def.description or S("Wooden")
 	def.drawtype = "nodebox"
@@ -215,7 +226,10 @@ function drawers.register_drawer(name, def)
 		def.groups.tubedevice_receiver = 1
 		def.tube = def.tube or {}
 		def.tube.insert_object = def.tube.insert_object or
-			drawers.drawer_insert_object
+		   drawers.drawer_insert_object
+		def.tube.can_insert = def.tube.can_insert or
+		   drawers.drawer_can_insert_object
+
 		def.tube.connect_sides = {left = 1, right = 1, back = 1, top = 1,
 			bottom = 1}
 		def.after_place_node = pipeworks.after_place
