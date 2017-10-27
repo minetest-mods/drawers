@@ -194,7 +194,6 @@ function drawers.drawer_can_insert_object(pos, node, stack, direction)
 		leftover = visual:try_insert_stack(leftover, true)
 	end
 	return not (leftover == stack)
-
 end
 
 function drawers.register_drawer(name, def)
