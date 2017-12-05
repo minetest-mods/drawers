@@ -189,11 +189,12 @@ function drawers.drawer_can_insert_object(pos, node, stack, direction)
    	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
 	if not drawer_visuals then return false end
 
-	local leftover = stack
 	for _, visual in pairs(drawer_visuals) do
-		leftover = visual:try_insert_stack(leftover, true)
+	   if visual.itemName == "" or (visual.itemName == stack:get_name() and visual.count ~= visual.maxCount) then
+	      return true
+	   end
 	end
-	return not (leftover == stack)
+	return false
 end
 
 function drawers.register_drawer(name, def)
