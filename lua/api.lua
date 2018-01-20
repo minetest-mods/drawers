@@ -100,7 +100,10 @@ function drawers.drawer_on_dig(pos, node, player)
 	if core.registered_nodes[node.name] then
 		drawerType = core.registered_nodes[node.name].groups.drawer
 	end
-
+	if core.is_protected(pos,player:get_player_name()) then
+	   core.record_protection_violation(pos,player:get_player_name())
+	   return 0
+	end
 	local meta = core.get_meta(pos)
 
 	local k = 1
