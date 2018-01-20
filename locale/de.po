@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-03 17:04+0200\n"
-"PO-Revision-Date: 2017-06-04 19:46+0000\n"
-"Last-Translator: LNJ <git@lnj.li>\n"
+"PO-Revision-Date: 2017-10-23 23:46+0000\n"
+"Last-Translator: Wuzzy <almikes@aol.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/minetest/mod-"
 "storage-drawers/de/>\n"
 "Language: de\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.15-dev\n"
+"X-Generator: Weblate 2.17\n"
 
 #: lua/visual.lua
 msgid "Empty"
@@ -33,11 +33,11 @@ msgstr "@1schubfach"
 
 #: lua/api.lua
 msgid "@1 Drawers (1x2)"
-msgstr "@1schubfächer (1x2)"
+msgstr "@1schubfächer (1×2)"
 
 #: lua/api.lua
 msgid "@1 Drawers (2x2)"
-msgstr "@1schubfächer (2x2)"
+msgstr "@1schubfächer (2×2)"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
@@ -81,27 +81,27 @@ msgstr "Fichtenholz"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
-msgstr "Stahl-Schubfachverbesserung (x2)"
+msgstr "Stahl-Schubfachverbesserung (×2)"
 
 #: init.lua
 msgid "Gold Drawer Upgrade (x3)"
-msgstr "Gold-Schubfachverbesserung (x3)"
+msgstr "Gold-Schubfachverbesserung (×3)"
 
 #: init.lua
 msgid "Obsidian Drawer Upgrade (x5)"
-msgstr "Obsidian-Schubfachverbesserung (x5)"
+msgstr "Obsidian-Schubfachverbesserung (×5)"
 
 #: init.lua
 msgid "Diamond Drawer Upgrade (x8)"
-msgstr "Diamant-Schubfachverbesserung (x8)"
+msgstr "Diamant-Schubfachverbesserung (×8)"
 
 #: init.lua
 msgid "Iron Drawer Upgrade (x2)"
-msgstr "Eise-Schubfachverbesserung (x2)"
+msgstr "Eisen-Schubfachverbesserung (×2)"
 
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
-msgstr "Smaragd-Schubfachverbesserung (x13)"
+msgstr "Smaragd-Schubfachverbesserung (×13)"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
