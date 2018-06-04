@@ -245,6 +245,7 @@ core.register_entity("drawers:visual", {
 
 		-- Don't add items stackable only to 1
 		if self.itemStackMax == 1 then
+			self.itemName = ""
 			return itemstack
 		end
 
