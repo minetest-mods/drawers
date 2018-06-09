@@ -67,6 +67,7 @@ drawers.gui_slots = "listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]"
 dofile(MP .. "/lua/helpers.lua")
 dofile(MP .. "/lua/visual.lua")
 dofile(MP .. "/lua/api.lua")
+dofile(MP .. "/lua/controller.lua")
 
 
 --
