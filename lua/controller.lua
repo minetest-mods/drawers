@@ -27,7 +27,7 @@ SOFTWARE.
 
 -- The gist of how the drawers mod stores data is that there are entities and the drawer node itself. The entities are needed to allow having multiple drawers in one node. The entities and node each store metadata about the item counts and such. It is necessary to change both at once otherwise in some cases the entity values are used and in other cases the node metadata is used.
 
--- The gist of how the controller works is this. The drawer controller scans the adjacent tiles (length and height is configurable) and puts the item names and other info such as coordinates and the visualid of the entity in a table. That table is saved in the controllers metadata. The table is used to help prevent needing to scan all the drawers to deposit an item in certain situations. The table is only updated on an as needed basis, not by a specific time/interval. Controllers that have no items will not continue scanning chests.
+-- The gist of how the controller works is this. The drawer controller scans the adjacent tiles (length and height is configurable) and puts the item names and other info such as coordinates and the visualid of the entity in a table. That table is saved in the controllers metadata. The table is used to help prevent needing to scan all the drawers to deposit an item in certain situations. The table is only updated on an as needed basis, not by a specific time/interval. Controllers that have no items will not continue scanning drawers.
 
 local function controller_can_dig(pos, player)
 	local meta = minetest.get_meta(pos);
