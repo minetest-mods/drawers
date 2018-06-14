@@ -108,8 +108,6 @@ Copyright (C) 2014 Justin Aquadro (MIT):
   textures/drawers_wood_front_2.png
   textures/drawers_wood_front_4.png
   textures/drawers_wood.png
-  
-Copyright (C) 2018 isaiah658 (CC0):
   textures/drawer_controller_side.png
   textures/drawer_controller_top_bottom.png
 
