@@ -252,51 +252,17 @@ local function controller_node_timer(pos, elapsed)
 		local indexed_drawer_pos = {x = drawers_table_index[src_name]["drawer_pos_x"], y = drawers_table_index[src_name]["drawer_pos_y"], z = drawers_table_index[src_name]["drawer_pos_z"]}
 		local visualid = drawers_table_index[src_name]["visualid"]
 		local indexed_drawer_meta = minetest.get_meta(indexed_drawer_pos)
-		-- Check if the metadata exists and the drawer entity is loaded
-		if indexed_drawer_meta and drawers.drawer_visuals[minetest.serialize(indexed_drawer_pos)] then
-			local indexed_drawer_meta_name = indexed_drawer_meta:get_string("name" .. visualid)
-			local indexed_drawer_meta_count = indexed_drawer_meta:get_int("count" .. visualid)
-			local indexed_drawer_meta_max_count = indexed_drawer_meta:get_int("max_count" .. visualid)
-			-- If the drawer still has the same item and it has room, we will put the items in
-			if indexed_drawer_meta_name == src_name and indexed_drawer_meta_count < indexed_drawer_meta_max_count then
-				local itemstack_size = src_count
-				--If there is not enough space for the whole stack, we will change the itemstack size to fit what we can
-				if indexed_drawer_meta_max_count - indexed_drawer_meta_count < itemstack_size then
-					itemstack_size = indexed_drawer_meta_max_count - indexed_drawer_meta_count
-				end
-				-- Remove the items from the src and put them in the drawer metadata
-				local itemstack = ItemStack(src_name .. " " .. itemstack_size)
-				src:take_item(itemstack_size)
-				inv:set_stack("src", 1, src)
-				-- Get the entity object/metadata
-				-- This is required because this is how the drawers mod seems to handle this situation
-				local vId = visualid
-				if vId == "" then
-					vId = 1
-				end
-				local self = drawers.drawer_visuals[minetest.serialize(indexed_drawer_pos)][vId]
-				-- Set the drawer node metadata count
-				indexed_drawer_meta:set_int("count" .. visualid, indexed_drawer_meta_count + itemstack_size)
-				-- Set the drawer entity metadata count
-				self.count = indexed_drawer_meta_count + itemstack_size
-				-- Set the drawer node and entity info text
-				local item_description = minetest.registered_items[src_name].description
-				local infotext = drawers.gen_info_text(item_description,
-				self.count, self.stackMaxFactor, self.itemStackMax)
-				indexed_drawer_meta:set_string("entity_infotext" .. visualid, infotext)
-				self.object:set_properties({
-					infotext = infotext .. "\n\n\n\n\n"
-				})
-				-- Set the controller metadata
-				meta:set_string("current_state", "running")
-				meta:set_string("formspec", controller_formspec(pos, "Running"))
-				meta:set_float("times_ran_while_jammed", 0)
-			else
-				meta:set_string("current_state", "jammed")
-				meta:set_string("formspec", controller_formspec(pos, "Jammed"))
-				meta:set_string("jammed_item_name", src_name)
-				meta:set_float("times_ran_while_jammed", meta_times_ran_while_jammed + 1)
-			end
+		local indexed_drawer_meta_name = indexed_drawer_meta:get_string("name" .. visualid)
+		local indexed_drawer_meta_count = indexed_drawer_meta:get_int("count" .. visualid)
+		local indexed_drawer_meta_max_count = indexed_drawer_meta:get_int("max_count" .. visualid)
+		-- If the the item in the drawer is the same as the one we are trying to store, the drawer is not full, and the drawer entity is loaded, we will put the items in the drawer
+		if indexed_drawer_meta_name == src_name and indexed_drawer_meta_count < indexed_drawer_meta_max_count and drawers.drawer_visuals[minetest.serialize(indexed_drawer_pos)] then
+			local leftover = drawers.drawer_insert_object(indexed_drawer_pos, nil, src, nil)
+			inv:set_stack("src", 1, leftover)
+			-- Set the controller metadata
+			meta:set_string("current_state", "running")
+			meta:set_string("formspec", controller_formspec(pos, "Running"))
+			meta:set_float("times_ran_while_jammed", 0)
 		else
 			meta:set_string("current_state", "jammed")
 			meta:set_string("formspec", controller_formspec(pos, "Jammed"))
@@ -307,63 +273,19 @@ local function controller_node_timer(pos, elapsed)
 		local indexed_drawer_pos = {x = drawers_table_index["empty"]["drawer_pos_x"], y = drawers_table_index["empty"]["drawer_pos_y"], z = drawers_table_index["empty"]["drawer_pos_z"]}
 		local visualid = drawers_table_index["empty"]["visualid"]
 		local indexed_drawer_meta = minetest.get_meta(indexed_drawer_pos)
-		-- Check if the metadata exists and the drawer entity is loaded
-		if indexed_drawer_meta and drawers.drawer_visuals[minetest.serialize(indexed_drawer_pos)] then
-			local indexed_drawer_meta_name = indexed_drawer_meta:get_string("name" .. visualid)
-			local indexed_drawer_meta_count = indexed_drawer_meta:get_int("count" .. visualid)
-			-- If the drawer is still empty, we will put in the items in
-			if indexed_drawer_meta_name == "" then
-				local indexed_drawer_meta_stack_max_factor = indexed_drawer_meta:get_int("stack_max_factor" .. visualid)
-				local indexed_drawer_meta_max_count = src_stack_max * indexed_drawer_meta_stack_max_factor
-				local itemstack_size = src_count
-				--If there is not enough space for the whole stack, we will change the itemstack size to fit what we can
-				if indexed_drawer_meta_max_count < itemstack_size then
-					itemstack_size = indexed_drawer_meta_max_count
-				end
-				-- Remove the items from the src and put them in the drawer metadata
-				local itemstack = ItemStack(src_name .. " " .. itemstack_size)
-				src:take_item(itemstack_size)
-				inv:set_stack("src", 1, src)
-				-- Get the entity object/metadata
-				-- This is required because this is how the drawers mod seems to handle this situation when the visualid is blank
-				local vId = visualid
-				if vId == "" then
-					vId = 1
-				end
-				local self = drawers.drawer_visuals[minetest.serialize(indexed_drawer_pos)][vId]
-				-- Set the drawer node and entity item name
-				indexed_drawer_meta:set_string("name" .. visualid, src_name)
-				self.itemName = src_name
-				-- Set the drawer node and entity metadata count
-				indexed_drawer_meta:set_int("count" .. visualid, indexed_drawer_meta_count + itemstack_size)
-				self.count = indexed_drawer_meta_count + itemstack_size
-				-- Set the drawer node max count
-				indexed_drawer_meta:set_int("max_count" .. visualid, indexed_drawer_meta_max_count)
-				self.maxCount = indexed_drawer_meta_max_count
-				-- Set the drawer node and entity info text and texture
-				local item_description = minetest.registered_items[src_name].description
-				local infotext = drawers.gen_info_text(item_description,
-				self.count, self.stackMaxFactor, self.itemStackMax)
-				indexed_drawer_meta:set_string("entity_infotext" .. visualid, infotext)
-				self.texture = drawers.get_inv_image(src_name)
-				self.object:set_properties({
-					infotext = infotext .. "\n\n\n\n\n",
-					textures = {self.texture}
-				})
-				-- Add the item to the drawers table index and set the empty one to nil
-				drawers_table_index["empty"]  = nil
-				drawers_table_index[src_name] = {drawer_pos_x = indexed_drawer_pos.x, drawer_pos_y = indexed_drawer_pos.y, drawer_pos_z = indexed_drawer_pos.z, visualid = visualid}
-				-- Set the controller metadata
-				meta:set_string("current_state", "running")
-				meta:set_string("formspec", controller_formspec(pos, "Running"))
-				meta:set_float("times_ran_while_jammed", 0)
-				meta:set_string("drawers_table_index", minetest.serialize(drawers_table_index))
-			else
-				meta:set_string("current_state", "jammed")
-				meta:set_string("formspec", controller_formspec(pos, "Jammed"))
-				meta:set_string("jammed_item_name", src_name)
-				meta:set_float("times_ran_while_jammed", meta_times_ran_while_jammed + 1)
-			end
+		local indexed_drawer_meta_name = indexed_drawer_meta:get_string("name" .. visualid)
+		-- If the drawer is still empty and the drawer entity is loaded, we will put the items in the drawer
+		if indexed_drawer_meta_name == "" and drawers.drawer_visuals[minetest.serialize(indexed_drawer_pos)] then
+			local leftover = drawers.drawer_insert_object(indexed_drawer_pos, nil, src, nil)
+			inv:set_stack("src", 1, leftover)
+			-- Add the item to the drawers table index and set the empty one to nil
+			drawers_table_index["empty"]  = nil
+			drawers_table_index[src_name] = {drawer_pos_x = indexed_drawer_pos.x, drawer_pos_y = indexed_drawer_pos.y, drawer_pos_z = indexed_drawer_pos.z, visualid = visualid}
+			-- Set the controller metadata
+			meta:set_string("current_state", "running")
+			meta:set_string("formspec", controller_formspec(pos, "Running"))
+			meta:set_float("times_ran_while_jammed", 0)
+			meta:set_string("drawers_table_index", minetest.serialize(drawers_table_index))
 		else
 			meta:set_string("current_state", "jammed")
 			meta:set_string("formspec", controller_formspec(pos, "Jammed"))
@@ -380,42 +302,76 @@ local function controller_node_timer(pos, elapsed)
 	return true
 end
 
-minetest.register_node('drawers:controller', {
-	description = 'Drawer Controller',
-	tiles = {"drawer_controller_top_bottom.png", "drawer_controller_top_bottom.png", "drawer_controller_side.png", "drawer_controller_side.png", "drawer_controller_side.png", "drawer_controller_side.png"},
-	can_dig = controller_can_dig,
-	groups = {cracky = 3, level = 2},
-	on_construct = function(pos)
+-- Set the controller definition using a table to allow for pipeworks and potentially other mod support
+local controller_def = {}
+controller_def.description = 'Drawer Controller'
+controller_def.tiles = {"drawer_controller_top_bottom.png", "drawer_controller_top_bottom.png", "drawer_controller_side.png", "drawer_controller_side.png", "drawer_controller_side.png", "drawer_controller_side.png"}
+controller_def.can_dig = controller_can_dig
+controller_def.groups = {cracky = 3, level = 2}
+controller_def.on_construct = function(pos)
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	inv:set_size('src', 1)
+	meta:set_string("current_state", "running")
+	meta:set_float("times_ran_while_jammed", 0)
+	meta:set_string("jammed_item_name", "")
+	meta:set_string("drawers_table_index", "")
+	meta:set_string("formspec", controller_formspec(pos, "Running"))
+	local timer = minetest.get_node_timer(pos)
+	timer:start(7)
+end
+controller_def.on_blast = function(pos)
+	local drops = {}
+	default.get_inventory_drops(pos, "src", drops)
+	drops[#drops+1] = "drawers:controller"
+	minetest.remove_node(pos)
+	return drops
+end
+controller_def.on_timer = controller_node_timer
+controller_def.allow_metadata_inventory_put = controller_allow_metadata_inventory_put
+controller_def.allow_metadata_inventory_move = controller_allow_metadata_inventory_move
+controller_def.allow_metadata_inventory_take = controller_allow_metadata_inventory_take
+
+-- Mostly copied from the drawers in the drawer mod to add pipeworks support
+if minetest.get_modpath("pipeworks") and pipeworks then
+	controller_def.groups.tubedevice = 1
+	controller_def.groups.tubedevice_receiver = 1
+	controller_def.tube = controller_def.tube or {}
+	controller_def.tube.insert_object = function(pos, node, stack, tubedir)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-		inv:set_size('src', 1)
-		meta:set_string("current_state", "running")
-		meta:set_float("times_ran_while_jammed", 0)
-		meta:set_string("jammed_item_name", "")
-		meta:set_string("drawers_table_index", "")
-		meta:set_string("formspec", controller_formspec(pos, "Running"))
-		local timer = minetest.get_node_timer(pos)
-		timer:start(7)
-	end,
-	on_blast = function(pos)
-		local drops = {}
-		default.get_inventory_drops(pos, "src", drops)
-		drops[#drops+1] = "drawers:controller"
-		minetest.remove_node(pos)
-		return drops
-	end,
-	on_timer = controller_node_timer,
-	
-	allow_metadata_inventory_put = controller_allow_metadata_inventory_put,
-	allow_metadata_inventory_move = controller_allow_metadata_inventory_move,
-	allow_metadata_inventory_take = controller_allow_metadata_inventory_take,
-})
+		return inv:add_item("src", stack)
+	end
+	controller_def.tube.can_insert = function(pos, node, stack, tubedir)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		return inv:room_for_item("src", stack)
+	end
+	controller_def.tube.connect_sides = {left = 1, right = 1, back = 1, top = 1,
+		bottom = 1}
+	controller_def.after_place_node = pipeworks.after_place
+	controller_def.after_dig_node = pipeworks.after_dig
+end
 
-minetest.register_craft({
-	output = 'drawers:controller',
-	recipe = {
-		{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
-		{'default:tin_ingot', 'group:drawer', 'default:copper_ingot'},
-		{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
-	}
-})
+minetest.register_node('drawers:controller', controller_def)
+
+-- Because the rest of the drawers mod doesn't have a hard depend on default, I changed the recipe to have an alternative
+if minetest.get_modpath("default") and default then
+	minetest.register_craft({
+		output = 'drawers:controller',
+		recipe = {
+			{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
+			{'default:tin_ingot', 'group:drawer', 'default:copper_ingot'},
+			{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
+		}
+	})
+else
+	minetest.register_craft({
+		output = 'drawers:controller',
+		recipe = {
+			{'group:stone', 'group:stone', 'group:stone'},
+			{'group:stone', 'group:drawer', 'group:stone'},
+			{'group:stone', 'group:stone', 'group:stone'},
+		}
+	})
+end
