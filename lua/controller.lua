@@ -147,12 +147,11 @@ local function index_drawers(pos)
 							visualid = ""
 						end
 						local drawer_meta_name = drawer_meta:get_string("name" .. visualid)
-						-- If the name is blank, it means it's empty
-						-- Rather than keeping track of all empty drawers, we only keep track of one in our table
-						-- If an empty drawer has already been indexed, we skip adding it to the table
-						if drawer_meta_name == "" and not drawers_table_index["empty"] then
+						local drawer_meta_entity_infotext = drawer_meta:get_string("entity_infotext" .. visualid)
+						-- Only one empty drawer needs to be indexed because everything is indexed again when an item isn't found in the index
+						if drawer_meta_name == "" and not drawers_table_index["empty"] and drawer_meta_entity_infotext ~= "" then
 							drawers_table_index["empty"] = {drawer_pos_x = drawer_pos.x, drawer_pos_y = drawer_pos.y, drawer_pos_z = drawer_pos.z, visualid = visualid}
-						elseif drawer_meta_name ~= "" and drawer_meta_name ~= nil then
+						elseif drawer_meta_name ~= "" then
 							-- If we already indexed this item previously, check which drawer has the most space and have that one be the one indexed
 							if drawers_table_index[drawer_meta_name] then
 								local indexed_drawer_meta = core.get_meta({x = drawers_table_index[drawer_meta_name]["drawer_pos_x"], y = drawers_table_index[drawer_meta_name]["drawer_pos_y"], z = drawers_table_index[drawer_meta_name]["drawer_pos_z"]})
@@ -382,8 +381,8 @@ if core.get_modpath("pipeworks") and pipeworks then
 		local inv = meta:get_inventory()
 		return inv:room_for_item("src", stack)
 	end
-	controller_def.tube.connect_sides = {left = 1, right = 1, back = 1, top = 1,
-		bottom = 1}
+	controller_def.tube.connect_sides = {left = 1, right = 1, back = 1, front = 1,
+		top = 1, bottom = 1}
 	controller_def.after_place_node = pipeworks.after_place
 	controller_def.after_dig_node = pipeworks.after_dig
 end
