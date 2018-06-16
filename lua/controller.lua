@@ -394,9 +394,18 @@ if core.get_modpath("default") and default then
 	core.register_craft({
 		output = 'drawers:controller',
 		recipe = {
-			{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
+			{'default:steel_ingot', 'default:diamond', 'default:steel_ingot'},
 			{'default:tin_ingot', 'group:drawer', 'default:copper_ingot'},
-			{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
+			{'default:steel_ingot', 'default:diamond', 'default:steel_ingot'},
+		}
+	})
+elseif core.get_modpath("mcl_core") and mcl_core then
+	core.register_craft({
+		output = 'drawers:controller',
+		recipe = {
+			{'mcl_core:iron_ingot', 'mcl_core:diamond', 'mcl_core:iron_ingot'},
+			{'mcl_core:gold_ingot', 'group:drawer', 'mcl_core:gold_ingot'},
+			{'mcl_core:iron_ingot', 'mcl_core:diamond', 'mcl_core:iron_ingot'},
 		}
 	})
 else
