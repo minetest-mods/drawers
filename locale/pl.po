@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-14 16:13+0200\n"
+"POT-Creation-Date: 2018-06-16 09:14+0200\n"
 "PO-Revision-Date: 2017-06-04 23:03+0000\n"
 "Last-Translator: LNJ <git@lnj.li>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/minetest/mod-"
@@ -20,13 +20,9 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 2.15-dev\n"
 
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% napełnione)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% napełnione)"
+#: lua/visual.lua
+msgid "Empty"
+msgstr "Pusta"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
@@ -44,9 +40,13 @@ msgstr "@1 Szuflady (1x2)"
 msgid "@1 Drawers (2x2)"
 msgstr "@1 Szuflady (2x2)"
 
-#: lua/visual.lua
-msgid "Empty"
-msgstr "Pusta"
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% napełnione)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% napełnione)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -79,3 +79,32 @@ msgstr "Drewno ciemne dębowe"
 #: init.lua
 msgid "Spruce Wood"
 msgstr "Drwno świerkowe"
+
+#: init.lua
+msgid "Steel Drawer Upgrade (x2)"
+msgstr ""
+
+#: init.lua
+msgid "Gold Drawer Upgrade (x3)"
+msgstr ""
+
+#: init.lua
+msgid "Obsidian Drawer Upgrade (x5)"
+msgstr ""
+
+#: init.lua
+msgid "Diamond Drawer Upgrade (x8)"
+msgstr ""
+
+#: init.lua
+#, fuzzy
+msgid "Iron Drawer Upgrade (x2)"
+msgstr "@1 Szuflady (1x2)"
+
+#: init.lua
+msgid "Emerald Drawer Upgrade (x13)"
+msgstr ""
+
+#: init.lua
+msgid "Drawer Upgrade Template"
+msgstr ""
