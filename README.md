@@ -12,7 +12,7 @@ MineClone 2 mods are only optional dependencies for crafting recipes.
 
 ## To-Do
 - [x] Add usable 1x1 drawer
-- [ ] Add a drawer controller for auto-sorting items into a drawer-network
+- [x] Add a drawer controller for auto-sorting items into a drawer-network
 - [ ] Add half-sized drawers
 - [x] Add 2x2 and 1x2 drawers
 - [ ] Add compacting drawers for auto-crafting blocks/ingots/fragments
