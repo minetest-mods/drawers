@@ -39,6 +39,10 @@ needing to scan all the drawers to deposit an item in certain situations. The
 table is only updated on an as needed basis, not by a specific time/interval. 
 Controllers that have no items will not continue scanning drawers. ]]--
 
+-- Load support for intllib.
+local MP = core.get_modpath(core.get_current_modname())
+local S, NS = dofile(MP.."/intllib.lua")
+
 local function controller_can_dig(pos, player)
 	local meta = core.get_meta(pos);
 	local inv = meta:get_inventory()
@@ -74,7 +78,7 @@ local function controller_formspec(pos, meta_current_state)
 		default.gui_bg..
 		default.gui_bg_img..
 		default.gui_slots..
-		"label[0,0;Current State: " .. meta_current_state .. "]" ..
+		"label[0,0;" .. S("Current State: ") .. meta_current_state .. "]" ..
 		"list[current_name;src;3.5,1.75;1,1;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
@@ -217,7 +221,7 @@ local function controller_node_timer(pos, elapsed)
 	clear it each time ]]--
 	if meta_current_state == "jammed" and meta_jammed_item_name == src_name and meta_times_ran_while_jammed >= 8 then
 		meta:set_string("current_state", "stopped")
-		meta:set_string("formspec", controller_formspec(pos, "Stopped"))
+		meta:set_string("formspec", controller_formspec(pos, S("Stopped")))
 		return true
 	end
 	
@@ -229,14 +233,14 @@ local function controller_node_timer(pos, elapsed)
 	-- If current state is stopped, and the item that jammed it is not the same item in the src inv slot, we set the current state to running and clear the jam counter
 	if meta_current_state == "stopped" and meta_jammed_item_name ~= src_name then
 		meta:set_string("current_state", "running")
-		meta:set_string("formspec", controller_formspec(pos, "Running"))
+		meta:set_string("formspec", controller_formspec(pos, S("Running")))
 		meta:set_float("times_ran_while_jammed", 0)
 	end
 	
 	-- If no item is in the controller, nothing is searched and current_state is set to running and no jams
 	if inv:is_empty("src") then
 		meta:set_string("current_state", "running")
-		meta:set_string("formspec", controller_formspec(pos, "Running"))
+		meta:set_string("formspec", controller_formspec(pos, S("Running")))
 		meta:set_float("times_ran_while_jammed", 0)
 		return true
 	end
@@ -244,7 +248,7 @@ local function controller_node_timer(pos, elapsed)
 	-- If a non stackable item is in the controller, such as a written book, set the current_state to stopped because they are not allowed in drawers
 	if src:get_stack_max() == 1 then
 		meta:set_string("current_state", "stopped")
-		meta:set_string("formspec", controller_formspec(pos, "Stopped"))
+		meta:set_string("formspec", controller_formspec(pos, S("Stopped")))
 		meta:set_string("jammed_item_name", src_name)
 		meta:set_float("times_ran_while_jammed", 1)
 		return true
@@ -295,11 +299,11 @@ local function controller_node_timer(pos, elapsed)
 			inv:set_stack("src", 1, leftover)
 			-- Set the controller metadata
 			meta:set_string("current_state", "running")
-			meta:set_string("formspec", controller_formspec(pos, "Running"))
+			meta:set_string("formspec", controller_formspec(pos, S("Running")))
 			meta:set_float("times_ran_while_jammed", 0)
 		else
 			meta:set_string("current_state", "jammed")
-			meta:set_string("formspec", controller_formspec(pos, "Jammed"))
+			meta:set_string("formspec", controller_formspec(pos, S("Jammed")))
 			meta:set_string("jammed_item_name", src_name)
 			meta:set_float("times_ran_while_jammed", meta_times_ran_while_jammed + 1)
 		end
@@ -317,18 +321,18 @@ local function controller_node_timer(pos, elapsed)
 			drawers_table_index[src_name] = {drawer_pos_x = indexed_drawer_pos.x, drawer_pos_y = indexed_drawer_pos.y, drawer_pos_z = indexed_drawer_pos.z, visualid = visualid}
 			-- Set the controller metadata
 			meta:set_string("current_state", "running")
-			meta:set_string("formspec", controller_formspec(pos, "Running"))
+			meta:set_string("formspec", controller_formspec(pos, S("Running")))
 			meta:set_float("times_ran_while_jammed", 0)
 			meta:set_string("drawers_table_index", core.serialize(drawers_table_index))
 		else
 			meta:set_string("current_state", "jammed")
-			meta:set_string("formspec", controller_formspec(pos, "Jammed"))
+			meta:set_string("formspec", controller_formspec(pos, S("Jammed")))
 			meta:set_string("jammed_item_name", src_name)
 			meta:set_float("times_ran_while_jammed", meta_times_ran_while_jammed + 1)
 		end
 	else
 		meta:set_string("current_state", "jammed")
-		meta:set_string("formspec", controller_formspec(pos, "Jammed"))
+		meta:set_string("formspec", controller_formspec(pos, S("Jammed")))
 		meta:set_string("jammed_item_name", src_name)
 		meta:set_float("times_ran_while_jammed", meta_times_ran_while_jammed + 1)
 	end
@@ -338,7 +342,7 @@ end
 
 -- Set the controller definition using a table to allow for pipeworks and potentially other mod support
 local controller_def = {}
-controller_def.description = 'Drawer Controller'
+controller_def.description = S("Drawer Controller")
 controller_def.tiles = {"drawer_controller_top_bottom.png", "drawer_controller_top_bottom.png", "drawer_controller_side.png", "drawer_controller_side.png", "drawer_controller_side.png", "drawer_controller_side.png"}
 controller_def.can_dig = controller_can_dig
 controller_def.groups = {cracky = 3, level = 2}
@@ -350,7 +354,7 @@ controller_def.on_construct = function(pos)
 	meta:set_float("times_ran_while_jammed", 0)
 	meta:set_string("jammed_item_name", "")
 	meta:set_string("drawers_table_index", "")
-	meta:set_string("formspec", controller_formspec(pos, "Running"))
+	meta:set_string("formspec", controller_formspec(pos, S("Running")))
 	local timer = core.get_node_timer(pos)
 	timer:start(7)
 end
