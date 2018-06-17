@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-16 09:14+0200\n"
+"POT-Creation-Date: 2018-06-17 11:36-0500\n"
 "PO-Revision-Date: 2017-06-04 23:03+0000\n"
 "Last-Translator: LNJ <git@lnj.li>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/minetest/mod-"
@@ -19,6 +19,14 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 2.15-dev\n"
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% napełnione)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% napełnione)"
 
 #: lua/visual.lua
 msgid "Empty"
@@ -40,13 +48,25 @@ msgstr "@1 Szuflady (1x2)"
 msgid "@1 Drawers (2x2)"
 msgstr "@1 Szuflady (2x2)"
 
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% napełnione)"
+#: lua/controller.lua
+msgid "Current State: "
+msgstr ""
 
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% napełnione)"
+#: lua/controller.lua
+msgid "Stopped"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Running"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Jammed"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr ""
 
 #: init.lua
 msgid "Acacia Wood"

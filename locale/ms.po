@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-03 17:04+0200\n"
+"POT-Creation-Date: 2018-06-17 11:36-0500\n"
 "PO-Revision-Date: 2017-07-01 04:31+0000\n"
-"Last-Translator: Muhammad Nur Hidayat Yasuyoshi <muhdnurhidayat96@yahoo.com>"
-"\n"
+"Last-Translator: Muhammad Nur Hidayat Yasuyoshi <muhdnurhidayat96@yahoo."
+"com>\n"
 "Language-Team: Malay <https://hosted.weblate.org/projects/minetest/mod-"
 "storage-drawers/ms/>\n"
 "Language: ms\n"
@@ -19,6 +19,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2.16-dev\n"
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% penuh)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% penuh)"
 
 #: lua/visual.lua
 msgid "Empty"
@@ -40,13 +48,25 @@ msgstr "Laci @1 (1x2)"
 msgid "@1 Drawers (2x2)"
 msgstr "Laci @1 (2x2)"
 
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% penuh)"
+#: lua/controller.lua
+msgid "Current State: "
+msgstr ""
 
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% penuh)"
+#: lua/controller.lua
+msgid "Stopped"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Running"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Jammed"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr ""
 
 #: init.lua
 msgid "Acacia Wood"
