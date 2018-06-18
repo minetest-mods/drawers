@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-17 11:36-0500\n"
-"PO-Revision-Date: 2017-10-23 23:46+0000\n"
-"Last-Translator: Wuzzy <almikes@aol.com>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/minetest/mod-"
-"storage-drawers/de/>\n"
+"PO-Revision-Date: 2018-06-18 16:42+0000\n"
+"Last-Translator: LNJ <git@lnj.li>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/minetest/"
+"mod-storage-drawers/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.17\n"
+"X-Generator: Weblate 3.0.1\n"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
@@ -49,23 +49,23 @@ msgstr "@1schubfächer (2×2)"
 
 #: lua/controller.lua
 msgid "Current State: "
-msgstr ""
+msgstr "Momentaner Zustand: "
 
 #: lua/controller.lua
 msgid "Stopped"
-msgstr ""
+msgstr "Angehalten"
 
 #: lua/controller.lua
 msgid "Running"
-msgstr ""
+msgstr "Läuft"
 
 #: lua/controller.lua
 msgid "Jammed"
-msgstr ""
+msgstr "Gestaut"
 
 #: lua/controller.lua
 msgid "Drawer Controller"
-msgstr ""
+msgstr "Schubfach Steuerung"
 
 #: init.lua
 msgid "Acacia Wood"
