@@ -67,7 +67,7 @@ function drawers.drawer_on_construct(pos)
 		meta:set_int("count"..vid, 0)
 		meta:set_int("max_count"..vid, base_stack_max * stack_max_factor)
 		meta:set_int("base_stack_max"..vid, base_stack_max)
-		meta:set_string("entity_infotext"..vid, drawers.gen_info_text("Empty", 0,
+		meta:set_string("entity_infotext"..vid, drawers.gen_info_text(S("Empty"), 0,
 			stack_max_factor, base_stack_max))
 		meta:set_int("stack_max_factor"..vid, stack_max_factor)
 
