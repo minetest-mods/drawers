@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-17 11:36-0500\n"
-"PO-Revision-Date: 2017-10-15 17:45+0000\n"
-"Last-Translator: xin <xin@riseup.net>\n"
-"Language-Team: French <https://hosted.weblate.org/projects/minetest/mod-"
-"storage-drawers/fr/>\n"
+"PO-Revision-Date: 2018-08-22 21:37+0000\n"
+"Last-Translator: Mrchiantos <Julienetnel@gmail.com>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/minetest/"
+"mod-storage-drawers/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2.17\n"
+"X-Generator: Weblate 3.2-dev\n"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
@@ -49,23 +49,24 @@ msgstr "Tiroirs (2x2) @1"
 
 #: lua/controller.lua
 msgid "Current State: "
-msgstr ""
+msgstr "État Actuel : "
 
 #: lua/controller.lua
 msgid "Stopped"
-msgstr ""
+msgstr "Arreté"
 
 #: lua/controller.lua
 msgid "Running"
-msgstr ""
+msgstr "En cours d'exécution"
 
 #: lua/controller.lua
 msgid "Jammed"
-msgstr ""
+msgstr "Bloqué"
 
 #: lua/controller.lua
+#, fuzzy
 msgid "Drawer Controller"
-msgstr ""
+msgstr "Contrôleur de Tiroirs"
 
 #: init.lua
 msgid "Acacia Wood"
