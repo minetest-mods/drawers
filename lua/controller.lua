@@ -43,6 +43,8 @@ Controllers that have no items will not continue scanning drawers. ]]--
 local MP = core.get_modpath(core.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
+local controller_interval = tonumber(core.setting_get("drawers_controller_interval"))
+
 local function controller_can_dig(pos, player)
 	local meta = core.get_meta(pos);
 	local inv = meta:get_inventory()
@@ -356,7 +358,7 @@ controller_def.on_construct = function(pos)
 	meta:set_string("drawers_table_index", "")
 	meta:set_string("formspec", controller_formspec(pos, S("Running")))
 	local timer = core.get_node_timer(pos)
-	timer:start(7)
+	timer:start(controller_interval)
 end
 controller_def.on_blast = function(pos)
 	local drops = {}
