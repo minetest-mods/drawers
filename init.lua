@@ -57,8 +57,12 @@ drawers.enable_2x2 = not core.settings:get_bool("drawers_disable_2x2")
 --
 
 drawers.gui_bg = "bgcolor[#080808BB;true]"
-drawers.gui_bg_img = "background[5,5;1,1;gui_formbg.png;true]"
 drawers.gui_slots = "listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]"
+if (core.get_modpath("mcl_core")) and mcl_core then -- MCL2
+	drawers.gui_bg_img = "background[5,5;1,1;crafting_creative_bg.png;true]"
+else
+	drawers.gui_bg_img = "background[5,5;1,1;gui_formbg.png;true]"
+end
 
 --
 -- Load API
