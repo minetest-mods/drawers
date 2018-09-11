@@ -96,6 +96,7 @@ Copyright (C) 2014 Justin Aquadro (MIT):
   textures/drawers_spruce_wood_front_2.png
   textures/drawers_spruce_wood_front_4.png
   textures/drawers_spruce_wood.png
+  textures/drawers_trim.png
   textures/drawers_upgrade_diamond.png
   textures/drawers_upgrade_emerald.png
   textures/drawers_upgrade_gold.png

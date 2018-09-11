@@ -314,6 +314,24 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 	})
 end
 
+--
+-- Register drawer trim
+--
+
+core.register_node("drawers:trim", {
+	description = S("Wooden Trim"),
+	tiles = {"drawers_trim.png"},
+	groups = {drawer = 1, choppy = 3, oddly_breakable_by_hand = 2}
+})
+
+core.register_craft({
+	output = "drawers:trim 6",
+	recipe = {
+		{"group:stick", "group:wood", "group:stick"},
+		{"group:wood",  "group:wood",  "group:wood"},
+		{"group:stick", "group:wood", "group:stick"}
+	}
+})
 
 --
 -- Register drawer upgrade template
