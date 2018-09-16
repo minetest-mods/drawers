@@ -43,7 +43,8 @@ Controllers that have no items will not continue scanning drawers. ]]--
 local MP = core.get_modpath(core.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
-local controller_interval = tonumber(core.setting_get("drawers_controller_interval"))
+local controller_interval = tonumber(core.setting_get("drawers_controller_interval")) or 7.0
+
 
 local function controller_can_dig(pos, player)
 	local meta = core.get_meta(pos);
