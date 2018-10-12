@@ -153,10 +153,12 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_oak_wood.png"),
 		tiles4 = drawers.node_tiles_front_other("drawers_oak_wood_front_4.png",
 			"drawers_oak_wood.png"),
-		groups = {choppy = 3, oddly_breakable_by_hand = 2},
+		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
 		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
-		material = drawers.WOOD_ITEMSTRING
+		material = drawers.WOOD_ITEMSTRING,
+		_mcl_blast_resistance = 15,
+		_mcl_hardness = 2,
 	})
 	drawers.register_drawer("drawers:acaciawood", {
 		description = S("Acacia Wood"),
@@ -166,10 +168,12 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_acacia_wood_mcl.png"),
 		tiles4 = drawers.node_tiles_front_other("drawers_acacia_wood_mcl_front_4.png",
 			"drawers_acacia_wood_mcl.png"),
-		groups = {choppy = 3, oddly_breakable_by_hand = 2},
+		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
 		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
-		material = "mcl_core:acaciawood"
+		material = "mcl_core:acaciawood",
+		_mcl_blast_resistance = 15,
+		_mcl_hardness = 2,
 	})
 	drawers.register_drawer("drawers:birchwood", {
 		description = S("Birch Wood"),
@@ -179,10 +183,12 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_birch_wood.png"),
 		tiles4 = drawers.node_tiles_front_other("drawers_birch_wood_front_4.png",
 			"drawers_birch_wood.png"),
-		groups = {choppy = 3, oddly_breakable_by_hand = 2},
+		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
 		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
-		material = "mcl_core:birchwood"
+		material = "mcl_core:birchwood",
+		_mcl_blast_resistance = 15,
+		_mcl_hardness = 2,
 	})
 	drawers.register_drawer("drawers:darkwood", {
 		description = S("Dark Oak Wood"),
@@ -192,10 +198,12 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_dark_oak_wood.png"),
 		tiles4 = drawers.node_tiles_front_other("drawers_dark_oak_wood_front_4.png",
 			"drawers_dark_oak_wood.png"),
-		groups = {choppy = 3, oddly_breakable_by_hand = 2},
+		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
 		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
-		material = "mcl_core:darkwood"
+		material = "mcl_core:darkwood",
+		_mcl_blast_resistance = 15,
+		_mcl_hardness = 2,
 	})
 	drawers.register_drawer("drawers:junglewood", {
 		description = S("Junglewood"),
@@ -205,10 +213,12 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_junglewood_mcl.png"),
 		tiles4 = drawers.node_tiles_front_other("drawers_junglewood_mcl_front_4.png",
 			"drawers_junglewood_mcl.png"),
-		groups = {choppy = 3, oddly_breakable_by_hand = 2},
+		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
 		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
-		material = "mcl_core:junglewood"
+		material = "mcl_core:junglewood",
+		_mcl_blast_resistance = 15,
+		_mcl_hardness = 2,
 	})
 	drawers.register_drawer("drawers:sprucewood", {
 		description = S("Spruce Wood"),
@@ -218,10 +228,12 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_spruce_wood.png"),
 		tiles4 = drawers.node_tiles_front_other("drawers_spruce_wood_front_4.png",
 			"drawers_spruce_wood.png"),
-		groups = {choppy = 3, oddly_breakable_by_hand = 2},
+		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
 		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
-		material = "mcl_core:sprucewood"
+		material = "mcl_core:sprucewood",
+		_mcl_blast_resistance = 15,
+		_mcl_hardness = 2,
 	})
 
 	-- backwards compatibility
