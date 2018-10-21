@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-17 11:36-0500\n"
-"PO-Revision-Date: 2017-06-01 21:02+0000\n"
-"Last-Translator: Miguel Isaac <mineyoshist@protonmail.ch>\n"
-"Language-Team: Spanish <https://hosted.weblate.org/projects/minetest/mod-"
-"storage-drawers/es/>\n"
+"PO-Revision-Date: 2018-10-22 18:37+0000\n"
+"Last-Translator: runs <runspect@yahoo.es>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/minetest/"
+"mod-storage-drawers/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.15-dev\n"
+"X-Generator: Weblate 3.3-dev\n"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
@@ -29,7 +29,7 @@ msgstr "@1 @2 (@3% lleno)"
 
 #: lua/visual.lua
 msgid "Empty"
-msgstr "Vacio"
+msgstr "Vacío"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
@@ -49,55 +49,55 @@ msgstr "@1 Gavetas (2x2)"
 
 #: lua/controller.lua
 msgid "Current State: "
-msgstr ""
+msgstr "Estado actual: "
 
 #: lua/controller.lua
 msgid "Stopped"
-msgstr ""
+msgstr "Detenido"
 
 #: lua/controller.lua
 msgid "Running"
-msgstr ""
+msgstr "Ejecutándose"
 
 #: lua/controller.lua
 msgid "Jammed"
-msgstr ""
+msgstr "Atascado"
 
 #: lua/controller.lua
 msgid "Drawer Controller"
-msgstr ""
+msgstr "Controlador de gaveta"
 
 #: init.lua
 msgid "Acacia Wood"
-msgstr "Madera de Acacia"
+msgstr "Madera de acacia"
 
 #: init.lua
 msgid "Aspen Wood"
-msgstr "Madera de Alamo"
+msgstr "Madera de álamo"
 
 #: init.lua
 msgid "Junglewood"
-msgstr "Madera de Jungla"
+msgstr "Madera tropical"
 
 #: init.lua
 msgid "Pine Wood"
-msgstr "Madera de Pino"
+msgstr "Madera de pino"
 
 #: init.lua
 msgid "Oak Wood"
-msgstr "Madera de Roble"
+msgstr "Madera de roble"
 
 #: init.lua
 msgid "Birch Wood"
-msgstr "Madera de Abedul"
+msgstr "Madera de abedul"
 
 #: init.lua
 msgid "Dark Oak Wood"
-msgstr "Madera de Roble Oscuro"
+msgstr "Madera de roble oscuro"
 
 #: init.lua
 msgid "Spruce Wood"
-msgstr "Madera de Pícea"
+msgstr "Madera de pícea"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
