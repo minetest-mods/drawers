@@ -334,7 +334,7 @@ if core.get_modpath("mcl_core") and mcl_core then
 	core.register_node("drawers:trim", {
 		description = S("Wooden Trim"),
 		tiles = {"drawers_trim.png"},
-		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1}
+		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		_mcl_blast_resistance = 15,
 		_mcl_hardness = 2,
 	})
@@ -342,7 +342,7 @@ else
 	core.register_node("drawers:trim", {
 		description = S("Wooden Trim"),
 		tiles = {"drawers_trim.png"},
-		groups = {drawer = 1, choppy = 3, oddly_breakable_by_hand = 2}
+		groups = {drawer = 1, choppy = 3, oddly_breakable_by_hand = 2},
 	})
 end
 
