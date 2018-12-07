@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-17 11:36-0500\n"
+"POT-Creation-Date: 2018-12-07 21:50+0100\n"
 "PO-Revision-Date: 2017-09-28 16:09+0000\n"
 "Last-Translator: Hamlet <h4mlet@riseup.net>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/minetest/mod-"
@@ -18,34 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.17-dev\n"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% pieno)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% pieno)"
-
-#: lua/visual.lua
-msgid "Empty"
-msgstr "Vuoto"
-
-#: lua/api.lua init.lua
-msgid "Wooden"
-msgstr "Di legno"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "@1 Cassetto"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "@1 Cassetti (1x2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "@1 Cassetti (2x2)"
 
 #: lua/controller.lua
 msgid "Current State: "
@@ -66,6 +38,34 @@ msgstr ""
 #: lua/controller.lua
 msgid "Drawer Controller"
 msgstr ""
+
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr "Vuoto"
+
+#: lua/api.lua init.lua
+msgid "Wooden"
+msgstr "Di legno"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "@1 Cassetto"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "@1 Cassetti (1x2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "@1 Cassetti (2x2)"
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% pieno)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% pieno)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -122,6 +122,11 @@ msgstr "Miglioramento di ferro della cassettiera (x3)"
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Miglioramento di smeraldo della cassettiera (x13)"
+
+#: init.lua
+#, fuzzy
+msgid "Wooden Trim"
+msgstr "Di legno"
 
 #: init.lua
 msgid "Drawer Upgrade Template"

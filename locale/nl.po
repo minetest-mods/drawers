@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-17 11:36-0500\n"
+"POT-Creation-Date: 2018-12-07 21:50+0100\n"
 "PO-Revision-Date: 2017-09-19 19:45+0000\n"
 "Last-Translator: Oscar <kingoscargames@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/minetest/mod-"
@@ -18,34 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.17-dev\n"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% vol)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% vol)"
-
-#: lua/visual.lua
-msgid "Empty"
-msgstr "Leeg"
-
-#: lua/api.lua init.lua
-msgid "Wooden"
-msgstr "Houten"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "@1 Lade"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "@1 Lades (1x2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "@1 Lades (2x2)"
 
 #: lua/controller.lua
 msgid "Current State: "
@@ -66,6 +38,34 @@ msgstr ""
 #: lua/controller.lua
 msgid "Drawer Controller"
 msgstr ""
+
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr "Leeg"
+
+#: lua/api.lua init.lua
+msgid "Wooden"
+msgstr "Houten"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "@1 Lade"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "@1 Lades (1x2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "@1 Lades (2x2)"
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% vol)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% vol)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -123,6 +123,11 @@ msgstr "Ijzeren Lade Upgrade (x2)"
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Smaragden Lade upgrade (x13)"
+
+#: init.lua
+#, fuzzy
+msgid "Wooden Trim"
+msgstr "Houten"
 
 #: init.lua
 msgid "Drawer Upgrade Template"

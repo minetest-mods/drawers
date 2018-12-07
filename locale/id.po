@@ -7,46 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-17 11:36-0500\n"
+"POT-Creation-Date: 2018-12-07 21:50+0100\n"
 "PO-Revision-Date: 2018-06-28 18:38+0000\n"
 "Last-Translator: Muhammad Rifqi Priyo Susanto "
 "<muhammadrifqipriyosusanto@gmail.com>\n"
-"Language-Team: Indonesian <https://hosted.weblate.org/projects/minetest/"
-"mod-storage-drawers/id/>\n"
+"Language-Team: Indonesian <https://hosted.weblate.org/projects/minetest/mod-"
+"storage-drawers/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.1-dev\n"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% penuh)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% penuh)"
-
-#: lua/visual.lua
-msgid "Empty"
-msgstr "Kosong"
-
-#: lua/api.lua init.lua
-msgid "Wooden"
-msgstr "Kayu"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "Laci @1"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "Laci @1 (1x2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "Laci @1 (2x2)"
 
 #: lua/controller.lua
 msgid "Current State: "
@@ -67,6 +39,34 @@ msgstr "Macet"
 #: lua/controller.lua
 msgid "Drawer Controller"
 msgstr "Pengendali Laci"
+
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr "Kosong"
+
+#: lua/api.lua init.lua
+msgid "Wooden"
+msgstr "Kayu"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "Laci @1"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "Laci @1 (1x2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "Laci @1 (2x2)"
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% penuh)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% penuh)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -123,6 +123,11 @@ msgstr "Tingkatkan menjadi Laci Besi (x2)"
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Tingkatkan menjadi Laci Zamrud (x13)"
+
+#: init.lua
+#, fuzzy
+msgid "Wooden Trim"
+msgstr "Kayu"
 
 #: init.lua
 msgid "Drawer Upgrade Template"

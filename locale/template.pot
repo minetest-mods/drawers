@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-17 11:36-0500\n"
+"POT-Creation-Date: 2018-12-07 21:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,34 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr ""
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr ""
-
-#: lua/visual.lua
-msgid "Empty"
-msgstr ""
-
-#: lua/api.lua init.lua
-msgid "Wooden"
-msgstr ""
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr ""
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr ""
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr ""
 
 #: lua/controller.lua
 msgid "Current State: "
@@ -63,6 +35,34 @@ msgstr ""
 
 #: lua/controller.lua
 msgid "Drawer Controller"
+msgstr ""
+
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr ""
+
+#: lua/api.lua init.lua
+msgid "Wooden"
+msgstr ""
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr ""
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr ""
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr ""
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr ""
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
 msgstr ""
 
 #: init.lua
@@ -119,6 +119,10 @@ msgstr ""
 
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
+msgstr ""
+
+#: init.lua
+msgid "Wooden Trim"
 msgstr ""
 
 #: init.lua
