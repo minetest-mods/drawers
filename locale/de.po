@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: 2018-06-18 16:42+0000\n"
+"PO-Revision-Date: 2018-12-08 09:04+0000\n"
 "Last-Translator: LNJ <git@lnj.li>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/minetest/mod-"
-"storage-drawers/de/>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/minetest/"
+"mod-storage-drawers/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.0.1\n"
+"X-Generator: Weblate 3.4-dev\n"
 
 #: lua/controller.lua
 msgid "Current State: "
@@ -124,9 +124,8 @@ msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Smaragd-Schubfachverbesserung (×13)"
 
 #: init.lua
-#, fuzzy
 msgid "Wooden Trim"
-msgstr "Holz"
+msgstr "Holzverkleidung"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
