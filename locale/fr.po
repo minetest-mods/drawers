@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: 2018-08-22 21:37+0000\n"
-"Last-Translator: Mrchiantos <Julienetnel@gmail.com>\n"
-"Language-Team: French <https://hosted.weblate.org/projects/minetest/mod-"
-"storage-drawers/fr/>\n"
+"PO-Revision-Date: 2019-01-21 21:21+0000\n"
+"Last-Translator: Nathan <bonnemainsnathan@gmail.com>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/minetest/"
+"mod-storage-drawers/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.2-dev\n"
+"X-Generator: Weblate 3.4-dev\n"
 
 #: lua/controller.lua
 msgid "Current State: "
@@ -36,7 +36,6 @@ msgid "Jammed"
 msgstr "Bloqué"
 
 #: lua/controller.lua
-#, fuzzy
 msgid "Drawer Controller"
 msgstr "Contrôleur de Tiroirs"
 
@@ -125,9 +124,8 @@ msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Amélioration tiroir en émeraude (x13)"
 
 #: init.lua
-#, fuzzy
 msgid "Wooden Trim"
-msgstr "En bois"
+msgstr "Habillage en bois"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
