@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: 2019-01-11 11:06+0000\n"
-"Last-Translator: Mateusz Mendel <mendelm9@gmail.com>\n"
+"PO-Revision-Date: 2019-01-28 09:05+0000\n"
+"Last-Translator: gam24 <kubacudny42@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/minetest/"
 "mod-storage-drawers/pl/>\n"
 "Language: pl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.4-dev\n"
+"X-Generator: Weblate 3.5-dev\n"
 
 #: lua/controller.lua
 msgid "Current State: "
@@ -106,7 +106,7 @@ msgstr "Ulepszenie stalowej szuflady(x2)"
 
 #: init.lua
 msgid "Gold Drawer Upgrade (x3)"
-msgstr "Ulepszenie złotej szuflady(x3)"
+msgstr "Ulepszenie złotej szuflady (x3)"
 
 #: init.lua
 msgid "Obsidian Drawer Upgrade (x5)"
