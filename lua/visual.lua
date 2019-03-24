@@ -163,6 +163,11 @@ core.register_entity("drawers:visual", {
 	end,
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
+		local node = minetest.get_node(self.object:get_pos())
+		if not node.name:match("^drawers:") then
+			self.object:remove()
+			return
+		end
 		local add_stack = not puncher:get_player_control().sneak
 		if core.is_protected(self.drawer_pos, puncher:get_player_name()) then
 		   core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
