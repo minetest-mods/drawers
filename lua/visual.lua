@@ -351,7 +351,7 @@ core.register_entity("drawers:visual", {
 
 	play_interact_sound = function(self)
 		core.sound_play("drawers_interact", {
-			pos = self.pos,
+			pos = self.object:get_pos(),
 			max_hear_distance = 6,
 			gain = 2.0
 		})
