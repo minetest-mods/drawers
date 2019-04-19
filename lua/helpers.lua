@@ -197,7 +197,7 @@ function drawers.spawn_visuals(pos)
 end
 
 function drawers.remove_visuals(pos)
-	local objs = core.get_objects_inside_radius(pos, 0.537)
+	local objs = core.get_objects_inside_radius(pos, 0.54)
 	if not objs then return end
 
 	for _, obj in pairs(objs) do
