@@ -77,6 +77,12 @@ core.register_entity("drawers:visual", {
 			self.drawerType = drawers.last_drawer_type
 		end
 
+		local node = minetest.get_node(self.object:get_pos())
+		if not node.name:match("^drawers:") then
+			self.object:remove()
+			return
+		end
+
 		-- add self to public drawer visuals
 		-- this is needed because there is no other way to get this class
 		-- only the underlying LuaEntitySAO
@@ -385,7 +391,7 @@ core.register_lbm({
 		-- count the drawer visuals
 		local drawerType = core.registered_nodes[node.name].groups.drawer
 		local foundVisuals = 0
-		local objs = core.get_objects_inside_radius(pos, 0.537)
+		local objs = core.get_objects_inside_radius(pos, 0.54)
 		if objs then
 			for _, obj in pairs(objs) do
 				if obj and obj:get_luaentity() and
