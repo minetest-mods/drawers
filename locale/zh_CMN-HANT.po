@@ -8,25 +8,28 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2019-04-28 10:48+0000\n"
+"Last-Translator: 青草 <qingcaomc@gmail.com>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
+"minetest/mod-storage-drawers/zh_CMN-HANT/>\n"
 "Language: zh_CMN-HANT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: lua/controller.lua
 msgid "Current State: "
-msgstr ""
+msgstr "当前状态： "
 
 #: lua/controller.lua
 msgid "Stopped"
-msgstr ""
+msgstr "已停止"
 
 #: lua/controller.lua
 msgid "Running"
-msgstr ""
+msgstr "正在运行"
 
 #: lua/controller.lua
 msgid "Jammed"
@@ -37,12 +40,14 @@ msgid "Drawer Controller"
 msgstr ""
 
 #: lua/visual.lua lua/api.lua
+#, fuzzy
 msgid "Empty"
-msgstr ""
+msgstr "空的"
 
 #: lua/api.lua init.lua
+#, fuzzy
 msgid "Wooden"
-msgstr ""
+msgstr "木制"
 
 #: lua/api.lua
 msgid "@1 Drawer"
@@ -66,7 +71,7 @@ msgstr ""
 
 #: init.lua
 msgid "Acacia Wood"
-msgstr ""
+msgstr "金合欢木"
 
 #: init.lua
 msgid "Aspen Wood"
