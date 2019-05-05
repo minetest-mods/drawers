@@ -180,6 +180,9 @@ core.register_entity("drawers:visual", {
 		   return
 		end
 		local inv = puncher:get_inventory()
+		if inv == nil then
+			return	
+		end
 		local spaceChecker = ItemStack(self.itemName)
 		if add_stack then
 			spaceChecker:set_count(spaceChecker:get_stack_max())
