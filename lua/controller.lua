@@ -344,10 +344,17 @@ end
 
 -- Set the controller definition using a table to allow for pipeworks and potentially other mod support
 local controller_def = {}
+-- MCL2 requires a few different groups and parameters that default does not
+if core.get_modpath("mcl_core") and mcl_core then
+	controller_def.groups = {pickaxey = 1, stone = 1, building_block = 1, material_stone = 1}
+	controller_def._mcl_blast_resistance = 30
+	controller_def._mcl_hardness = 1.5
+else
+	controller_def.groups = {cracky = 3, level = 2}
+end
 controller_def.description = S("Drawer Controller")
 controller_def.tiles = {"drawer_controller_top_bottom.png", "drawer_controller_top_bottom.png", "drawer_controller_side.png", "drawer_controller_side.png", "drawer_controller_side.png", "drawer_controller_side.png"}
 controller_def.can_dig = controller_can_dig
-controller_def.groups = {cracky = 3, level = 2}
 controller_def.on_construct = function(pos)
 	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
