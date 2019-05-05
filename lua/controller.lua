@@ -78,17 +78,16 @@ end
 local function controller_formspec(pos, meta_current_state)
 	local formspec = 
 		"size[8,8.5]"..
-		default.gui_bg..
-		default.gui_bg_img..
-		default.gui_slots..
+		drawers.gui_bg..
+		drawers.gui_bg_img..
+		drawers.gui_slots..
 		"label[0,0;" .. S("Current State: ") .. meta_current_state .. "]" ..
 		"list[current_name;src;3.5,1.75;1,1;]"..
 		"list[current_player;main;0,4.25;8,1;]"..
 		"list[current_player;main;0,5.5;8,3;8]"..
 		"listring[current_player;main]"..
 		"listring[current_name;src]"..
-		"listring[current_player;main]"..
-		default.get_hotbar_bg(0, 4.25)
+		"listring[current_player;main]"
 	return formspec
 end
 
