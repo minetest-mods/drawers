@@ -1,7 +1,7 @@
 --[[
 Minetest Mod Storage Drawers - A Mod adding storage drawers
 
-Copyright (C) 2017 LNJ <git@lnj.li>
+Copyright (C) 2017-2019 Linus Jahn <lnj@kaidan.im>
 
 MIT License
 

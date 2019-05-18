@@ -17,7 +17,7 @@ MineClone 2 mods are only optional dependencies for crafting recipes.
 - [x] Add 2x2 and 1x2 drawers
 - [ ] Add compacting drawers for auto-crafting blocks/ingots/fragments
 - [ ] Add a key (or something similar) for locking the item (so the item is
-	also displayed at count 0)
+      also displayed at count 0)
 - [ ] Add duct tape to transport drawers
 - [x] Support pipeworks
 - [ ] Support hoppers (needs hoppers mod change)
@@ -40,5 +40,5 @@ alternatively you can also [email](mailto:git@lnj.li) me.
 * [Minetest Forums](https://forum.minetest.net/viewtopic.php?f=9&t=17134)
 * [Minetest Wiki](http://wiki.minetest.net/Mods/Storage_Drawers)
 * [Weblate](https://hosted.weblate.org/projects/minetest/mod-storage-drawers/)
-* [GitHub](http://github.com/lnj2/drawers/)
+* [GitHub](http://github.com/minetest-mods/drawers/)
 
