@@ -181,9 +181,19 @@ function drawers.drawer_insert_object(pos, node, stack, direction)
 	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
 	if not drawer_visuals then return stack end
 
+	-- first try to insert in the correct slot (if there are already items)
 	local leftover = stack
 	for _, visual in pairs(drawer_visuals) do
-		leftover = visual:try_insert_stack(leftover, true)
+		if visual.itemName == stack:get_name() then
+			leftover = visual:try_insert_stack(leftover, true)
+		end
+	end
+
+	-- if there's still something left, also use other slots
+	if leftover:get_count() > 0 then
+		for _, visual in pairs(drawer_visuals) do
+			leftover = visual:try_insert_stack(leftover, true)
+		end
 	end
 	return leftover
 end
