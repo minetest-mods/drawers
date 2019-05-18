@@ -1,7 +1,7 @@
 --[[
 Minetest Mod Storage Drawers - A Mod adding storage drawers
 
-Copyright (C) 2017 LNJ <git@lnj.li>
+Copyright (C) 2017-2019 Linus Jahn <lnj@kaidan.im>
 Copyright (C) 2016 Mango Tango <mtango688@gmail.com>
 
 MIT License
@@ -101,9 +101,9 @@ function drawers.spawn_visuals(pos)
 
 		local obj = core.add_entity(pos2, "drawers:visual")
 
-		if bdir.x < 0 then obj:setyaw(0.5 * math.pi) end
-		if bdir.z < 0 then obj:setyaw(math.pi) end
-		if bdir.x > 0 then obj:setyaw(1.5 * math.pi) end
+		if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
+		if bdir.z < 0 then obj:set_yaw(math.pi) end
+		if bdir.x > 0 then obj:set_yaw(1.5 * math.pi) end
 
 		drawers.last_texture = nil
 	elseif drawerType == 2 then
@@ -132,9 +132,9 @@ function drawers.spawn_visuals(pos)
 		objs[2] = core.add_entity(pos2, "drawers:visual")
 
 		for i,obj in pairs(objs) do
-			if bdir.x < 0 then obj:setyaw(0.5 * math.pi) end
-			if bdir.z < 0 then obj:setyaw(math.pi) end
-			if bdir.x > 0 then obj:setyaw(1.5 * math.pi) end
+			if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
+			if bdir.z < 0 then obj:set_yaw(math.pi) end
+			if bdir.x > 0 then obj:set_yaw(1.5 * math.pi) end
 		end
 	else -- 2x2 drawer
 		local bdir = core.facedir_to_dir(node.param2)
@@ -189,9 +189,9 @@ function drawers.spawn_visuals(pos)
 
 
 		for i,obj in pairs(objs) do
-			if bdir.x < 0 then obj:setyaw(0.5 * math.pi) end
-			if bdir.z < 0 then obj:setyaw(math.pi) end
-			if bdir.x > 0 then obj:setyaw(1.5 * math.pi) end
+			if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
+			if bdir.z < 0 then obj:set_yaw(math.pi) end
+			if bdir.x > 0 then obj:set_yaw(1.5 * math.pi) end
 		end
 	end
 end
