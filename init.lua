@@ -31,18 +31,16 @@ local S, NS = dofile(MP.."/intllib.lua")
 drawers = {}
 drawers.drawer_visuals = {}
 
+drawers.WOOD_ITEMSTRING = "group:wood"
 if core.get_modpath("default") and default then
 	drawers.WOOD_SOUNDS = default.node_sound_wood_defaults()
-	drawers.WOOD_ITEMSTRING = "group:wood"
 	drawers.CHEST_ITEMSTRING = "default:chest"
 elseif core.get_modpath("mcl_core") and mcl_core then -- MineClone 2
-	drawers.WOOD_ITEMSTRING = "group:wood"
 	drawers.CHEST_ITEMSTRING = "mcl_chests:chest"
 	if core.get_modpath("mcl_sounds") and mcl_sounds then
 		drawers.WOOD_SOUNDS = mcl_sounds.node_sound_wood_defaults()
 	end
 else
-	drawers.WOOD_ITEMSTRING = "group:wood"
 	drawers.CHEST_ITEMSTRING = "chest"
 end
 

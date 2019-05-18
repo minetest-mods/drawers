@@ -47,7 +47,7 @@ local default_loaded = core.get_modpath("default") and default
 local mcl_loaded = core.get_modpath("mcl_core") and mcl_core
 local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
 
-local controller_interval = tonumber(core.setting_get("drawers_controller_interval")) or 7.0
+local controller_interval = tonumber(core.settings:get("drawers_controller_interval")) or 1.0
 
 local function controller_formspec(pos, meta_current_state)
 	local formspec =
