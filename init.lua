@@ -49,7 +49,7 @@ drawers.enable_1x1 = not core.settings:get_bool("drawers_disable_1x1")
 drawers.enable_1x2 = not core.settings:get_bool("drawers_disable_1x2")
 drawers.enable_2x2 = not core.settings:get_bool("drawers_disable_2x2")
 
-drawers.CONTROLLER_RANGE = 8
+drawers.CONTROLLER_RANGE = 14
 
 --
 -- GUI
