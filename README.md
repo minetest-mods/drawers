@@ -1,5 +1,5 @@
 # Minetest Mod Storage Drawers
-Version 0.4.3, Status: alpha, License: MIT
+Version 0.5.0, License: MIT
 
 ## Description
 This mod adds simple item storages showing the item's inventory image in the
@@ -21,7 +21,7 @@ MineClone 2 mods are only optional dependencies for crafting recipes.
 - [ ] Add duct tape to transport drawers
 - [x] Support pipeworks
 - [ ] Support hoppers (needs hoppers mod change)
-- [ ] Make drawers upgradable
+- [x] Make drawers upgradable
 - [x] Add drawers in all wood types
 
 ## Bug reports and suggestions
