@@ -153,19 +153,59 @@ core.register_entity("drawers:visual", {
 	end,
 
 	on_rightclick = function(self, clicker)
-	        if core.is_protected(self.drawer_pos, clicker:get_player_name()) then
-		   core.record_protection_violation(self.drawer_pos, clicker:get_player_name())
-		   return
+		if core.is_protected(self.drawer_pos, clicker:get_player_name()) then
+			core.record_protection_violation(self.drawer_pos, clicker:get_player_name())
+			return
 		end
-		local leftover = self.try_insert_stack(self, clicker:get_wielded_item(),
-			not clicker:get_player_control().sneak)
 
-		-- if smth. was added play the interact sound
-		if clicker:get_wielded_item():get_count() > leftover:get_count() then
+		-- used to check if we need to play a sound in the end
+		local inventoryChanged = false
+
+		-- When the player uses the drawer with their bare hand all
+		-- stacks from the inventory will be added to the drawer.
+		if self.itemName ~= "" and
+		   clicker:get_wielded_item():get_name() == "" and
+		   not clicker:get_player_control().sneak then
+			-- try to insert all items from inventory
+			local i = 0
+			local inv = clicker:get_inventory()
+
+			while i < inv:get_size("main") do
+				-- set current stack to leftover of insertion
+				local leftover = self.try_insert_stack(
+					self,
+					inv:get_stack("main", i),
+					true
+				)
+
+				-- check if something was added
+				if leftover:get_count() < inv:get_stack("main", i):get_count() then
+					inventoryChanged = true
+				end
+
+				-- set new stack
+				inv:set_stack("main", i, leftover)
+				i = i + 1
+			end
+		else
+			-- try to insert wielded item only
+			local leftover = self.try_insert_stack(
+				self,
+				clicker:get_wielded_item(),
+				not clicker:get_player_control().sneak
+			)
+
+			-- check if something was added
+			if clicker:get_wielded_item():get_count() > leftover:get_count() then
+				inventoryChanged = true
+			end
+			-- set the leftover as new wielded item for the player
+			clicker:set_wielded_item(leftover)
+		end
+
+		if inventoryChanged then
 			self:play_interact_sound()
 		end
-		-- set the leftover as new wielded item for the player
-		clicker:set_wielded_item(leftover)
 	end,
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
