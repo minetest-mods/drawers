@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: 2019-04-28 10:48+0000\n"
-"Last-Translator: 青草 <qingcaomc@gmail.com>\n"
+"PO-Revision-Date: 2019-07-18 17:04+0000\n"
+"Last-Translator: Elizabeth Sherrock <lizzyd710@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "minetest/mod-storage-drawers/zh_CMN-HANT/>\n"
 "Language: zh_CMN-HANT\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 3.8-dev\n"
 
 #: lua/controller.lua
 msgid "Current State: "
@@ -79,7 +79,7 @@ msgstr ""
 
 #: init.lua
 msgid "Junglewood"
-msgstr ""
+msgstr "丛林木"
 
 #: init.lua
 msgid "Pine Wood"
@@ -87,19 +87,19 @@ msgstr ""
 
 #: init.lua
 msgid "Oak Wood"
-msgstr ""
+msgstr "橡木"
 
 #: init.lua
 msgid "Birch Wood"
-msgstr ""
+msgstr "白桦木"
 
 #: init.lua
 msgid "Dark Oak Wood"
-msgstr ""
+msgstr "深色橡木"
 
 #: init.lua
 msgid "Spruce Wood"
-msgstr ""
+msgstr "云杉木"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
