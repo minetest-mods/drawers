@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: 2019-08-27 12:23+0000\n"
+"PO-Revision-Date: 2019-09-03 13:23+0000\n"
 "Last-Translator: Jacques Lagrange <Jacques.Reads@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/minetest/"
 "mod-storage-drawers/it/>\n"
@@ -25,15 +25,15 @@ msgstr "Stato attuale: "
 
 #: lua/controller.lua
 msgid "Stopped"
-msgstr ""
+msgstr "Fermo"
 
 #: lua/controller.lua
 msgid "Running"
-msgstr ""
+msgstr "In corso di esecuzione"
 
 #: lua/controller.lua
 msgid "Jammed"
-msgstr ""
+msgstr "Bloccato"
 
 #: lua/controller.lua
 msgid "Drawer Controller"
