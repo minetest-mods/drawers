@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: 2019-02-23 11:18+0000\n"
+"PO-Revision-Date: 2019-09-11 16:23+0000\n"
 "Last-Translator: Mateusz Mendel <mendelm9@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/minetest/"
 "mod-storage-drawers/pl/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.5-dev\n"
+"X-Generator: Weblate 3.9-dev\n"
 
 #: lua/controller.lua
 msgid "Current State: "
@@ -125,11 +125,9 @@ msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Ulepszenie szmaragdowej szuflady (x13)"
 
 #: init.lua
-#, fuzzy
 msgid "Wooden Trim"
 msgstr "Drewniane wykończenia"
 
 #: init.lua
-#, fuzzy
 msgid "Drawer Upgrade Template"
 msgstr "Szablon ulepszenia szuflady"
