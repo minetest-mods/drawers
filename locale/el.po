@@ -8,57 +8,60 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2020-01-05 21:21+0000\n"
+"Last-Translator: THANOS SIOURDAKIS <siourdakisthanos@gmail.com>\n"
+"Language-Team: Greek <https://hosted.weblate.org/projects/minetest/"
+"mod-storage-drawers/el/>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.10\n"
 
 #: lua/controller.lua
 msgid "Current State: "
-msgstr ""
+msgstr "Τρέχουσα κατάσταση: "
 
 #: lua/controller.lua
 msgid "Stopped"
-msgstr ""
+msgstr "Σταμάτησε"
 
 #: lua/controller.lua
 msgid "Running"
-msgstr ""
+msgstr "Εκτέλεση"
 
 #: lua/controller.lua
 msgid "Jammed"
-msgstr ""
+msgstr "Μπλοκαρισμένο"
 
 #: lua/controller.lua
 msgid "Drawer Controller"
-msgstr ""
+msgstr "Ελεγκτής συρταριού"
 
 #: lua/visual.lua lua/api.lua
 msgid "Empty"
-msgstr ""
+msgstr "Κενό"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
-msgstr ""
+msgstr "Ξύλινο"
 
 #: lua/api.lua
 msgid "@1 Drawer"
-msgstr ""
+msgstr "@1 συρτάρι"
 
 #: lua/api.lua
 msgid "@1 Drawers (1x2)"
-msgstr ""
+msgstr "@1 συρτάρια (1x2)"
 
 #: lua/api.lua
 msgid "@1 Drawers (2x2)"
-msgstr ""
+msgstr "@1 συρτάρια (2x2)"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
-msgstr ""
+msgstr "@1 (@2% Πλήρης)"
 
 #: lua/helpers.lua
 msgid "@1 @2 (@3% full)"
