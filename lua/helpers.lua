@@ -97,7 +97,7 @@ function drawers.spawn_visuals(pos)
 
 		local bdir = core.facedir_to_dir(node.param2)
 		local fdir = vector.new(-bdir.x, 0, -bdir.z)
-		local pos2 = vector.add(pos, vector.multiply(fdir, 0.438))
+		local pos2 = vector.add(pos, vector.multiply(fdir, 0.45))
 
 		local obj = core.add_entity(pos2, "drawers:visual")
 
@@ -123,12 +123,12 @@ function drawers.spawn_visuals(pos)
 
 		drawers.last_visual_id = 1
 		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name1"))
-		local pos1 = vector.add(pos, vector.multiply(fdir1, 0.438))
+		local pos1 = vector.add(pos, vector.multiply(fdir1, 0.45))
 		objs[1] = core.add_entity(pos1, "drawers:visual")
 
 		drawers.last_visual_id = 2
 		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name2"))
-		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.438))
+		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.45))
 		objs[2] = core.add_entity(pos2, "drawers:visual")
 
 		for i,obj in pairs(objs) do
@@ -169,22 +169,22 @@ function drawers.spawn_visuals(pos)
 
 		drawers.last_visual_id = 1
 		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name1"))
-		local pos1 = vector.add(pos, vector.multiply(fdir1, 0.438))
+		local pos1 = vector.add(pos, vector.multiply(fdir1, 0.45))
 		objs[1] = core.add_entity(pos1, "drawers:visual")
 
 		drawers.last_visual_id = 2
 		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name2"))
-		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.438))
+		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.45))
 		objs[2] = core.add_entity(pos2, "drawers:visual")
 
 		drawers.last_visual_id = 3
 		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name3"))
-		local pos3 = vector.add(pos, vector.multiply(fdir3, 0.438))
+		local pos3 = vector.add(pos, vector.multiply(fdir3, 0.45))
 		objs[3] = core.add_entity(pos3, "drawers:visual")
 
 		drawers.last_visual_id = 4
 		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name4"))
-		local pos4 = vector.add(pos, vector.multiply(fdir4, 0.438))
+		local pos4 = vector.add(pos, vector.multiply(fdir4, 0.45))
 		objs[4] = core.add_entity(pos4, "drawers:visual")
 
 
