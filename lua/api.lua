@@ -200,8 +200,9 @@ end
 
 function drawers.drawer_can_insert_object(pos, node, stack, direction)
 	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
-	if not drawer_visuals then return false end
-
+	if not drawer_visuals then
+		return false
+	end
 
 	for _, visual in pairs(drawer_visuals) do
 	   if visual.itemName == "" or (visual.itemName == stack:get_name() and visual.count ~= visual.maxCount) then
@@ -209,6 +210,27 @@ function drawers.drawer_can_insert_object(pos, node, stack, direction)
 	   end
 	end
 	return false
+end
+
+function drawers.drawer_take_item(pos, itemstack)
+	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
+
+	if not drawer_visuals then
+		return ItemStack("")
+	end
+
+	-- check for max count
+	if itemstack:get_count() > itemstack:get_stack_max() then
+		itemstack:set_count(itemstack:get_stack_max())
+	end
+
+	for _, visual in pairs(drawer_visuals) do
+		if visual.itemName == itemstack:get_name() and visual.count ~= visual.maxCount then
+			return visual:take_items(itemstack:get_count())
+		end
+	end
+
+	return ItemStack()
 end
 
 function drawers.register_drawer(name, def)

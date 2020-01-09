@@ -1,7 +1,7 @@
 --[[
 Minetest Mod Storage Drawers - A Mod adding storage drawers
 
-Copyright (C) 2017-2019 Linus Jahn <lnj@kaidan.im>
+Copyright (C) 2017-2020 Linus Jahn <lnj@kaidan.im>
 Copyright (C) 2018 isaiah658
 
 MIT License
@@ -216,6 +216,52 @@ local function index_drawers(pos)
 	return controllerInventory
 end
 
+--[[
+	Returns a table of all stored itemstrings in the drawer network with their
+	drawer position and visualid.
+
+	It uses the cached data, if possible, but if the itemstring is not contained
+	the network is reindexed.
+]]
+local function controller_get_drawer_index(pos, itemstring)
+	local meta = core.get_meta(pos)
+
+	-- If the index has not been created, the item isn't in the index, the
+	-- item in the drawer is no longer the same item in the index, or the item
+	-- is in the index but it's full, run the index_drawers function.
+	local drawers_table_index = core.deserialize(meta:get_string("drawers_table_index"))
+
+	-- If the index has not been created
+	if not drawers_table_index then
+		drawers_table_index = index_drawers(pos)
+		meta:set_string("drawers_table_index", core.serialize(drawers_table_index))
+
+	-- If the item isn't in the index
+	elseif not drawers_table_index[itemstring] then
+		drawers_table_index = index_drawers(pos)
+		meta:set_string("drawers_table_index", core.serialize(drawers_table_index))
+
+	-- If the item is in the index but either the name that was indexed is not
+	-- the same as what is currently in the drawer or the drawer is full
+	elseif drawers_table_index[itemstring] then
+		local visualid = drawers_table_index[itemstring]["visualid"]
+		local indexed_drawer_meta = core.get_meta({
+			x = drawers_table_index[itemstring]["drawer_pos_x"],
+			y = drawers_table_index[itemstring]["drawer_pos_y"],
+			z = drawers_table_index[itemstring]["drawer_pos_z"]
+		})
+		local indexed_drawer_meta_name = indexed_drawer_meta:get_string("name" .. visualid)
+		local indexed_drawer_meta_count = indexed_drawer_meta:get_int("count" .. visualid)
+		local indexed_drawer_meta_max_count = indexed_drawer_meta:get_int("max_count" .. visualid)
+		if indexed_drawer_meta_name ~= itemstring or indexed_drawer_meta_count >= indexed_drawer_meta_max_count then
+			drawers_table_index = index_drawers(pos)
+			meta:set_string("drawers_table_index", core.serialize(drawers_table_index))
+		end
+	end
+
+	return drawers_table_index
+end
+
 local function controller_node_timer(pos, elapsed)
 	-- Inizialize metadata
 	local meta = core.get_meta(pos)
@@ -287,34 +333,7 @@ local function controller_node_timer(pos, elapsed)
 		return true
 	end
 
-	-- If the index has not been created, the item isn't in the index, the
-	-- item in the drawer is no longer the same item in the index, or the item
-	-- is in the index but it's full, run the index_drawers function.
-	local drawers_table_index = core.deserialize(meta:get_string("drawers_table_index"))
-
-	-- If the index has not been created
-	if not drawers_table_index then
-		drawers_table_index = index_drawers(pos)
-		meta:set_string("drawers_table_index", core.serialize(drawers_table_index))
-
-	-- If the item isn't in the index
-	elseif not drawers_table_index[src_name] then
-		drawers_table_index = index_drawers(pos)
-		meta:set_string("drawers_table_index", core.serialize(drawers_table_index))
-
-	-- If the item is in the index but either the name that was indexed is not
-	-- the same as what is currently in the drawer or the drawer is full
-	elseif drawers_table_index[src_name] then
-		local visualid = drawers_table_index[src_name]["visualid"]
-		local indexed_drawer_meta = core.get_meta({x = drawers_table_index[src_name]["drawer_pos_x"], y = drawers_table_index[src_name]["drawer_pos_y"], z = drawers_table_index[src_name]["drawer_pos_z"]})
-		local indexed_drawer_meta_name = indexed_drawer_meta:get_string("name" .. visualid)
-		local indexed_drawer_meta_count = indexed_drawer_meta:get_int("count" .. visualid)
-		local indexed_drawer_meta_max_count = indexed_drawer_meta:get_int("max_count" .. visualid)
-		if indexed_drawer_meta_name ~= src_name or indexed_drawer_meta_count >= indexed_drawer_meta_max_count then
-			drawers_table_index = index_drawers(pos)
-			meta:set_string("drawers_table_index", core.serialize(drawers_table_index))
-		end
-	end
+	drawers_table_index = controller_get_drawer_index(pos, src_name)
 
 	-- This might not be needed, but my concern is if the above indexing takes
 	-- enough time, there could be a "race condition" where the item in the src
@@ -433,6 +452,42 @@ local function controller_allow_metadata_inventory_take(pos, listname, index, st
 	return stack:get_count()
 end
 
+local function controller_on_digiline_receive(pos, _, channel, msg)
+	local meta = core.get_meta(pos)
+
+	local own_channel = meta:get_string("digiline_channel")
+	if own_channel == "" then
+		own_channel = "drawer_controller"
+	end
+
+	if channel ~= own_channel then
+		return
+	end
+
+	local item = ItemStack(msg)
+	local itemstring = item:get_name()
+
+	local drawers_index = controller_get_drawer_index(pos, itemstring)
+
+	if not drawers_index[itemstring] then
+		-- we can't do anything: the requested item doesn't exist
+		return
+	end
+
+	local drawer_data = drawers_index[itemstring]
+	local drawer_pos = {
+		x = drawer_data["drawer_pos_x"],
+		y = drawer_data["drawer_pos_y"],
+		z = drawer_data["drawer_pos_z"]
+	}
+
+	local taken_stack = drawers.drawer_take_item(drawer_pos, item)
+	local node = core.get_node(pos)
+
+    local dir = core.facedir_to_dir(node.param2)
+	pipeworks.tube_inject_item(pos, pos, dir, taken_stack:to_string())
+end
+
 -- Registers the drawer controller
 local function register_controller()
 	-- Set the controller definition using a table to allow for pipeworks and
@@ -515,6 +570,15 @@ local function register_controller()
 
 		def.after_place_node = pipeworks.after_place
 		def.after_dig_node = pipeworks.after_dig
+	end
+
+	if digilines then
+		def.digiline = {
+			receptor = {},
+			effector = {
+				action = controller_on_digiline_receive
+			},
+		}
 	end
 
 	core.register_node("drawers:controller", def)
