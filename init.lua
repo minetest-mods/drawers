@@ -325,6 +325,15 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 	})
 end
 
+if core.get_modpath("moreores") then
+	drawers.register_drawer_upgrade("drawers:upgrade_mithril", {
+		description = S("Mithril Drawer Upgrade (x13)"),
+		inventory_image = "drawers_upgrade_mithril.png",
+		groups = {drawer_upgrade = 1200},
+		recipe_item = "moreores:mithril_ingot"
+	})
+end
+
 --
 -- Register drawer trim
 --
