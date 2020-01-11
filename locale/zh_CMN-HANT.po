@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-07 21:50+0100\n"
+"POT-Creation-Date: 2020-01-11 16:49+0100\n"
 "PO-Revision-Date: 2019-07-18 17:04+0000\n"
 "Last-Translator: Elizabeth Sherrock <lizzyd710@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -19,55 +19,10 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 3.8-dev\n"
 
-#: lua/controller.lua
-msgid "Current State: "
-msgstr "当前状态： "
-
-#: lua/controller.lua
-msgid "Stopped"
-msgstr "已停止"
-
-#: lua/controller.lua
-msgid "Running"
-msgstr "正在运行"
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr ""
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr ""
-
-#: lua/visual.lua lua/api.lua
-#, fuzzy
-msgid "Empty"
-msgstr "空的"
-
-#: lua/api.lua init.lua
+#: init.lua lua/api.lua
 #, fuzzy
 msgid "Wooden"
 msgstr "木制"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr ""
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr ""
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr ""
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr ""
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr ""
 
 #: init.lua
 msgid "Acacia Wood"
@@ -110,7 +65,7 @@ msgid "Gold Drawer Upgrade (x3)"
 msgstr ""
 
 #: init.lua
-msgid "Obsidian Drawer Upgrade (x5)"
+msgid "Obsidian Drawer Upgrade (x4)"
 msgstr ""
 
 #: init.lua
@@ -126,9 +81,58 @@ msgid "Emerald Drawer Upgrade (x13)"
 msgstr ""
 
 #: init.lua
+msgid "Mithril Drawer Upgrade (x13)"
+msgstr ""
+
+#: init.lua
 msgid "Wooden Trim"
 msgstr ""
 
 #: init.lua
 msgid "Drawer Upgrade Template"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Current State: "
+msgstr "当前状态： "
+
+#: lua/controller.lua
+msgid "Stopped"
+msgstr "已停止"
+
+#: lua/controller.lua
+msgid "Running"
+msgstr "正在运行"
+
+#: lua/controller.lua
+msgid "Jammed"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr ""
+
+#: lua/api.lua lua/visual.lua
+#, fuzzy
+msgid "Empty"
+msgstr "空的"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr ""
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr ""
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr ""
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr ""
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
 msgstr ""

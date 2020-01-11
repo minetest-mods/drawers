@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-07 21:50+0100\n"
+"POT-Creation-Date: 2020-01-11 16:49+0100\n"
 "PO-Revision-Date: 2018-10-22 18:37+0000\n"
 "Last-Translator: runs <runspect@yahoo.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/minetest/mod-"
@@ -19,53 +19,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.3-dev\n"
 
-#: lua/controller.lua
-msgid "Current State: "
-msgstr "Estado actual: "
-
-#: lua/controller.lua
-msgid "Stopped"
-msgstr "Detenido"
-
-#: lua/controller.lua
-msgid "Running"
-msgstr "Ejecutándose"
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr "Atascado"
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr "Controlador de gaveta"
-
-#: lua/visual.lua lua/api.lua
-msgid "Empty"
-msgstr "Vacío"
-
-#: lua/api.lua init.lua
+#: init.lua lua/api.lua
 msgid "Wooden"
 msgstr "De Madera"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "@1 Gaveta"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "@1 Gavetas (1x2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "@1 Gavetas (2x2)"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% lleno)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% lleno)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -108,8 +64,9 @@ msgid "Gold Drawer Upgrade (x3)"
 msgstr ""
 
 #: init.lua
-msgid "Obsidian Drawer Upgrade (x5)"
-msgstr ""
+#, fuzzy
+msgid "Obsidian Drawer Upgrade (x4)"
+msgstr "@1 Gavetas (1x2)"
 
 #: init.lua
 msgid "Diamond Drawer Upgrade (x8)"
@@ -126,9 +83,58 @@ msgstr ""
 
 #: init.lua
 #, fuzzy
+msgid "Mithril Drawer Upgrade (x13)"
+msgstr "@1 Gavetas (1x2)"
+
+#: init.lua
+#, fuzzy
 msgid "Wooden Trim"
 msgstr "De Madera"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
 msgstr ""
+
+#: lua/controller.lua
+msgid "Current State: "
+msgstr "Estado actual: "
+
+#: lua/controller.lua
+msgid "Stopped"
+msgstr "Detenido"
+
+#: lua/controller.lua
+msgid "Running"
+msgstr "Ejecutándose"
+
+#: lua/controller.lua
+msgid "Jammed"
+msgstr "Atascado"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr "Controlador de gaveta"
+
+#: lua/api.lua lua/visual.lua
+msgid "Empty"
+msgstr "Vacío"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "@1 Gaveta"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "@1 Gavetas (1x2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "@1 Gavetas (2x2)"
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% lleno)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% lleno)"

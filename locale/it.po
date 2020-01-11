@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-07 21:50+0100\n"
+"POT-Creation-Date: 2020-01-11 16:49+0100\n"
 "PO-Revision-Date: 2019-09-03 13:23+0000\n"
 "Last-Translator: Jacques Lagrange <Jacques.Reads@gmail.com>\n"
-"Language-Team: Italian <https://hosted.weblate.org/projects/minetest/"
-"mod-storage-drawers/it/>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/minetest/mod-"
+"storage-drawers/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,53 +19,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.9-dev\n"
 
-#: lua/controller.lua
-msgid "Current State: "
-msgstr "Stato attuale: "
-
-#: lua/controller.lua
-msgid "Stopped"
-msgstr "Fermo"
-
-#: lua/controller.lua
-msgid "Running"
-msgstr "In corso di esecuzione"
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr "Bloccato"
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr ""
-
-#: lua/visual.lua lua/api.lua
-msgid "Empty"
-msgstr "Vuoto"
-
-#: lua/api.lua init.lua
+#: init.lua lua/api.lua
 msgid "Wooden"
 msgstr "Di legno"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "@1 Cassetto"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "@1 Cassetti (1x2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "@1 Cassetti (2x2)"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% pieno)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% pieno)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -108,7 +64,8 @@ msgid "Gold Drawer Upgrade (x3)"
 msgstr "Miglioramento d'oro della cassettiera (x3)"
 
 #: init.lua
-msgid "Obsidian Drawer Upgrade (x5)"
+#, fuzzy
+msgid "Obsidian Drawer Upgrade (x4)"
 msgstr "Miglioramento d'ossidiana della cassettiera (x5)"
 
 #: init.lua
@@ -124,9 +81,58 @@ msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Miglioramento di smeraldo della cassettiera (x13)"
 
 #: init.lua
+#, fuzzy
+msgid "Mithril Drawer Upgrade (x13)"
+msgstr "Miglioramento di smeraldo della cassettiera (x13)"
+
+#: init.lua
 msgid "Wooden Trim"
 msgstr "di legno"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
 msgstr "Modello di miglioramento della cassettiera"
+
+#: lua/controller.lua
+msgid "Current State: "
+msgstr "Stato attuale: "
+
+#: lua/controller.lua
+msgid "Stopped"
+msgstr "Fermo"
+
+#: lua/controller.lua
+msgid "Running"
+msgstr "In corso di esecuzione"
+
+#: lua/controller.lua
+msgid "Jammed"
+msgstr "Bloccato"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr ""
+
+#: lua/api.lua lua/visual.lua
+msgid "Empty"
+msgstr "Vuoto"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "@1 Cassetto"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "@1 Cassetti (1x2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "@1 Cassetti (2x2)"
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% pieno)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% pieno)"

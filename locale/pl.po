@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-07 21:50+0100\n"
+"POT-Creation-Date: 2020-01-11 16:49+0100\n"
 "PO-Revision-Date: 2019-09-11 16:23+0000\n"
 "Last-Translator: Mateusz Mendel <mendelm9@gmail.com>\n"
-"Language-Team: Polish <https://hosted.weblate.org/projects/minetest/"
-"mod-storage-drawers/pl/>\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/minetest/mod-"
+"storage-drawers/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,53 +20,9 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.9-dev\n"
 
-#: lua/controller.lua
-msgid "Current State: "
-msgstr "Stan aktulany: "
-
-#: lua/controller.lua
-msgid "Stopped"
-msgstr "Zatrzymany"
-
-#: lua/controller.lua
-msgid "Running"
-msgstr "Uruchomiona"
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr "Zablokowany"
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr "Kontroler szuflady"
-
-#: lua/visual.lua lua/api.lua
-msgid "Empty"
-msgstr "Pusta"
-
-#: lua/api.lua init.lua
+#: init.lua lua/api.lua
 msgid "Wooden"
 msgstr "Drewniany"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "@1 Szuflada"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "@1 Szuflady (1x2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "@1 Szuflady (2x2)"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% napełnione)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% napełnione)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -109,7 +65,8 @@ msgid "Gold Drawer Upgrade (x3)"
 msgstr "Ulepszenie złotej szuflady (x3)"
 
 #: init.lua
-msgid "Obsidian Drawer Upgrade (x5)"
+#, fuzzy
+msgid "Obsidian Drawer Upgrade (x4)"
 msgstr "Ulepszenie obsydianowej szuflady (x5)"
 
 #: init.lua
@@ -125,9 +82,58 @@ msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Ulepszenie szmaragdowej szuflady (x13)"
 
 #: init.lua
+#, fuzzy
+msgid "Mithril Drawer Upgrade (x13)"
+msgstr "Ulepszenie szmaragdowej szuflady (x13)"
+
+#: init.lua
 msgid "Wooden Trim"
 msgstr "Drewniane wykończenia"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
 msgstr "Szablon ulepszenia szuflady"
+
+#: lua/controller.lua
+msgid "Current State: "
+msgstr "Stan aktulany: "
+
+#: lua/controller.lua
+msgid "Stopped"
+msgstr "Zatrzymany"
+
+#: lua/controller.lua
+msgid "Running"
+msgstr "Uruchomiona"
+
+#: lua/controller.lua
+msgid "Jammed"
+msgstr "Zablokowany"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr "Kontroler szuflady"
+
+#: lua/api.lua lua/visual.lua
+msgid "Empty"
+msgstr "Pusta"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "@1 Szuflada"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "@1 Szuflady (1x2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "@1 Szuflady (2x2)"
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% napełnione)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% napełnione)"

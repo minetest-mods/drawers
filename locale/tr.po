@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-07 21:50+0100\n"
+"POT-Creation-Date: 2020-01-11 16:49+0100\n"
 "PO-Revision-Date: 2018-12-09 11:08+0000\n"
 "Last-Translator: monolifed <monolifed@gmail.com>\n"
-"Language-Team: Turkish <https://hosted.weblate.org/projects/minetest/"
-"mod-storage-drawers/tr/>\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/minetest/mod-"
+"storage-drawers/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,53 +19,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 3.4-dev\n"
 
-#: lua/controller.lua
-msgid "Current State: "
-msgstr "Şu Anki Durum: "
-
-#: lua/controller.lua
-msgid "Stopped"
-msgstr "Durdu"
-
-#: lua/controller.lua
-msgid "Running"
-msgstr "Çalışıyor"
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr "Sıkıştı"
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr "Çekmece Denetleyicisi"
-
-#: lua/visual.lua lua/api.lua
-msgid "Empty"
-msgstr "Boş"
-
-#: lua/api.lua init.lua
+#: init.lua lua/api.lua
 msgid "Wooden"
 msgstr "Ahşap"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "@1 Çekmece"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "@1 Çekmece (1x2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "@1 Çekmece (2x2)"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (%@2 dolu)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (%@3 dolu)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -108,7 +64,8 @@ msgid "Gold Drawer Upgrade (x3)"
 msgstr "Altın Çekmece Yükseltme (x3)"
 
 #: init.lua
-msgid "Obsidian Drawer Upgrade (x5)"
+#, fuzzy
+msgid "Obsidian Drawer Upgrade (x4)"
 msgstr "Obsidyen Çekmece Yükseltme (x5)"
 
 #: init.lua
@@ -124,9 +81,58 @@ msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Zümrüt Çekmece Yükseltme (x13)"
 
 #: init.lua
+#, fuzzy
+msgid "Mithril Drawer Upgrade (x13)"
+msgstr "Zümrüt Çekmece Yükseltme (x13)"
+
+#: init.lua
 msgid "Wooden Trim"
 msgstr "Ahşap Döşeme"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
 msgstr "Çekmece Yükseltme Şablonu"
+
+#: lua/controller.lua
+msgid "Current State: "
+msgstr "Şu Anki Durum: "
+
+#: lua/controller.lua
+msgid "Stopped"
+msgstr "Durdu"
+
+#: lua/controller.lua
+msgid "Running"
+msgstr "Çalışıyor"
+
+#: lua/controller.lua
+msgid "Jammed"
+msgstr "Sıkıştı"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr "Çekmece Denetleyicisi"
+
+#: lua/api.lua lua/visual.lua
+msgid "Empty"
+msgstr "Boş"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "@1 Çekmece"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "@1 Çekmece (1x2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "@1 Çekmece (2x2)"
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (%@2 dolu)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (%@3 dolu)"
