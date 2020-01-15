@@ -170,7 +170,7 @@ core.register_entity("drawers:visual", {
 			local i = 0
 			local inv = clicker:get_inventory()
 
-			while i < inv:get_size("main") do
+			while i <= inv:get_size("main") do
 				-- set current stack to leftover of insertion
 				local leftover = self.try_insert_stack(
 					self,
