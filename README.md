@@ -1,4 +1,7 @@
 # Minetest Mod Storage Drawers
+
+![](https://github.com/minetest-mods/drawers/workflows/luacheck/badge.svg)
+
 Version 0.5.0, License: MIT
 
 ## Description
@@ -41,4 +44,3 @@ alternatively you can also [email](mailto:git@lnj.li) me.
 * [Minetest Wiki](http://wiki.minetest.net/Mods/Storage_Drawers)
 * [Weblate](https://hosted.weblate.org/projects/minetest/mod-storage-drawers/)
 * [GitHub](http://github.com/minetest-mods/drawers/)
-
