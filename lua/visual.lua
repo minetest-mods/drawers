@@ -100,7 +100,7 @@ core.register_entity("drawers:visual", {
 		self.meta = core.get_meta(self.drawer_pos)
 
 		-- collisionbox
-		local node = core.get_node(self.drawer_pos)
+		node = core.get_node(self.drawer_pos)
 		local colbox
 		if self.drawerType ~= 2 then
 			if node.param2 == 1 or node.param2 == 3 then
@@ -221,7 +221,7 @@ core.register_entity("drawers:visual", {
 		end
 		local inv = puncher:get_inventory()
 		if inv == nil then
-			return	
+			return
 		end
 		local spaceChecker = ItemStack(self.itemName)
 		if add_stack then
@@ -231,7 +231,7 @@ core.register_entity("drawers:visual", {
 			return
 		end
 
-		stack = self:take_items(add_stack)
+		local stack = self:take_items(add_stack)
 		if stack ~= nil then
 			-- add removed stack to player's inventory
 			inv:add_item("main", stack)

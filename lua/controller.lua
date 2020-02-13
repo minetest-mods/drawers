@@ -232,7 +232,7 @@ local function controller_node_timer(pos, elapsed)
 	2: Item is not stackable.
 	3. Item is allowed and there is either an existing drawer for that item with room or an empty drawer.
 	4: Item is allowed, but there is no room.
-	
+
 	There are three different possibilities for "current_state".
 	1: "running" which means means it's operating normally.
 	2: "stopped" meaning the controller makes no attempt to put in the item possibly due to being unallowed for various reasons.
