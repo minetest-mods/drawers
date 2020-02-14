@@ -497,7 +497,12 @@ local function register_controller()
 
 		def.tube = {}
 		def.tube.insert_object = function(pos, node, stack, tubedir)
-			return core.get_meta(pos):get_inventory():add_item("src", stack)
+			-- add stack to inventory
+			local remaining_stack = core.get_meta(pos):get_inventory():add_item("src", stack)
+			-- kick off controller work
+			controller_node_timer(pos)
+
+			return remaining_stack
 		end
 
 		def.tube.can_insert = function(pos, node, stack, tubedir)
