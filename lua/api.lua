@@ -199,7 +199,7 @@ function drawers.drawer_insert_object(pos, node, stack, direction)
 end
 
 function drawers.drawer_can_insert_object(pos, node, stack, direction)
-  local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
+	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
 	if not drawer_visuals then return false end
 
 
