@@ -8,20 +8,20 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: 2017-06-21 18:49+0000\n"
-"Last-Translator: Jakub Vaněk <vanek.jakub4@seznam.cz>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/minetest/mod-"
-"storage-drawers/cs/>\n"
+"PO-Revision-Date: 2020-02-25 00:32+0000\n"
+"Last-Translator: Vojtěch Šamla <auzkok@seznam.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/minetest/"
+"mod-storage-drawers/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2.15-dev\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #: lua/controller.lua
 msgid "Current State: "
-msgstr ""
+msgstr "Aktuální stav: "
 
 #: lua/controller.lua
 msgid "Stopped"
@@ -45,7 +45,7 @@ msgstr "Prázdný"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
-msgstr "ze dřeva"
+msgstr "Dřevěný"
 
 #: lua/api.lua
 msgid "@1 Drawer"
