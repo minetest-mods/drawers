@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: 2020-02-25 00:32+0000\n"
-"Last-Translator: Vojtěch Šamla <auzkok@seznam.cz>\n"
+"PO-Revision-Date: 2020-04-28 17:11+0000\n"
+"Last-Translator: Marek Sebera <marek.sebera@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/minetest/"
 "mod-storage-drawers/cs/>\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.0.2\n"
 
 #: lua/controller.lua
 msgid "Current State: "
@@ -25,19 +25,19 @@ msgstr "Aktuální stav: "
 
 #: lua/controller.lua
 msgid "Stopped"
-msgstr ""
+msgstr "Zastaveno"
 
 #: lua/controller.lua
 msgid "Running"
-msgstr ""
+msgstr "Spuštěno"
 
 #: lua/controller.lua
 msgid "Jammed"
-msgstr ""
+msgstr "Zaseknuto"
 
 #: lua/controller.lua
 msgid "Drawer Controller"
-msgstr ""
+msgstr "Ovládání Zásuvky"
 
 #: lua/visual.lua lua/api.lua
 msgid "Empty"
@@ -124,9 +124,8 @@ msgid "Emerald Drawer Upgrade (x13)"
 msgstr "Emeraldové vylepšení šuplíku (x13)"
 
 #: init.lua
-#, fuzzy
 msgid "Wooden Trim"
-msgstr "ze dřeva"
+msgstr "Dřevěný Ořez"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
