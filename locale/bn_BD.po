@@ -8,53 +8,56 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2020-05-03 15:11+0000\n"
+"Last-Translator: Oymate <dhruboadittya96@gmail.com>\n"
+"Language-Team: Bengali (Bangladesh) <https://hosted.weblate.org/projects/"
+"minetest/mod-storage-drawers/bn_BD/>\n"
 "Language: bn_BD\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.1-dev\n"
 
 #: lua/controller.lua
 msgid "Current State: "
-msgstr ""
+msgstr "বর্তমান অবস্থা: "
 
 #: lua/controller.lua
 msgid "Stopped"
-msgstr ""
+msgstr "বন্ধ"
 
 #: lua/controller.lua
 msgid "Running"
-msgstr ""
+msgstr "চলছে"
 
 #: lua/controller.lua
 msgid "Jammed"
-msgstr ""
+msgstr "জ্যামড"
 
 #: lua/controller.lua
 msgid "Drawer Controller"
-msgstr ""
+msgstr "ড্রয়ার কন্ট্রোলার"
 
 #: lua/visual.lua lua/api.lua
 msgid "Empty"
-msgstr ""
+msgstr "খালি"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
-msgstr ""
+msgstr "কাঠের"
 
 #: lua/api.lua
 msgid "@1 Drawer"
-msgstr ""
+msgstr "@১ ড্রয়ার"
 
 #: lua/api.lua
 msgid "@1 Drawers (1x2)"
-msgstr ""
+msgstr "@১ ড্রয়ার (১x২)"
 
 #: lua/api.lua
 msgid "@1 Drawers (2x2)"
-msgstr ""
+msgstr "@১ ড্রয়ার (২x২)"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
