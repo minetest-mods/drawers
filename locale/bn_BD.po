@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: 2020-05-03 15:11+0000\n"
+"PO-Revision-Date: 2020-05-10 12:32+0000\n"
 "Last-Translator: Oymate <dhruboadittya96@gmail.com>\n"
 "Language-Team: Bengali (Bangladesh) <https://hosted.weblate.org/projects/"
 "minetest/mod-storage-drawers/bn_BD/>\n"
@@ -61,27 +61,27 @@ msgstr "@১ ড্রয়ার (২x২)"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
-msgstr ""
+msgstr "@1 (@2% পূর্ণ)"
 
 #: lua/helpers.lua
 msgid "@1 @2 (@3% full)"
-msgstr ""
+msgstr "@1 @2 (@3% পূর্ণ)"
 
 #: init.lua
 msgid "Acacia Wood"
-msgstr ""
+msgstr "বাবলা কাঠ"
 
 #: init.lua
 msgid "Aspen Wood"
-msgstr ""
+msgstr "ভূর্জ কাঠ"
 
 #: init.lua
 msgid "Junglewood"
-msgstr ""
+msgstr "জংলিকাঠ"
 
 #: init.lua
 msgid "Pine Wood"
-msgstr ""
+msgstr "পাইন কাঠ"
 
 #: init.lua
 msgid "Oak Wood"
@@ -89,7 +89,7 @@ msgstr ""
 
 #: init.lua
 msgid "Birch Wood"
-msgstr ""
+msgstr "ভূর্জ কাঠ"
 
 #: init.lua
 msgid "Dark Oak Wood"
