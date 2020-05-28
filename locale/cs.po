@@ -17,11 +17,35 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 2.15-dev\n"
+"X-Generator: Weblate 4.0.2\n"
 
-#: init.lua lua/api.lua
+#: lua/controller.lua
+msgid "Current State: "
+msgstr "Aktuální stav: "
+
+#: lua/controller.lua
+msgid "Stopped"
+msgstr "Zastaveno"
+
+#: lua/controller.lua
+msgid "Running"
+msgstr "Spuštěno"
+
+#: lua/controller.lua
+msgid "Jammed"
+msgstr "Zaseknuto"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr "Ovládání Zásuvky"
+
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr "Prázdný"
+
+#: lua/api.lua init.lua
 msgid "Wooden"
-msgstr "ze dřeva"
+msgstr "Dřevěný"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -86,9 +110,8 @@ msgid "Mithril Drawer Upgrade (x13)"
 msgstr "Emeraldové vylepšení šuplíku (x13)"
 
 #: init.lua
-#, fuzzy
 msgid "Wooden Trim"
-msgstr "ze dřeva"
+msgstr "Dřevěný Ořez"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
