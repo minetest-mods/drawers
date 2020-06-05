@@ -62,6 +62,12 @@ local function controller_formspec(pos, meta_current_state)
 		"listring[current_player;main]"..
 		"listring[current_name;src]"..
 		"listring[current_player;main]"
+
+	if digilines and pipeworks then
+		formspec = formspec .. "field[1,3.5;4,1;digilineChannel;" .. S("Digiline Channel") .. ";${digilineChannel}]"
+		formspec = formspec .. "button_exit[5,3.2;2,1;saveChannel;" .. S("Save") .. "]"
+	end
+
 	return formspec
 end
 
@@ -455,12 +461,8 @@ end
 local function controller_on_digiline_receive(pos, _, channel, msg)
 	local meta = core.get_meta(pos)
 
-	local own_channel = meta:get_string("digiline_channel")
-	if own_channel == "" then
-		own_channel = "drawer_controller"
-	end
-
-	if channel ~= own_channel then
+	core.chat_send_all("Moin")
+	if channel ~= meta:get_string("digilineChannel") then
 		return
 	end
 
@@ -486,6 +488,13 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 
     local dir = core.facedir_to_dir(node.param2)
 	pipeworks.tube_inject_item(pos, pos, dir, taken_stack:to_string())
+end
+
+local function controller_on_receive_fields(pos, formname, fields, sender)
+	local meta = core.get_meta(pos)
+	if fields.saveChannel then
+		meta:set_string("digilineChannel", fields.digilineChannel)
+	end
 end
 
 -- Registers the drawer controller
@@ -541,6 +550,7 @@ local function register_controller()
 	def.on_construct = controller_on_construct
 	def.on_blast = controller_on_blast
 	def.on_timer = controller_node_timer
+	def.on_receive_fields = controller_on_receive_fields
 
 	def.allow_metadata_inventory_put = controller_allow_metadata_inventory_put
 	def.allow_metadata_inventory_move = controller_allow_metadata_inventory_move
@@ -572,7 +582,7 @@ local function register_controller()
 		def.after_dig_node = pipeworks.after_dig
 	end
 
-	if digilines then
+	if digilines and pipeworks then
 		def.digiline = {
 			receptor = {},
 			effector = {
