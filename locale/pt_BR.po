@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-11 16:49+0100\n"
+"POT-Creation-Date: 2020-06-06 00:47+0200\n"
 "PO-Revision-Date: 2019-08-03 04:11+0000\n"
 "Last-Translator: Wilker Santana da Silva <wilker@tutamail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
@@ -96,6 +96,14 @@ msgstr "Modelo de Melhoria de Armário"
 #: lua/controller.lua
 msgid "Current State: "
 msgstr "Estado atual: "
+
+#: lua/controller.lua
+msgid "Digiline Channel"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Save"
+msgstr ""
 
 #: lua/controller.lua
 msgid "Stopped"
