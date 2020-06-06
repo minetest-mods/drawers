@@ -23,5 +23,6 @@ read_globals = {
 	"mcl_sounds",
 	"pipeworks",
 	"screwdriver",
-	"intllib"
+	"intllib",
+	"digilines"
 }

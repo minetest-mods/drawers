@@ -333,7 +333,7 @@ local function controller_node_timer(pos, elapsed)
 		return true
 	end
 
-	drawers_table_index = controller_get_drawer_index(pos, src_name)
+	local drawers_table_index = controller_get_drawer_index(pos, src_name)
 
 	-- This might not be needed, but my concern is if the above indexing takes
 	-- enough time, there could be a "race condition" where the item in the src
