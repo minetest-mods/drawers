@@ -1,6 +1,5 @@
 Minetest Mod Storage Drawers
 ============================
-Version 0.4.3
 
 License of source code:
 -----------------------

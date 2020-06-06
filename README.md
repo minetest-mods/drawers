@@ -2,7 +2,7 @@
 
 ![](https://github.com/minetest-mods/drawers/workflows/luacheck/badge.svg)
 
-Version 0.5.0, License: MIT
+Version 0.6.0, License: MIT
 
 ## Description
 This mod adds simple item storages showing the item's inventory image in the
@@ -36,6 +36,7 @@ MineClone 2 mods are only optional dependencies for crafting recipes.
 - [ ] Support hoppers (needs hoppers mod change)
 - [x] Make drawers upgradable
 - [x] Add drawers in all wood types
+- [x] Make them digilines compatible
 
 ## Bug reports and suggestions
 You can report bugs and suggest ideas on [GitHub](http://github.com/lnj2/drawers/issues/new),
