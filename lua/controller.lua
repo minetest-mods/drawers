@@ -73,9 +73,7 @@ end
 
 local function controller_index_slot(pos, visualid)
 	return {
-		drawer_pos_x = pos.x,
-		drawer_pos_y = pos.y,
-		drawer_pos_z = pos.z,
+		drawer_pos = pos,
 		visualid = visualid
 	}
 end
@@ -152,10 +150,8 @@ local function add_drawer_to_inventory(controllerInventory, pos)
 			-- has the most space and have that one be the one indexed
 			if controllerInventory[item_id] then
 				local indexed_drawer_meta = core.get_meta({
-					x = controllerInventory[item_id]["drawer_pos_x"],
-					y = controllerInventory[item_id]["drawer_pos_y"],
-					z = controllerInventory[item_id]["drawer_pos_z"]}
-				)
+					controllerInventory[item_id]["drawer_pos"],
+				})
 				local indexed_drawer_meta_count = indexed_drawer_meta:get_int(
 					"count" .. controllerInventory[item_id]["visualid"])
 				local indexed_drawer_meta_max_count = indexed_drawer_meta:get_int(
@@ -252,9 +248,7 @@ local function controller_get_drawer_index(pos, itemstring)
 	elseif drawers_table_index[itemstring] then
 		local visualid = drawers_table_index[itemstring]["visualid"]
 		local indexed_drawer_meta = core.get_meta({
-			x = drawers_table_index[itemstring]["drawer_pos_x"],
-			y = drawers_table_index[itemstring]["drawer_pos_y"],
-			z = drawers_table_index[itemstring]["drawer_pos_z"]
+			drawers_table_index[itemstring]["drawer_pos"]
 		})
 		local indexed_drawer_meta_name = indexed_drawer_meta:get_string("name" .. visualid)
 		local indexed_drawer_meta_count = indexed_drawer_meta:get_int("count" .. visualid)
@@ -355,13 +349,17 @@ local function controller_node_timer(pos, elapsed)
 	-- At this point, the item either was in the index or everything was reindexed so we check again
 	-- If there is a drawer with the item and it isn't full, we will put the items we can in to it
 	if drawers_table_index[src_name] then
-		local indexed_drawer_pos = {x = drawers_table_index[src_name]["drawer_pos_x"], y = drawers_table_index[src_name]["drawer_pos_y"], z = drawers_table_index[src_name]["drawer_pos_z"]}
+		local indexed_drawer_pos = drawers_table_index[src_name]["drawer_pos"]
 		local visualid = drawers_table_index[src_name]["visualid"]
+
 		local indexed_drawer_meta = core.get_meta(indexed_drawer_pos)
 		local indexed_drawer_meta_name = indexed_drawer_meta:get_string("name" .. visualid)
 		local indexed_drawer_meta_count = indexed_drawer_meta:get_int("count" .. visualid)
 		local indexed_drawer_meta_max_count = indexed_drawer_meta:get_int("max_count" .. visualid)
-		-- If the the item in the drawer is the same as the one we are trying to store, the drawer is not full, and the drawer entity is loaded, we will put the items in the drawer
+
+		-- If the the item in the drawer is the same as the one we are trying to
+		-- store, the drawer is not full, and the drawer entity is loaded, we
+		-- will put the items in the drawer
 		if indexed_drawer_meta_name == src_name and indexed_drawer_meta_count < indexed_drawer_meta_max_count and drawers.drawer_visuals[core.serialize(indexed_drawer_pos)] then
 			local leftover = drawers.drawer_insert_object(indexed_drawer_pos, nil, src, nil)
 			inv:set_stack("src", 1, leftover)
@@ -376,17 +374,21 @@ local function controller_node_timer(pos, elapsed)
 			meta:set_float("times_ran_while_jammed", meta_times_ran_while_jammed + 1)
 		end
 	elseif drawers_table_index["empty"] then
-		local indexed_drawer_pos = {x = drawers_table_index["empty"]["drawer_pos_x"], y = drawers_table_index["empty"]["drawer_pos_y"], z = drawers_table_index["empty"]["drawer_pos_z"]}
+		local indexed_drawer_pos = drawers_table_index["empty"]["drawer_pos"]
 		local visualid = drawers_table_index["empty"]["visualid"]
+
 		local indexed_drawer_meta = core.get_meta(indexed_drawer_pos)
 		local indexed_drawer_meta_name = indexed_drawer_meta:get_string("name" .. visualid)
+
 		-- If the drawer is still empty and the drawer entity is loaded, we will put the items in the drawer
 		if indexed_drawer_meta_name == "" and drawers.drawer_visuals[core.serialize(indexed_drawer_pos)] then
 			local leftover = drawers.drawer_insert_object(indexed_drawer_pos, nil, src, nil)
 			inv:set_stack("src", 1, leftover)
+
 			-- Add the item to the drawers table index and set the empty one to nil
 			drawers_table_index["empty"]  = nil
-			drawers_table_index[src_name] = {drawer_pos_x = indexed_drawer_pos.x, drawer_pos_y = indexed_drawer_pos.y, drawer_pos_z = indexed_drawer_pos.z, visualid = visualid}
+			drawers_table_index[src_name] = indexed_drawer_pos
+
 			-- Set the controller metadata
 			meta:set_string("current_state", "running")
 			meta:set_string("formspec", controller_formspec(pos, S("Running")))
@@ -461,7 +463,6 @@ end
 local function controller_on_digiline_receive(pos, _, channel, msg)
 	local meta = core.get_meta(pos)
 
-	core.chat_send_all("Moin")
 	if channel ~= meta:get_string("digilineChannel") then
 		return
 	end
@@ -477,13 +478,8 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 	end
 
 	local drawer_data = drawers_index[itemstring]
-	local drawer_pos = {
-		x = drawer_data["drawer_pos_x"],
-		y = drawer_data["drawer_pos_y"],
-		z = drawer_data["drawer_pos_z"]
-	}
 
-	local taken_stack = drawers.drawer_take_item(drawer_pos, item)
+	local taken_stack = drawers.drawer_take_item(drawer_data["drawer_pos"], item)
 	local node = core.get_node(pos)
 
     local dir = core.facedir_to_dir(node.param2)
