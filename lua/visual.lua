@@ -276,57 +276,59 @@ core.register_entity("drawers:visual", {
 		return self:take_items(ItemStack(self.itemName):get_stack_max())
 	end,
 
-	try_insert_stack = function(self, itemstack, insert_stack)
+	can_insert_stack = function(self, stack)
+		if stack:get_name() == "" or stack:get_count() <= 0 then
+			return 0
+		end
+
+		-- don't allow unstackable stacks
+		if self.itemName == "" and stack:get_stack_max() ~= 1 then
+			return stack:get_count()
+		end
+
+		if self.itemName ~= stack:get_name() then
+			return 0
+		end
+
+		if (self.count + stack:get_count()) <= self.maxCount then
+			return stack:get_count()
+		end
+		return self.maxCount - self.count
+	end,
+
+	try_insert_stack = function(self, itemstack, insert_all)
 		local stackCount = itemstack:get_count()
 		local stackName = itemstack:get_name()
 
-		-- if nothing to be added, return
-		if stackCount <= 0 then return itemstack end
-		-- if no itemstring, return
-		if stackName == "" then return itemstack end
+		local insertCount = self:can_insert_stack(itemstack)
 
-		-- only add one, if player holding sneak key
-		if not insert_stack then
-			stackCount = 1
-		end
-
-		-- if current itemstring is not empty
-		if self.itemName ~= "" then
-			-- check if same item
-			if stackName ~= self.itemName then return itemstack end
-		else -- is empty
-			self.itemName = stackName
-			self.count = 0
-
-			-- get new stack max
-			self.itemStackMax = ItemStack(self.itemName):get_stack_max()
-			self.maxCount = self.itemStackMax * self.stackMaxFactor
-		end
-
-		-- Don't add items stackable only to 1
-		if self.itemStackMax == 1 then
-			self.itemName = ""
+		if insertCount == 0 then
 			return itemstack
 		end
 
-		-- set new counts:
-		-- if new count is more than max_count
-		if (self.count + stackCount) > self.maxCount then
-			itemstack:set_count(self.count + stackCount - self.maxCount)
-			self.count = self.maxCount
-		else -- new count fits
-			self.count = self.count + stackCount
-			-- this is for only removing one
-			itemstack:set_count(itemstack:get_count() - stackCount)
+		-- only add one, if player holding sneak key
+		if not insert_all then
+			insertCount = 1
 		end
 
-		-- update infotext, texture
+		-- in case the drawer was empty, initialize count, itemName, maxCount
+		if self.itemName == "" then
+			self.count = 0
+			self.itemName = itemstack:get_name()
+			self.maxCount = itemstack:get_stack_max() * self.stackMaxFactor
+		end
+
+		-- update everything
+		self.count = self.count + insertCount
 		self:updateInfotext()
 		self:updateTexture()
-
 		self:saveMetaData()
 
-		if itemstack:get_count() == 0 then itemstack = ItemStack("") end
+		-- return leftover
+		itemstack:take_item(insertCount)
+		if itemstack:get_count() == 0 then
+			return ItemStack("")
+		end
 		return itemstack
 	end,
 

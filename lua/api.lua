@@ -177,9 +177,26 @@ function drawers.remove_drawer_upgrade(pos, listname, index, stack, player)
 	drawers.update_drawer_upgrades(pos)
 end
 
-function drawers.drawer_insert_object(pos, node, stack, direction)
+--[[
+	Inserts an incoming stack into a specific slot of a drawer.
+]]
+function drawers.drawer_insert_object(pos, stack, visualid)
+	local visual = drawers.get_visual(pos, visualid)
+	if not visual then
+		return stack
+	end
+
+	return visual:try_insert_stack(stack, true)
+end
+
+--[[
+	Inserts an incoming stack into a drawer and uses all slots.
+]]
+function drawers.drawer_insert_object_from_tube(pos, node, stack, direction)
 	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
-	if not drawer_visuals then return stack end
+	if not drawer_visuals then
+        return stack
+    end
 
 	-- first try to insert in the correct slot (if there are already items)
 	local leftover = stack
@@ -198,14 +215,29 @@ function drawers.drawer_insert_object(pos, node, stack, direction)
 	return leftover
 end
 
-function drawers.drawer_can_insert_object(pos, node, stack, direction)
+--[[
+	Returns how much (count) of a stack can be inserted to a drawer slot.
+]]
+function drawers.drawer_can_insert_stack(pos, stack, visualid)
+	local visual = drawers.get_visual(pos, visualid)
+	if not visual then
+		return 0
+	end
+
+	return visual:can_insert_stack(stack)
+end
+
+--[[
+	Returns whether a stack can be (partially) inserted to any slot of a drawer.
+]]
+function drawers.drawer_can_insert_stack_from_tube(pos, node, stack, direction)
 	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
 	if not drawer_visuals then
 		return false
 	end
 
 	for _, visual in pairs(drawer_visuals) do
-	   if visual.itemName == "" or (visual.itemName == stack:get_name() and visual.count ~= visual.maxCount) then
+	   if visual:can_insert_stack(stack) > 0 then
 	      return true
 	   end
 	end
@@ -231,6 +263,19 @@ function drawers.drawer_take_item(pos, itemstack)
 	end
 
 	return ItemStack()
+end
+
+--[[
+	Returns the content of a drawer slot.
+]]
+function drawers.drawer_get_content(pos, visualid)
+	local drawer_meta = core.get_meta(pos)
+
+	return {
+		name = drawer_meta:get_string("name" .. visualid),
+		count = drawer_meta:get_int("count" .. visualid),
+		maxCount = drawer_meta:get_int("max_count" .. visualid)
+	}
 end
 
 function drawers.register_drawer(name, def)
@@ -263,9 +308,9 @@ function drawers.register_drawer(name, def)
 		def.groups.tubedevice_receiver = 1
 		def.tube = def.tube or {}
 		def.tube.insert_object = def.tube.insert_object or
-		   drawers.drawer_insert_object
+		   drawers.drawer_insert_object_from_tube
 		def.tube.can_insert = def.tube.can_insert or
-		   drawers.drawer_can_insert_object
+		   drawers.drawer_can_insert_stack_from_tube
 
 		def.tube.connect_sides = {left = 1, right = 1, back = 1, top = 1,
 			bottom = 1}

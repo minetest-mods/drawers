@@ -208,6 +208,26 @@ function drawers.remove_visuals(pos)
 	end
 end
 
+--[[
+	Returns the visual object for the visualid of the drawer at pos.
+
+	visualid can be: "", "1", "2", ... or 1, 2, ...
+]]
+function drawers.get_visual(pos, visualid)
+	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
+	if not drawer_visuals then
+		return nil
+	end
+
+	-- not a real index (starts with 1)
+	local index = tonumber(visualid)
+	if visualid == "" then
+		index = 1
+	end
+
+	return drawer_visuals[index]
+end
+
 function drawers.update_drawer_upgrades(pos)
 	local node = core.get_node(pos)
 	local ndef = core.registered_nodes[node.name]
