@@ -70,6 +70,16 @@ local function controller_formspec(pos)
 	return formspec
 end
 
+local function is_valid_drawer_index_slot(net_index, item_name)
+	return net_index and
+			net_index[item_name] and
+			net_index[item_name].drawer_pos and
+			net_index[item_name].drawer_pos.x and
+			net_index[item_name].drawer_pos.y and
+			net_index[item_name].drawer_pos.z and
+			net_index[item_name].visualid
+end
+
 local function controller_index_slot(pos, visualid)
 	return {
 		drawer_pos = pos,
@@ -225,18 +235,13 @@ local function controller_get_drawer_index(pos, itemstring)
 	local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
 
 	-- If the index has not been created
-	if not drawer_net_index then
+	-- If the item isn't in the index (or the index is corrupted)
+	if not is_valid_drawer_index_slot(drawer_net_index, itemstring) then
 		drawer_net_index = index_drawers(pos)
 		meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
 
-	-- If the item isn't in the index
-	elseif not drawer_net_index[itemstring] then
-		drawer_net_index = index_drawers(pos)
-		meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
-
-	-- If the item is in the index but either the name that was indexed is not
-	-- the same as what is currently in the drawer or the drawer is full
-	elseif drawer_net_index[itemstring] then
+	-- There is a valid entry in the index: check that the entry is still up-to-date
+	else
 		local content = drawers.drawer_get_content(drawer_net_index[itemstring].drawer_pos, drawer_net_index[itemstring].visualid)
 
 		if content.name ~= itemstring or content.count >= content.maxCount then
