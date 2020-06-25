@@ -390,7 +390,10 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 	local taken_stack = drawers.drawer_take_item(drawers_index[item:get_name()]["drawer_pos"], item)
 	local dir = core.facedir_to_dir(core.get_node(pos).param2)
 
-	pipeworks.tube_inject_item(pos, pos, dir, taken_stack:to_string())
+	-- prevent crash if taken_stack ended up with a nil value
+	if taken_stack then
+		pipeworks.tube_inject_item(pos, pos, dir, taken_stack:to_string())
+	end
 end
 
 local function controller_on_receive_fields(pos, formname, fields, sender)
