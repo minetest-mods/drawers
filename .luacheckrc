@@ -24,5 +24,6 @@ read_globals = {
 	"pipeworks",
 	"screwdriver",
 	"intllib",
-	"digilines"
+	"digilines",
+	"mesecon"
 }
