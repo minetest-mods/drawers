@@ -349,7 +349,7 @@ function drawers.register_drawer(name, def)
 		def2.groups.drawer = 2
 		core.register_node(name .. "2", def2)
 		if has_mesecons_mvps then
-			mesecon.register_mvps_stopper(name .. "1")
+			mesecon.register_mvps_stopper(name .. "2")
 		end
 	end
 
@@ -364,7 +364,7 @@ function drawers.register_drawer(name, def)
 		def4.groups.drawer = 4
 		core.register_node(name .. "4", def4)
 		if has_mesecons_mvps then
-			mesecon.register_mvps_stopper(name .. "1")
+			mesecon.register_mvps_stopper(name .. "4")
 		end
 	end
 
