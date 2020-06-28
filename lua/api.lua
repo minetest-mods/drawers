@@ -318,6 +318,8 @@ function drawers.register_drawer(name, def)
 		def.after_dig_node = pipeworks.after_dig
 	end
 
+	local has_mesecons_mvps = minetest.get_modpath("mesecons_mvps")
+
 	if drawers.enable_1x1 then
 		-- normal drawer 1x1 = 1
 		local def1 = table.copy(def)
@@ -329,6 +331,11 @@ function drawers.register_drawer(name, def)
 		def1.groups.drawer = 1
 		core.register_node(name .. "1", def1)
 		core.register_alias(name, name .. "1") -- 1x1 drawer is the default one
+		if has_mesecons_mvps then
+			-- don't let drawers be moved by pistons, visual glitches and
+			-- possible duplication bugs occur otherwise
+			mesecon.register_mvps_stopper(name .. "1")
+		end
 	end
 
 	if drawers.enable_1x2 then
@@ -341,6 +348,9 @@ function drawers.register_drawer(name, def)
 		def2.tiles4 = nil
 		def2.groups.drawer = 2
 		core.register_node(name .. "2", def2)
+		if has_mesecons_mvps then
+			mesecon.register_mvps_stopper(name .. "2")
+		end
 	end
 
 	if drawers.enable_2x2 then
@@ -353,6 +363,9 @@ function drawers.register_drawer(name, def)
 		def4.tiles4 = nil
 		def4.groups.drawer = 4
 		core.register_node(name .. "4", def4)
+		if has_mesecons_mvps then
+			mesecon.register_mvps_stopper(name .. "4")
+		end
 	end
 
 	if (not def.no_craft) and def.material then
