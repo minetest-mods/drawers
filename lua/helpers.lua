@@ -100,6 +100,7 @@ function drawers.spawn_visuals(pos)
 		local pos2 = vector.add(pos, vector.multiply(fdir, 0.45))
 
 		local obj = core.add_entity(pos2, "drawers:visual")
+		if not obj then return end
 
 		if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
 		if bdir.z < 0 then obj:set_yaw(math.pi) end

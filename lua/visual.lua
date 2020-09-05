@@ -78,7 +78,7 @@ core.register_entity("drawers:visual", {
 		end
 
 		local node = minetest.get_node(self.object:get_pos())
-		if not node.name:match("^drawers:") then
+		if core.get_item_group(node.name, "drawer") == 0 then
 			self.object:remove()
 			return
 		end
@@ -210,7 +210,8 @@ core.register_entity("drawers:visual", {
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
 		local node = minetest.get_node(self.object:get_pos())
-		if not node.name:match("^drawers:") then
+
+		if core.get_item_group(node.name, "drawer") == 0 then
 			self.object:remove()
 			return
 		end
