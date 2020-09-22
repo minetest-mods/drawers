@@ -317,6 +317,7 @@ core.register_entity("drawers:visual", {
 			self.count = 0
 			self.itemName = itemstack:get_name()
 			self.maxCount = itemstack:get_stack_max() * self.stackMaxFactor
+			self.itemStackMax = itemstack:get_stack_max()
 		end
 
 		-- update everything
