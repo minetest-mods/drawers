@@ -2,7 +2,7 @@
 
 ![](https://github.com/minetest-mods/drawers/workflows/luacheck/badge.svg)
 
-Version 0.6.0, License: MIT
+Version 0.6.1, License: MIT
 
 ## Description
 This mod adds simple item storages showing the item's inventory image in the
