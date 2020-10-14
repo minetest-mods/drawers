@@ -257,7 +257,7 @@ function drawers.drawer_take_item(pos, itemstack)
 	end
 
 	for _, visual in pairs(drawer_visuals) do
-		if visual.itemName == itemstack:get_name() and visual.count ~= visual.maxCount then
+		if visual.itemName == itemstack:get_name() then
 			return visual:take_items(itemstack:get_count())
 		end
 	end
@@ -424,3 +424,4 @@ function drawers.register_drawer_upgrade(name, def)
 		})
 	end
 end
+
