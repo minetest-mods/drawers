@@ -49,22 +49,25 @@ local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
 local digilines_loaded = core.get_modpath("digilines") and digilines
 
 local function controller_formspec(pos)
+	local use_all = core.get_meta(pos):get_int("use_all")
+	if 0 >= use_all then use_all = "false" else use_all = "true" end
 	local formspec =
-		"size[8,8.5]"..
+		"size[8,8.9]"..
 		drawers.gui_bg..
 		drawers.gui_bg_img..
 		drawers.gui_slots..
 		"label[0,0;" .. S("Drawer Controller") .. "]" ..
 		"list[current_name;src;3.5,1.75;1,1;]"..
-		"list[current_player;main;0,4.25;8,1;]"..
-		"list[current_player;main;0,5.5;8,3;8]"..
+		"list[current_player;main;0,4.65;8,1;]"..
+		"list[current_player;main;0,5.9;8,3;8]"..
 		"listring[current_player;main]"..
 		"listring[current_name;src]"..
-		"listring[current_player;main]"
+		"listring[current_player;main]"..
+		"checkbox[0.7,2.6;use_all;" .. S("Use all drawers") .. ";" .. use_all .. "]"
 
 	if digilines_loaded and pipeworks_loaded then
-		formspec = formspec .. "field[1,3.5;4,1;digilineChannel;" .. S("Digiline Channel") .. ";${digilineChannel}]"
-		formspec = formspec .. "button_exit[5,3.2;2,1;saveChannel;" .. S("Save") .. "]"
+		formspec = formspec .. "field[1,3.9;4,1;digilineChannel;" .. S("Digiline Channel") .. ";${digilineChannel}]"
+		formspec = formspec .. "button_exit[5,3.6;2,1;saveChannel;" .. S("Save") .. "]"
 	end
 
 	return formspec
@@ -310,6 +313,7 @@ end
 local function controller_on_construct(pos)
 	local meta = core.get_meta(pos)
 	meta:set_string("drawers_table_index", "")
+	meta:set_int("use_all", 0)
 	meta:set_string("formspec", controller_formspec(pos))
 
 	meta:get_inventory():set_size("src", 1)
@@ -404,6 +408,11 @@ local function controller_on_receive_fields(pos, formname, fields, sender)
 	local meta = core.get_meta(pos)
 	if fields.saveChannel then
 		meta:set_string("digilineChannel", fields.digilineChannel)
+	end
+	if fields.use_all then
+		local value = 0
+		if "true" == fields.use_all then v = 1 end
+		meta:set_int("use_all", value)
 	end
 end
 
