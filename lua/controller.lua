@@ -412,8 +412,9 @@ local function controller_on_receive_fields(pos, formname, fields, sender)
 	end
 	if fields.use_all then
 		local value = 0
-		if "true" == fields.use_all then v = 1 end
+		if "true" == fields.use_all then value = 1 end
 		meta:set_int("use_all", value)
+		meta:set_string("formspec", controller_formspec(pos))
 	end
 end
 
