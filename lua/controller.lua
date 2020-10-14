@@ -242,7 +242,9 @@ local function controller_get_drawer_index(pos, itemstring)
 
 	-- There is a valid entry in the index: check that the entry is still up-to-date
 	else
-		local content = drawers.drawer_get_content(drawer_net_index[itemstring].drawer_pos, drawer_net_index[itemstring].visualid)
+		local content = drawers.drawer_get_content(
+			drawer_net_index[itemstring].drawer_pos,
+			drawer_net_index[itemstring].visualid)
 
 		if content.name ~= itemstring or content.count >= content.maxCount then
 			drawer_net_index = index_drawers(pos)
@@ -280,7 +282,8 @@ local function controller_insert_to_drawers(pos, stack)
 		local visualid = drawer_net_index["empty"]["visualid"]
 		local content = drawers.drawer_get_content(drawer_pos, visualid)
 
-		-- If the drawer is still empty and the drawer entity is loaded, we will put the items in the drawer
+		-- If the drawer is still empty and the drawer entity is loaded, we will
+		-- put the items in the drawer
 		if content.name == "" and drawers.drawer_visuals[core.serialize(drawer_pos)] then
 			local leftover = drawers.drawer_insert_object(drawer_pos, stack, visualid)
 
@@ -387,7 +390,8 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 		return
 	end
 
-	local taken_stack = drawers.drawer_take_item(drawers_index[item:get_name()]["drawer_pos"], item)
+	local taken_stack = drawers.drawer_take_item(
+		drawers_index[item:get_name()]["drawer_pos"], item)
 	local dir = core.facedir_to_dir(core.get_node(pos).param2)
 
 	-- prevent crash if taken_stack ended up with a nil value
@@ -528,3 +532,4 @@ else
 		}
 	})
 end
+
