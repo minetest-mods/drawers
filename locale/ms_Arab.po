@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: 2020-06-19 22:41+0000\n"
+"PO-Revision-Date: 2020-10-15 22:26+0000\n"
 "Last-Translator: Yaya - Nurul Azeera Hidayah @ Muhammad Nur Hidayat "
 "Yasuyoshi <translation@mnh48.moe>\n"
 "Language-Team: Malay (Jawi) <https://hosted.weblate.org/projects/minetest/"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.1.1\n"
+"X-Generator: Weblate 4.3-dev\n"
 
 #: lua/controller.lua
 msgid "Current State: "
-msgstr "کأداءن سماس: "
+msgstr "کأداٴن سماس: "
 
 #: lua/controller.lua
 msgid "Stopped"
@@ -102,27 +102,27 @@ msgstr "ڤاڤن کايو فير"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
-msgstr "ناءيق طرف لاچي - کلولي⹁ x2"
+msgstr "ناٴيق طرف لاچي - کلولي⹁ x2"
 
 #: init.lua
 msgid "Gold Drawer Upgrade (x3)"
-msgstr "ناءيق طرف لاچي - امس⹁ x3"
+msgstr "ناٴيق طرف لاچي - امس⹁ x3"
 
 #: init.lua
 msgid "Obsidian Drawer Upgrade (x5)"
-msgstr "ناءيق طرف لاچي - اوبسيدي⹁ x5"
+msgstr "ناٴيق طرف لاچي - اوبسيدي⹁ x5"
 
 #: init.lua
 msgid "Diamond Drawer Upgrade (x8)"
-msgstr "ناءيق طرف لاچي - اينتن⹁ x8"
+msgstr "ناٴيق طرف لاچي - اينتن⹁ x8"
 
 #: init.lua
 msgid "Iron Drawer Upgrade (x2)"
-msgstr "ناءيق طرف لاچي - بسي⹁ x2"
+msgstr "ناٴيق طرف لاچي - بسي⹁ x2"
 
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
-msgstr "ناءيق طرف لاچي - زمرود⹁ x13"
+msgstr "ناٴيق طرف لاچي - زمرود⹁ x13"
 
 #: init.lua
 msgid "Wooden Trim"
@@ -130,4 +130,4 @@ msgstr "هياسن کايو"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
-msgstr "تمڤلت ناءيق طرف لاچي"
+msgstr "تمڤلت ناٴيق طرف لاچي"
