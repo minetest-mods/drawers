@@ -262,20 +262,21 @@ local function controller_insert_to_drawers(pos, stack)
 	-- Inizialize metadata
 	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
+	local name = stack:get_name()
 
-	local drawer_net_index = controller_get_drawer_index(pos, stack:get_name())
+	local drawer_net_index = controller_get_drawer_index(pos, name)
 
 	-- We check if there is a drawer with the item and it isn't full. We will
 	-- put the items we can into it.
-	if drawer_net_index[stack:get_name()] then
-		local drawer_pos = drawer_net_index[stack:get_name()]["drawer_pos"]
-		local visualid = drawer_net_index[stack:get_name()]["visualid"]
+	if drawer_net_index[name] then
+		local drawer_pos = drawer_net_index[name]["drawer_pos"]
+		local visualid = drawer_net_index[name]["visualid"]
 		local content = drawers.drawer_get_content(drawer_pos, visualid)
 
 		-- If the the item in the drawer is the same as the one we are trying to
 		-- store, the drawer is not full, and the drawer entity is loaded, we
 		-- will put the items in the drawer
-		if content.name == stack:get_name() and
+		if content.name == name and
 				content.count < content.maxCount and
 				drawers.drawer_visuals[core.serialize(drawer_pos)] then
 			return drawers.drawer_insert_object(drawer_pos, stack, visualid)
@@ -292,7 +293,7 @@ local function controller_insert_to_drawers(pos, stack)
 
 			-- Add the item to the drawers table index and set the empty one to nil
 			drawer_net_index["empty"] = nil
-			drawer_net_index[stack:get_name()] = controller_index_slot(drawer_pos, visualid)
+			drawer_net_index[name] = controller_index_slot(drawer_pos, visualid)
 
 			-- Set the controller metadata
 			meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
