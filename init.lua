@@ -88,7 +88,7 @@ if core.get_modpath("default") and default then
 			"drawers_wood.png"),
 		groups = {choppy = 3, oddly_breakable_by_hand = 2},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 8, -- normal chest size
+		drawer_stack_max_factor = 32, -- 4 * 8 normal chest size
 		material = drawers.WOOD_ITEMSTRING
 	})
 	drawers.register_drawer("drawers:acacia_wood", {
@@ -101,7 +101,7 @@ if core.get_modpath("default") and default then
 			"drawers_acacia_wood.png"),
 		groups = {choppy = 3, oddly_breakable_by_hand = 2},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 8, -- normal mcl chest size
+		drawer_stack_max_factor = 32, -- 4 * 8 normal mcl chest size
 		material = "default:acacia_wood"
 	})
 	drawers.register_drawer("drawers:aspen_wood", {
@@ -114,7 +114,7 @@ if core.get_modpath("default") and default then
 			"drawers_aspen_wood.png"),
 		groups = {choppy = 3, oddly_breakable_by_hand = 2},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 8, -- normal chest size
+		drawer_stack_max_factor = 32, -- 4 * 8 normal chest size
 		material = "default:aspen_wood"
 	})
 	drawers.register_drawer("drawers:junglewood", {
@@ -127,7 +127,7 @@ if core.get_modpath("default") and default then
 			"drawers_junglewood.png"),
 		groups = {choppy = 3, oddly_breakable_by_hand = 2},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 8, -- normal mcl chest size
+		drawer_stack_max_factor = 32, -- 4 * 8 normal mcl chest size
 		material = "default:junglewood"
 	})
 	drawers.register_drawer("drawers:pine_wood", {
@@ -140,7 +140,7 @@ if core.get_modpath("default") and default then
 			"drawers_pine_wood.png"),
 		groups = {choppy = 3, oddly_breakable_by_hand = 2},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 8, -- normal chest size
+		drawer_stack_max_factor = 32, -- 4 * 8 normal chest size
 		material = "default:pine_wood"
 	})
 elseif core.get_modpath("mcl_core") and mcl_core then
@@ -154,7 +154,7 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_oak_wood.png"),
 		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
+		drawer_stack_max_factor = 36, -- 4 * 9 normal mcl chest size
 		material = drawers.WOOD_ITEMSTRING,
 		_mcl_blast_resistance = 15,
 		_mcl_hardness = 2,
@@ -169,7 +169,7 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_acacia_wood_mcl.png"),
 		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
+		drawer_stack_max_factor = 36, -- 4 * 9 normal mcl chest size
 		material = "mcl_core:acaciawood",
 		_mcl_blast_resistance = 15,
 		_mcl_hardness = 2,
@@ -184,7 +184,7 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_birch_wood.png"),
 		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
+		drawer_stack_max_factor = 36, -- 4 * 9 normal mcl chest size
 		material = "mcl_core:birchwood",
 		_mcl_blast_resistance = 15,
 		_mcl_hardness = 2,
@@ -199,7 +199,7 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_dark_oak_wood.png"),
 		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
+		drawer_stack_max_factor = 36, -- 4 * 9 normal mcl chest size
 		material = "mcl_core:darkwood",
 		_mcl_blast_resistance = 15,
 		_mcl_hardness = 2,
@@ -214,7 +214,7 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_junglewood_mcl.png"),
 		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
+		drawer_stack_max_factor = 36, -- 4 * 9 normal mcl chest size
 		material = "mcl_core:junglewood",
 		_mcl_blast_resistance = 15,
 		_mcl_hardness = 2,
@@ -229,7 +229,7 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 			"drawers_spruce_wood.png"),
 		groups = {handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 9, -- normal mcl chest size
+		drawer_stack_max_factor = 36, -- 4 * 9 normal mcl chest size
 		material = "mcl_core:sprucewood",
 		_mcl_blast_resistance = 15,
 		_mcl_hardness = 2,
@@ -250,7 +250,7 @@ else
 			"drawers_wood.png"),
 		groups = {choppy = 3, oddly_breakable_by_hand = 2},
 		sounds = drawers.WOOD_SOUNDS,
-		drawer_stack_max_factor = 4 * 8, -- normal chest size
+		drawer_stack_max_factor = 32, -- 4 * 8 normal chest size
 		material = drawers.WOOD_ITEMSTRING
 	})
 end
@@ -380,3 +380,4 @@ core.register_craft({
 		{"group:stick", "group:stick", "group:stick"}
 	}
 })
+
