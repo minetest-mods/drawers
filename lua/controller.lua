@@ -63,7 +63,7 @@ local function controller_formspec(pos)
 		"listring[current_player;main]"..
 		"listring[current_name;src]"..
 		"listring[current_player;main]"..
-		"checkbox[0.7,2.6;use_all;" .. S("Use all drawers") .. ";" .. use_all .. "]"
+		"checkbox[0.7,2.6;use_all;" .. S("Use empty drawers for overflow") .. ";" .. use_all .. "]"
 
 	if digilines_loaded and pipeworks_loaded then
 		formspec = formspec .. "field[1,3.9;4,1;digilineChannel;" .. S("Digiline Channel") .. ";${digilineChannel}]"
@@ -560,4 +560,3 @@ else
 		}
 	})
 end
-
