@@ -49,8 +49,7 @@ local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
 local digilines_loaded = core.get_modpath("digilines") and digilines
 
 local function controller_formspec(pos)
-	local use_all = core.get_meta(pos):get_int("use_all")
-	if 0 >= use_all then use_all = "false" else use_all = "true" end
+	local use_all = tostring(core.get_meta(pos):get_int("use_all") > 0)
 	local formspec =
 		"size[8,8.9]"..
 		drawers.gui_bg..
