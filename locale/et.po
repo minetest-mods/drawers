@@ -8,122 +8,125 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2020-11-07 21:26+0000\n"
+"Last-Translator: Janar Leas <janarleas+ubuntuone@googlemail.com>\n"
+"Language-Team: Estonian <https://hosted.weblate.org/projects/minetest/"
+"mod-storage-drawers/et/>\n"
 "Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.3.2\n"
 
 #: lua/controller.lua
 msgid "Current State: "
-msgstr ""
+msgstr "Hetkel: "
 
 #: lua/controller.lua
 msgid "Stopped"
-msgstr ""
+msgstr "Seisab"
 
 #: lua/controller.lua
 msgid "Running"
-msgstr ""
+msgstr "Töötab"
 
 #: lua/controller.lua
 msgid "Jammed"
-msgstr ""
+msgstr "Umbes"
 
 #: lua/controller.lua
 msgid "Drawer Controller"
-msgstr ""
+msgstr "Salve juhtpult"
 
 #: lua/visual.lua lua/api.lua
 msgid "Empty"
-msgstr ""
+msgstr "Tühi"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
-msgstr ""
+msgstr "Puidust"
 
 #: lua/api.lua
 msgid "@1 Drawer"
-msgstr ""
+msgstr "@1 salv"
 
 #: lua/api.lua
 msgid "@1 Drawers (1x2)"
-msgstr ""
+msgstr "@1 salved (1x2)"
 
 #: lua/api.lua
 msgid "@1 Drawers (2x2)"
-msgstr ""
+msgstr "@1 salved (2x2)"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
-msgstr ""
+msgstr "@1 (@2% täis)"
 
 #: lua/helpers.lua
 msgid "@1 @2 (@3% full)"
-msgstr ""
+msgstr "@1 @2 (@3% täis)"
 
 #: init.lua
 msgid "Acacia Wood"
-msgstr ""
+msgstr "Akaatsia puidust"
 
 #: init.lua
 msgid "Aspen Wood"
-msgstr ""
+msgstr "Haavast"
 
 #: init.lua
 msgid "Junglewood"
-msgstr ""
+msgstr "Tihniku puidust"
 
 #: init.lua
 msgid "Pine Wood"
-msgstr ""
+msgstr "Männist"
 
 #: init.lua
 msgid "Oak Wood"
-msgstr ""
+msgstr "Tammest"
 
 #: init.lua
 msgid "Birch Wood"
-msgstr ""
+msgstr "Kasest"
 
 #: init.lua
 msgid "Dark Oak Wood"
-msgstr ""
+msgstr "Tõmmu-tammest"
 
 #: init.lua
 msgid "Spruce Wood"
-msgstr ""
+msgstr "Kuusest"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Teras salve täiustus (x2)"
 
 #: init.lua
 msgid "Gold Drawer Upgrade (x3)"
-msgstr ""
+msgstr "Kuld salve täiustus (x3)"
 
 #: init.lua
 msgid "Obsidian Drawer Upgrade (x5)"
-msgstr ""
+msgstr "Vulkaanklaas salve täiustus (x5)"
 
 #: init.lua
 msgid "Diamond Drawer Upgrade (x8)"
-msgstr ""
+msgstr "Teemant salve täiustus (x8)"
 
 #: init.lua
 msgid "Iron Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Raud salve täiustus (x2)"
 
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
-msgstr ""
+msgstr "Smaragd salve täiustus (x13)"
 
 #: init.lua
 msgid "Wooden Trim"
-msgstr ""
+msgstr "Puitliist"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
-msgstr ""
+msgstr "Salve täiustamise kava"
