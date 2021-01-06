@@ -8,17 +8,21 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2021-01-07 21:32+0000\n"
+"Last-Translator: Omer I.S. <omeritzicschwartz@gmail.com>\n"
+"Language-Team: Hebrew <https://hosted.weblate.org/projects/minetest/"
+"mod-storage-drawers/he/>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
+"n % 10 == 0) ? 2 : 3));\n"
+"X-Generator: Weblate 4.4.1-dev\n"
 
 #: lua/controller.lua
 msgid "Current State: "
-msgstr ""
+msgstr "המצב הנוכחי: "
 
 #: lua/controller.lua
 msgid "Stopped"
@@ -42,59 +46,59 @@ msgstr ""
 
 #: lua/api.lua init.lua
 msgid "Wooden"
-msgstr ""
+msgstr "מעץ"
 
 #: lua/api.lua
 msgid "@1 Drawer"
-msgstr ""
+msgstr "מגירה @1"
 
 #: lua/api.lua
 msgid "@1 Drawers (1x2)"
-msgstr ""
+msgstr "@1 מגירות (1x2)"
 
 #: lua/api.lua
 msgid "@1 Drawers (2x2)"
-msgstr ""
+msgstr "@1 מגירות (2x2)"
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
-msgstr ""
+msgstr "@1 (תפוסה של @1%)"
 
 #: lua/helpers.lua
 msgid "@1 @2 (@3% full)"
-msgstr ""
+msgstr "@1 @2 (תפוסה של @3%)"
 
 #: init.lua
 msgid "Acacia Wood"
-msgstr ""
+msgstr "עץ שיטה"
 
 #: init.lua
 msgid "Aspen Wood"
-msgstr ""
+msgstr "עץ אספן"
 
 #: init.lua
 msgid "Junglewood"
-msgstr ""
+msgstr "עץ ג׳ונגל"
 
 #: init.lua
 msgid "Pine Wood"
-msgstr ""
+msgstr "עץ אורן"
 
 #: init.lua
 msgid "Oak Wood"
-msgstr ""
+msgstr "עץ אלון"
 
 #: init.lua
 msgid "Birch Wood"
-msgstr ""
+msgstr "עץ לבנה"
 
 #: init.lua
 msgid "Dark Oak Wood"
-msgstr ""
+msgstr "עץ אלון כהה"
 
 #: init.lua
 msgid "Spruce Wood"
-msgstr ""
+msgstr "עץ אשוח"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
