@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-07 21:50+0100\n"
-"PO-Revision-Date: 2021-01-07 21:32+0000\n"
+"PO-Revision-Date: 2021-02-08 23:50+0000\n"
 "Last-Translator: Omer I.S. <omeritzicschwartz@gmail.com>\n"
 "Language-Team: Hebrew <https://hosted.weblate.org/projects/minetest/"
 "mod-storage-drawers/he/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Weblate 4.4.1-dev\n"
+"X-Generator: Weblate 4.5-dev\n"
 
 #: lua/controller.lua
 msgid "Current State: "
@@ -26,15 +26,15 @@ msgstr "המצב הנוכחי: "
 
 #: lua/controller.lua
 msgid "Stopped"
-msgstr ""
+msgstr "הופסקה"
 
 #: lua/controller.lua
 msgid "Running"
-msgstr ""
+msgstr "פעילה"
 
 #: lua/controller.lua
 msgid "Jammed"
-msgstr ""
+msgstr "תקועה"
 
 #: lua/controller.lua
 msgid "Drawer Controller"
@@ -42,7 +42,7 @@ msgstr ""
 
 #: lua/visual.lua lua/api.lua
 msgid "Empty"
-msgstr ""
+msgstr "ריקה"
 
 #: lua/api.lua init.lua
 msgid "Wooden"
