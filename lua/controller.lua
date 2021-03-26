@@ -274,7 +274,7 @@ local function controller_insert_to_drawers(pos, stack)
 		-- will put the items in the drawer
 		if content.name == stack:get_name() and
 				content.count < content.maxCount and
-				drawers.drawer_visuals[core.serialize(drawer_pos)] then
+				drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
 			return drawers.drawer_insert_object(drawer_pos, stack, visualid)
 		end
 	elseif drawer_net_index["empty"] then
@@ -284,7 +284,7 @@ local function controller_insert_to_drawers(pos, stack)
 
 		-- If the drawer is still empty and the drawer entity is loaded, we will
 		-- put the items in the drawer
-		if content.name == "" and drawers.drawer_visuals[core.serialize(drawer_pos)] then
+		if content.name == "" and drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
 			local leftover = drawers.drawer_insert_object(drawer_pos, stack, visualid)
 
 			-- Add the item to the drawers table index and set the empty one to nil

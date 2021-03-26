@@ -215,7 +215,7 @@ end
 	visualid can be: "", "1", "2", ... or 1, 2, ...
 ]]
 function drawers.get_visual(pos, visualid)
-	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
+	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
 	if not drawer_visuals then
 		return nil
 	end
@@ -256,7 +256,7 @@ function drawers.update_drawer_upgrades(pos)
 	stackMaxFactor = stackMaxFactor / drawerType
 
 	-- set the new stack max factor in all visuals
-	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
+	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
 	if not drawer_visuals then return end
 
 	for _,visual in pairs(drawer_visuals) do
