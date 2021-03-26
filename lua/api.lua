@@ -89,8 +89,8 @@ function drawers.drawer_on_destruct(pos)
 	drawers.remove_visuals(pos)
 
 	-- clean up visual cache
-	if drawers.drawer_visuals[core.serialize(pos)] then
-		drawers.drawer_visuals[core.serialize(pos)] = nil
+	if drawers.drawer_visuals[core.hash_node_position(pos)] then
+		drawers.drawer_visuals[core.hash_node_position(pos)] = nil
 	end
 end
 
@@ -193,7 +193,7 @@ end
 	Inserts an incoming stack into a drawer and uses all slots.
 ]]
 function drawers.drawer_insert_object_from_tube(pos, node, stack, direction)
-	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
+	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
 	if not drawer_visuals then
         return stack
     end
@@ -231,7 +231,7 @@ end
 	Returns whether a stack can be (partially) inserted to any slot of a drawer.
 ]]
 function drawers.drawer_can_insert_stack_from_tube(pos, node, stack, direction)
-	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
+	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
 	if not drawer_visuals then
 		return false
 	end
@@ -245,7 +245,7 @@ function drawers.drawer_can_insert_stack_from_tube(pos, node, stack, direction)
 end
 
 function drawers.drawer_take_item(pos, itemstack)
-	local drawer_visuals = drawers.drawer_visuals[core.serialize(pos)]
+	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
 
 	if not drawer_visuals then
 		return ItemStack("")

@@ -89,7 +89,7 @@ core.register_entity("drawers:visual", {
 		-- PLEASE contact me, if this is wrong
 		local vId = self.visualId
 		if vId == "" then vId = 1 end
-		local posstr = core.serialize(self.drawer_pos)
+		local posstr = core.hash_node_position(self.drawer_pos)
 		if not drawers.drawer_visuals[posstr] then
 			drawers.drawer_visuals[posstr] = {[vId] = self}
 		else
