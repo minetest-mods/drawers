@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-06-06 00:47+0200\n"
-"PO-Revision-Date: 2020-01-05 21:21+0000\n"
+"PO-Revision-Date: 2020-09-29 13:40+0000\n"
 "Last-Translator: THANOS SIOURDAKIS <siourdakisthanos@gmail.com>\n"
 "Language-Team: Greek <https://hosted.weblate.org/projects/minetest/mod-"
 "storage-drawers/el/>\n"
@@ -17,15 +17,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10\n"
+"X-Generator: Weblate 4.3-dev\n"
 
-#: init.lua lua/api.lua
+#: lua/controller.lua
+msgid "Current State: "
+msgstr "Τρέχουσα κατάσταση: "
+
+#: lua/controller.lua
+msgid "Stopped"
+msgstr "Διακόπηκε"
+
+#: lua/controller.lua
+msgid "Running"
+msgstr "Εκτέλεση"
+
+#: lua/controller.lua
+msgid "Jammed"
+msgstr "Μπλοκαρισμένο"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr "Ελεγκτής συρταριού"
+
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr "Κενό"
+
+#: lua/api.lua init.lua
 msgid "Wooden"
 msgstr "Ξύλινο"
 
 #: init.lua
 msgid "Acacia Wood"
-msgstr ""
+msgstr "Ξύλο ακακίας"
 
 #: init.lua
 msgid "Aspen Wood"
@@ -37,47 +61,47 @@ msgstr ""
 
 #: init.lua
 msgid "Pine Wood"
-msgstr ""
+msgstr "Ξύλο πεύκου"
 
 #: init.lua
 msgid "Oak Wood"
-msgstr ""
+msgstr "Ξύλο βελανιδιάς"
 
 #: init.lua
 msgid "Birch Wood"
-msgstr ""
+msgstr "Ξύλο σημύδας"
 
 #: init.lua
 msgid "Dark Oak Wood"
-msgstr ""
+msgstr "Σκούρο ξύλο βελανιδιάς"
 
 #: init.lua
 msgid "Spruce Wood"
-msgstr ""
+msgstr "Ξύλο ερυθρελάτης"
 
 #: init.lua
 msgid "Steel Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Χαλύβδινη αναβάθμιση συρταριού (x2)"
 
 #: init.lua
 msgid "Gold Drawer Upgrade (x3)"
-msgstr ""
+msgstr "Χρυσού αναβάθμιση συρταριού (x3)"
 
 #: init.lua
-msgid "Obsidian Drawer Upgrade (x4)"
-msgstr ""
+msgid "Obsidian Drawer Upgrade (x5)"
+msgstr "Οψιδιανή αναβάθμιση συρταριού (x5)"
 
 #: init.lua
 msgid "Diamond Drawer Upgrade (x8)"
-msgstr ""
+msgstr "Διαμαντένια Αναβάθμιση συρταριού (x8)"
 
 #: init.lua
 msgid "Iron Drawer Upgrade (x2)"
-msgstr ""
+msgstr "Σιδερένια αναβάθμιση συρταριού (x2)"
 
 #: init.lua
 msgid "Emerald Drawer Upgrade (x13)"
-msgstr ""
+msgstr "Σμαραγδένια αναβάθμιση συρταριού (x13)"
 
 #: init.lua
 msgid "Mithril Drawer Upgrade (x13)"
