@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-06 00:47+0200\n"
+"POT-Creation-Date: 2021-03-27 18:43+0100\n"
 "PO-Revision-Date: 2018-12-08 09:04+0000\n"
 "Last-Translator: LNJ <git@lnj.li>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/minetest/mod-"
@@ -19,9 +19,45 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.4-dev\n"
 
-#: init.lua lua/api.lua
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr "Leer"
+
+#: lua/api.lua init.lua
 msgid "Wooden"
 msgstr "Holz"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "@1schubfach"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "@1schubfächer (1×2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "@1schubfächer (2×2)"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr "Schubfach Steuerung"
+
+#: lua/controller.lua
+msgid "Digiline Channel"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Save"
+msgstr ""
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% voll)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% voll)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -93,54 +129,14 @@ msgstr "Holzverkleidung"
 msgid "Drawer Upgrade Template"
 msgstr "Schubfachverbesserungsvorlage"
 
-#: lua/controller.lua
-msgid "Current State: "
-msgstr "Momentaner Zustand: "
+#~ msgid "Current State: "
+#~ msgstr "Momentaner Zustand: "
 
-#: lua/controller.lua
-msgid "Digiline Channel"
-msgstr ""
+#~ msgid "Stopped"
+#~ msgstr "Angehalten"
 
-#: lua/controller.lua
-msgid "Save"
-msgstr ""
+#~ msgid "Running"
+#~ msgstr "Läuft"
 
-#: lua/controller.lua
-msgid "Stopped"
-msgstr "Angehalten"
-
-#: lua/controller.lua
-msgid "Running"
-msgstr "Läuft"
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr "Gestaut"
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr "Schubfach Steuerung"
-
-#: lua/api.lua lua/visual.lua
-msgid "Empty"
-msgstr "Leer"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "@1schubfach"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "@1schubfächer (1×2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "@1schubfächer (2×2)"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% voll)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% voll)"
+#~ msgid "Jammed"
+#~ msgstr "Gestaut"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-06 00:47+0200\n"
+"POT-Creation-Date: 2021-03-27 18:43+0100\n"
 "PO-Revision-Date: 2020-05-10 12:32+0000\n"
 "Last-Translator: Oymate <dhruboadittya96@gmail.com>\n"
 "Language-Team: Bengali (Bangladesh) <https://hosted.weblate.org/projects/"
@@ -19,9 +19,45 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.1-dev\n"
 
-#: init.lua lua/api.lua
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr "খালি"
+
+#: lua/api.lua init.lua
 msgid "Wooden"
 msgstr "কাঠের"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "@১ ড্রয়ার"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "@১ ড্রয়ার (১x২)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "@১ ড্রয়ার (২x২)"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr "ড্রয়ার কন্ট্রোলার"
+
+#: lua/controller.lua
+msgid "Digiline Channel"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Save"
+msgstr ""
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% পূর্ণ)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% পূর্ণ)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -91,54 +127,14 @@ msgstr ""
 msgid "Drawer Upgrade Template"
 msgstr ""
 
-#: lua/controller.lua
-msgid "Current State: "
-msgstr "বর্তমান অবস্থা: "
+#~ msgid "Current State: "
+#~ msgstr "বর্তমান অবস্থা: "
 
-#: lua/controller.lua
-msgid "Digiline Channel"
-msgstr ""
+#~ msgid "Stopped"
+#~ msgstr "বন্ধ"
 
-#: lua/controller.lua
-msgid "Save"
-msgstr ""
+#~ msgid "Running"
+#~ msgstr "চলছে"
 
-#: lua/controller.lua
-msgid "Stopped"
-msgstr "বন্ধ"
-
-#: lua/controller.lua
-msgid "Running"
-msgstr "চলছে"
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr "জ্যামড"
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr "ড্রয়ার কন্ট্রোলার"
-
-#: lua/api.lua lua/visual.lua
-msgid "Empty"
-msgstr "খালি"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "@১ ড্রয়ার"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "@১ ড্রয়ার (১x২)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "@১ ড্রয়ার (২x২)"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% পূর্ণ)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% পূর্ণ)"
+#~ msgid "Jammed"
+#~ msgstr "জ্যামড"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-07 21:50+0100\n"
+"POT-Creation-Date: 2021-03-27 18:43+0100\n"
 "PO-Revision-Date: 2020-10-15 22:26+0000\n"
 "Last-Translator: Yaya - Nurul Azeera Hidayah @ Muhammad Nur Hidayat "
 "Yasuyoshi <translation@mnh48.moe>\n"
@@ -19,26 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.3-dev\n"
-
-#: lua/controller.lua
-msgid "Current State: "
-msgstr "کأداٴن سماس: "
-
-#: lua/controller.lua
-msgid "Stopped"
-msgstr "برهنتي"
-
-#: lua/controller.lua
-msgid "Running"
-msgstr "برجالن"
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr "ترسکت"
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr "ڤڠاول لاچي"
 
 #: lua/visual.lua lua/api.lua
 msgid "Empty"
@@ -59,6 +39,18 @@ msgstr "لاچي @1 جنيس 1x2"
 #: lua/api.lua
 msgid "@1 Drawers (2x2)"
 msgstr "لاچي @1 جنيس 2x2"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr "ڤڠاول لاچي"
+
+#: lua/controller.lua
+msgid "Digiline Channel"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Save"
+msgstr ""
 
 #: lua/helpers.lua
 msgid "@1 (@2% full)"
@@ -109,7 +101,8 @@ msgid "Gold Drawer Upgrade (x3)"
 msgstr "ناٴيق طرف لاچي - امس⹁ x3"
 
 #: init.lua
-msgid "Obsidian Drawer Upgrade (x5)"
+#, fuzzy
+msgid "Obsidian Drawer Upgrade (x4)"
 msgstr "ناٴيق طرف لاچي - اوبسيدي⹁ x5"
 
 #: init.lua
@@ -125,9 +118,26 @@ msgid "Emerald Drawer Upgrade (x13)"
 msgstr "ناٴيق طرف لاچي - زمرود⹁ x13"
 
 #: init.lua
+#, fuzzy
+msgid "Mithril Drawer Upgrade (x13)"
+msgstr "ناٴيق طرف لاچي - زمرود⹁ x13"
+
+#: init.lua
 msgid "Wooden Trim"
 msgstr "هياسن کايو"
 
 #: init.lua
 msgid "Drawer Upgrade Template"
 msgstr "تمڤلت ناٴيق طرف لاچي"
+
+#~ msgid "Current State: "
+#~ msgstr "کأداٴن سماس: "
+
+#~ msgid "Stopped"
+#~ msgstr "برهنتي"
+
+#~ msgid "Running"
+#~ msgstr "برجالن"
+
+#~ msgid "Jammed"
+#~ msgstr "ترسکت"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-06 00:47+0200\n"
+"POT-Creation-Date: 2021-03-27 18:43+0100\n"
 "PO-Revision-Date: 2019-09-11 16:23+0000\n"
 "Last-Translator: Mateusz Mendel <mendelm9@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/minetest/mod-"
@@ -20,9 +20,45 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.9-dev\n"
 
-#: init.lua lua/api.lua
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr "Pusta"
+
+#: lua/api.lua init.lua
 msgid "Wooden"
 msgstr "Drewniany"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "@1 Szuflada"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "@1 Szuflady (1x2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "@1 Szuflady (2x2)"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr "Kontroler szuflady"
+
+#: lua/controller.lua
+msgid "Digiline Channel"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Save"
+msgstr ""
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% napełnione)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% napełnione)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -94,54 +130,14 @@ msgstr "Drewniane wykończenia"
 msgid "Drawer Upgrade Template"
 msgstr "Szablon ulepszenia szuflady"
 
-#: lua/controller.lua
-msgid "Current State: "
-msgstr "Stan aktulany: "
+#~ msgid "Current State: "
+#~ msgstr "Stan aktulany: "
 
-#: lua/controller.lua
-msgid "Digiline Channel"
-msgstr ""
+#~ msgid "Stopped"
+#~ msgstr "Zatrzymany"
 
-#: lua/controller.lua
-msgid "Save"
-msgstr ""
+#~ msgid "Running"
+#~ msgstr "Uruchomiona"
 
-#: lua/controller.lua
-msgid "Stopped"
-msgstr "Zatrzymany"
-
-#: lua/controller.lua
-msgid "Running"
-msgstr "Uruchomiona"
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr "Zablokowany"
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr "Kontroler szuflady"
-
-#: lua/api.lua lua/visual.lua
-msgid "Empty"
-msgstr "Pusta"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "@1 Szuflada"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "@1 Szuflady (1x2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "@1 Szuflady (2x2)"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% napełnione)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% napełnione)"
+#~ msgid "Jammed"
+#~ msgstr "Zablokowany"

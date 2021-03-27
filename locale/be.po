@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-06 00:47+0200\n"
+"POT-Creation-Date: 2021-03-27 18:43+0100\n"
 "PO-Revision-Date: 2019-03-15 09:03+0000\n"
 "Last-Translator: Zmicer Turok <zmicerturok@gmail.com>\n"
 "Language-Team: Belarusian <https://hosted.weblate.org/projects/minetest/mod-"
@@ -20,9 +20,45 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 3.6-dev\n"
 
-#: init.lua lua/api.lua
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr "Пустая"
+
+#: lua/api.lua init.lua
 msgid "Wooden"
 msgstr "Драўляны"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "@1 шуфляда"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "@1 шуфляды (1x2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "@1 шуфляды (2x2)"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr "Кантролер шуфляды"
+
+#: lua/controller.lua
+msgid "Digiline Channel"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Save"
+msgstr ""
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% поўны)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% поўны)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -94,54 +130,14 @@ msgstr "Драўлянае аздабленне"
 msgid "Drawer Upgrade Template"
 msgstr "Шаблон мадэрнізацыі шуфляды"
 
-#: lua/controller.lua
-msgid "Current State: "
-msgstr "Бягучы стан: "
+#~ msgid "Current State: "
+#~ msgstr "Бягучы стан: "
 
-#: lua/controller.lua
-msgid "Digiline Channel"
-msgstr ""
+#~ msgid "Stopped"
+#~ msgstr "Спынены"
 
-#: lua/controller.lua
-msgid "Save"
-msgstr ""
+#~ msgid "Running"
+#~ msgstr "Працуе"
 
-#: lua/controller.lua
-msgid "Stopped"
-msgstr "Спынены"
-
-#: lua/controller.lua
-msgid "Running"
-msgstr "Працуе"
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr "Затрыманы"
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr "Кантролер шуфляды"
-
-#: lua/api.lua lua/visual.lua
-msgid "Empty"
-msgstr "Пустая"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "@1 шуфляда"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "@1 шуфляды (1x2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "@1 шуфляды (2x2)"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% поўны)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% поўны)"
+#~ msgid "Jammed"
+#~ msgstr "Затрыманы"

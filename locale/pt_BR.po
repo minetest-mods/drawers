@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-06 00:47+0200\n"
+"POT-Creation-Date: 2021-03-27 18:43+0100\n"
 "PO-Revision-Date: 2019-08-03 04:11+0000\n"
 "Last-Translator: Wilker Santana da Silva <wilker@tutamail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
@@ -19,9 +19,45 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 3.8-dev\n"
 
-#: init.lua lua/api.lua
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr "Vazio"
+
+#: lua/api.lua init.lua
 msgid "Wooden"
 msgstr "Madeira"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "Armário @1"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "Armários @1 (1x2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "Armários @1 (2x2)"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr "Controlador de Armários"
+
+#: lua/controller.lua
+msgid "Digiline Channel"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Save"
+msgstr ""
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% cheio)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% cheio)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -93,54 +129,14 @@ msgstr "Guarnição de Madeira"
 msgid "Drawer Upgrade Template"
 msgstr "Modelo de Melhoria de Armário"
 
-#: lua/controller.lua
-msgid "Current State: "
-msgstr "Estado atual: "
+#~ msgid "Current State: "
+#~ msgstr "Estado atual: "
 
-#: lua/controller.lua
-msgid "Digiline Channel"
-msgstr ""
+#~ msgid "Stopped"
+#~ msgstr "Parado"
 
-#: lua/controller.lua
-msgid "Save"
-msgstr ""
+#~ msgid "Running"
+#~ msgstr "Ativo"
 
-#: lua/controller.lua
-msgid "Stopped"
-msgstr "Parado"
-
-#: lua/controller.lua
-msgid "Running"
-msgstr "Ativo"
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr "Obstruído"
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr "Controlador de Armários"
-
-#: lua/api.lua lua/visual.lua
-msgid "Empty"
-msgstr "Vazio"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "Armário @1"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "Armários @1 (1x2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "Armários @1 (2x2)"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% cheio)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% cheio)"
+#~ msgid "Jammed"
+#~ msgstr "Obstruído"

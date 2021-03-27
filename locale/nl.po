@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-06 00:47+0200\n"
+"POT-Creation-Date: 2021-03-27 18:43+0100\n"
 "PO-Revision-Date: 2020-05-28 16:41+0000\n"
 "Last-Translator: Miniontoby <tobias.gaarenstroom@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/minetest/mod-"
@@ -19,9 +19,45 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.1-dev\n"
 
-#: init.lua lua/api.lua
+#: lua/visual.lua lua/api.lua
+msgid "Empty"
+msgstr "Leeg"
+
+#: lua/api.lua init.lua
 msgid "Wooden"
 msgstr "Houten"
+
+#: lua/api.lua
+msgid "@1 Drawer"
+msgstr "@1 Lade"
+
+#: lua/api.lua
+msgid "@1 Drawers (1x2)"
+msgstr "@1 Lades (1x2)"
+
+#: lua/api.lua
+msgid "@1 Drawers (2x2)"
+msgstr "@1 Lades (2x2)"
+
+#: lua/controller.lua
+msgid "Drawer Controller"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Digiline Channel"
+msgstr ""
+
+#: lua/controller.lua
+msgid "Save"
+msgstr ""
+
+#: lua/helpers.lua
+msgid "@1 (@2% full)"
+msgstr "@1 (@2% vol)"
+
+#: lua/helpers.lua
+msgid "@1 @2 (@3% full)"
+msgstr "@1 @2 (@3% vol)"
 
 #: init.lua
 msgid "Acacia Wood"
@@ -92,55 +128,3 @@ msgstr "Houten bekleding"
 #: init.lua
 msgid "Drawer Upgrade Template"
 msgstr "Lade Upgrade Template"
-
-#: lua/controller.lua
-msgid "Current State: "
-msgstr ""
-
-#: lua/controller.lua
-msgid "Digiline Channel"
-msgstr ""
-
-#: lua/controller.lua
-msgid "Save"
-msgstr ""
-
-#: lua/controller.lua
-msgid "Stopped"
-msgstr ""
-
-#: lua/controller.lua
-msgid "Running"
-msgstr ""
-
-#: lua/controller.lua
-msgid "Jammed"
-msgstr ""
-
-#: lua/controller.lua
-msgid "Drawer Controller"
-msgstr ""
-
-#: lua/api.lua lua/visual.lua
-msgid "Empty"
-msgstr "Leeg"
-
-#: lua/api.lua
-msgid "@1 Drawer"
-msgstr "@1 Lade"
-
-#: lua/api.lua
-msgid "@1 Drawers (1x2)"
-msgstr "@1 Lades (1x2)"
-
-#: lua/api.lua
-msgid "@1 Drawers (2x2)"
-msgstr "@1 Lades (2x2)"
-
-#: lua/helpers.lua
-msgid "@1 (@2% full)"
-msgstr "@1 (@2% vol)"
-
-#: lua/helpers.lua
-msgid "@1 @2 (@3% full)"
-msgstr "@1 @2 (@3% vol)"
