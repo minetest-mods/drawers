@@ -401,6 +401,9 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 end
 
 local function controller_on_receive_fields(pos, formname, fields, sender)
+	if core.is_protected(pos, sender:get_player_name()) then
+		return
+	end
 	local meta = core.get_meta(pos)
 	if fields.saveChannel then
 		meta:set_string("digilineChannel", fields.digilineChannel)
