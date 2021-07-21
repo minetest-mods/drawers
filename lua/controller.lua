@@ -46,6 +46,7 @@ local S, NS = dofile(MP.."/intllib.lua")
 local default_loaded = core.get_modpath("default") and default
 local mcl_loaded = core.get_modpath("mcl_core") and mcl_core
 local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
+local tubelib_loaded = core.get_modpath("tubelib")
 local digilines_loaded = core.get_modpath("digilines") and digilines
 
 local function controller_formspec(pos)
@@ -277,7 +278,8 @@ local function controller_insert_to_drawers(pos, stack)
 				drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
 			return drawers.drawer_insert_object(drawer_pos, stack, visualid)
 		end
-	elseif drawer_net_index["empty"] then
+	end
+	if drawer_net_index["empty"] then
 		local drawer_pos = drawer_net_index["empty"]["drawer_pos"]
 		local visualid = drawer_net_index["empty"]["visualid"]
 		local content = drawers.drawer_get_content(drawer_pos, visualid)
@@ -332,9 +334,11 @@ local function controller_allow_metadata_inventory_put(pos, listname, index, sta
 
 	if drawer_net_index[stack:get_name()] then
 		local drawer = drawer_net_index[stack:get_name()]
+	local meta = core.get_meta(pos)
 
 		if drawers.drawer_get_content(drawer.drawer_pos, drawer.visualid).name == stack:get_name() then
-			return drawers.drawer_can_insert_stack(drawer.drawer_pos, stack, drawer["visualid"])
+			num_allowed = drawers.drawer_can_insert_stack(drawer.drawer_pos, stack, drawer["visualid"])
+			if num_allowed > 0 then return num_allowed end
 		end
 	end
 
@@ -490,6 +494,19 @@ local function register_controller()
 		def.after_dig_node = pipeworks.after_dig
 	end
 
+	if tubelib_loaded then
+		tubelib.register_node("drawers:controller", {}, {
+			on_push_item = controller_tl_on_push,
+			on_unpull_item = controller_tl_on_push,
+			on_pull_item = controller_tl_on_pull
+		})
+
+		def.after_place_node = function(pos, placer)
+			tubelib.add_node(pos, "drawers:controller")
+		end
+		def.after_dig_node = tubelib.remove_node
+	end
+
 	if digilines_loaded and pipeworks_loaded then
 		def.digiline = {
 			receptor = {},
@@ -500,6 +517,39 @@ local function register_controller()
 	end
 
 	core.register_node("drawers:controller", def)
+end
+
+function controller_tl_on_pull(pos, side, player_name)
+	if not controller_allow_metadata_inventory_take then return false end
+	local meta = core.get_meta(pos)
+	local drawer_net_index = index_drawers(pos)
+	meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
+	local first = nil
+	for index,_ in pairs(drawer_net_index) do
+		if index and index ~= "empty" then
+			first = index
+			break
+		end
+	end
+	if first then
+		local stack = ItemStack(first)
+		stack:set_count(stack:get_stack_max())
+		local taken_stack = drawers.drawer_take_item(drawer_net_index[first]["drawer_pos"], stack)
+		if taken_stack then return taken_stack else return nil end
+	end
+	return nil
+end
+
+function controller_tl_on_push(pos, side, item, player_name)
+	local player = minetest.get_player_by_name(player_name)
+	local meta = minetest.get_meta(pos)
+	local num_allowed = controller_allow_metadata_inventory_put(pos, "src", nil, item, player)
+
+	if num_allowed <= 0 then return false end
+	item:set_count(num_allowed)
+	if not tubelib.put_item(meta, "src", item) then return false end
+	controller_on_metadata_inventory_put(pos, "src", nil, item, player)
+	return true
 end
 
 -- register drawer controller
