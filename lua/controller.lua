@@ -40,14 +40,14 @@ basis, not by a specific time/interval. Controllers that have no items will not
 continue scanning drawers. ]]--
 
 -- Load support for intllib.
-local MP = core.get_modpath(core.get_current_modname())
+local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
-local default_loaded = core.get_modpath("default") and default
-local mcl_loaded = core.get_modpath("mcl_core") and mcl_core
-local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
-local tubelib_loaded = core.get_modpath("tubelib")
-local digilines_loaded = core.get_modpath("digilines") and digilines
+local default_loaded = minetest.get_modpath("default") and default
+local mcl_loaded = minetest.get_modpath("mcl_core") and mcl_core
+local pipeworks_loaded = minetest.get_modpath("pipeworks") and pipeworks
+local tubelib_loaded = minetest.get_modpath("tubelib")
+local digilines_loaded = minetest.get_modpath("digilines") and digilines
 
 local function controller_formspec(pos)
 	local formspec =
@@ -132,12 +132,12 @@ end
 
 local function add_drawer_to_inventory(controllerInventory, pos)
 	-- the number of slots is saved as drawer group
-	local slots = core.get_item_group(core.get_node(pos).name, "drawer")
+	local slots = minetest.get_item_group(minetest.get_node(pos).name, "drawer")
 	if not slots then
 		return
 	end
 
-	local meta = core.get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	if not meta then
 		return
 	end
@@ -180,7 +180,7 @@ local function find_connected_drawers(controller_pos, pos, foundPositions)
 	foundPositions = foundPositions or {}
 	pos = pos or controller_pos
 
-	local newPositions = core.find_nodes_in_area(
+	local newPositions = minetest.find_nodes_in_area(
 		{x = pos.x - 1, y = pos.y - 1, z = pos.z - 1},
 		{x = pos.x + 1, y = pos.y + 1, z = pos.z + 1},
 		{"group:drawer", "group:drawer_connector"}
@@ -228,18 +228,18 @@ end
 	the network is reindexed.
 ]]
 local function controller_get_drawer_index(pos, itemstring)
-	local meta = core.get_meta(pos)
+	local meta = minetest.get_meta(pos)
 
 	-- If the index has not been created, the item isn't in the index, the
 	-- item in the drawer is no longer the same item in the index, or the item
 	-- is in the index but it's full, run the index_drawers function.
-	local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
+	local drawer_net_index = minetest.deserialize(meta:get_string("drawers_table_index"))
 
 	-- If the index has not been created
 	-- If the item isn't in the index (or the index is corrupted)
 	if not is_valid_drawer_index_slot(drawer_net_index, itemstring) then
 		drawer_net_index = index_drawers(pos)
-		meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
+		meta:set_string("drawers_table_index", minetest.serialize(drawer_net_index))
 
 	-- There is a valid entry in the index: check that the entry is still up-to-date
 	else
@@ -249,7 +249,7 @@ local function controller_get_drawer_index(pos, itemstring)
 
 		if content.name ~= itemstring or content.count >= content.maxCount then
 			drawer_net_index = index_drawers(pos)
-			meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
+			meta:set_string("drawers_table_index", minetest.serialize(drawer_net_index))
 		end
 	end
 
@@ -258,7 +258,7 @@ end
 
 local function controller_insert_to_drawers(pos, stack)
 	-- Inizialize metadata
-	local meta = core.get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 
 	local drawer_net_index = controller_get_drawer_index(pos, stack:get_name())
@@ -275,7 +275,7 @@ local function controller_insert_to_drawers(pos, stack)
 		-- will put the items in the drawer
 		if content.name == stack:get_name() and
 				content.count < content.maxCount and
-				drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
+				drawers.drawer_visuals[minetest.hash_node_position(drawer_pos)] then
 			return drawers.drawer_insert_object(drawer_pos, stack, visualid)
 		end
 	end
@@ -286,7 +286,7 @@ local function controller_insert_to_drawers(pos, stack)
 
 		-- If the drawer is still empty and the drawer entity is loaded, we will
 		-- put the items in the drawer
-		if content.name == "" and drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
+		if content.name == "" and drawers.drawer_visuals[minetest.hash_node_position(drawer_pos)] then
 			local leftover = drawers.drawer_insert_object(drawer_pos, stack, visualid)
 
 			-- Add the item to the drawers table index and set the empty one to nil
@@ -294,7 +294,7 @@ local function controller_insert_to_drawers(pos, stack)
 			drawer_net_index[stack:get_name()] = controller_index_slot(drawer_pos, visualid)
 
 			-- Set the controller metadata
-			meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
+			meta:set_string("drawers_table_index", minetest.serialize(drawer_net_index))
 
 			return leftover
 		end
@@ -304,13 +304,13 @@ local function controller_insert_to_drawers(pos, stack)
 end
 
 local function controller_can_dig(pos, player)
-	local meta = core.get_meta(pos);
+	local meta = minetest.get_meta(pos);
 	local inv = meta:get_inventory()
 	return inv:is_empty("src")
 end
 
 local function controller_on_construct(pos)
-	local meta = core.get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	meta:set_string("drawers_table_index", "")
 	meta:set_string("formspec", controller_formspec(pos))
 
@@ -321,12 +321,12 @@ local function controller_on_blast(pos)
 	local drops = {}
 	default.get_inventory_drops(pos, "src", drops)
 	drops[#drops+1] = "drawers:controller"
-	core.remove_node(pos)
+	minetest.remove_node(pos)
 	return drops
 end
 
 local function controller_allow_metadata_inventory_put(pos, listname, index, stack, player)
-	if (player and core.is_protected(pos, player:get_player_name())) or listname ~= "src" then
+	if (player and minetest.is_protected(pos, player:get_player_name())) or listname ~= "src" then
 		return 0
 	end
 
@@ -334,7 +334,7 @@ local function controller_allow_metadata_inventory_put(pos, listname, index, sta
 
 	if drawer_net_index[stack:get_name()] then
 		local drawer = drawer_net_index[stack:get_name()]
-	local meta = core.get_meta(pos)
+		local meta = minetest.get_meta(pos)
 
 		if drawers.drawer_get_content(drawer.drawer_pos, drawer.visualid).name == stack:get_name() then
 			num_allowed = drawers.drawer_can_insert_stack(drawer.drawer_pos, stack, drawer["visualid"])
@@ -354,14 +354,14 @@ local function controller_allow_metadata_inventory_put(pos, listname, index, sta
 end
 
 local function controller_allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
-	local meta = core.get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	local stack = inv:get_stack(from_list, from_index)
 	return controller_allow_metadata_inventory_put(pos, to_list, to_index, stack, player)
 end
 
 local function controller_allow_metadata_inventory_take(pos, listname, index, stack, player)
-	if core.is_protected(pos, player:get_player_name()) then
+	if minetest.is_protected(pos, player:get_player_name()) then
 		return 0
 	end
 	return stack:get_count()
@@ -372,7 +372,7 @@ local function controller_on_metadata_inventory_put(pos, listname, index, stack,
 		return
 	end
 
-	local inv = core.get_meta(pos):get_inventory()
+	local inv = minetest.get_meta(pos):get_inventory()
 
 	local complete_stack = inv:get_stack("src", 1)
 	local leftover = controller_insert_to_drawers(pos, complete_stack)
@@ -380,7 +380,7 @@ local function controller_on_metadata_inventory_put(pos, listname, index, stack,
 end
 
 local function controller_on_digiline_receive(pos, _, channel, msg)
-	local meta = core.get_meta(pos)
+	local meta = minetest.get_meta(pos)
 
 	if channel ~= meta:get_string("digilineChannel") then
 		return
@@ -396,7 +396,7 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 
 	local taken_stack = drawers.drawer_take_item(
 		drawers_index[item:get_name()]["drawer_pos"], item)
-	local dir = core.facedir_to_dir(core.get_node(pos).param2)
+	local dir = minetest.facedir_to_dir(minetest.get_node(pos).param2)
 
 	-- prevent crash if taken_stack ended up with a nil value
 	if taken_stack then
@@ -405,10 +405,10 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 end
 
 local function controller_on_receive_fields(pos, formname, fields, sender)
-	if core.is_protected(pos, sender:get_player_name()) then
+	if minetest.is_protected(pos, sender:get_player_name()) then
 		return
 	end
-	local meta = core.get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	if fields.saveChannel then
 		meta:set_string("digilineChannel", fields.digilineChannel)
 	end
@@ -516,17 +516,17 @@ local function register_controller()
 		}
 	end
 
-	core.register_node("drawers:controller", def)
+	minetest.register_node("drawers:controller", def)
 end
 
 function controller_tl_on_pull(pos, side, player_name)
 	if not controller_allow_metadata_inventory_take then return false end
-	local meta = core.get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	local drawer_net_index = index_drawers(pos)
-	meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
+	meta:set_string("drawers_table_index", minetest.serialize(drawer_net_index))
 	local first = nil
 	for index,_ in pairs(drawer_net_index) do
-		if index and index ~= "empty" then
+		if index ~= "empty" then
 			first = index
 			break
 		end
@@ -534,7 +534,8 @@ function controller_tl_on_pull(pos, side, player_name)
 	if first then
 		local stack = ItemStack(first)
 		stack:set_count(stack:get_stack_max())
-		local taken_stack = drawers.drawer_take_item(drawer_net_index[first]["drawer_pos"], stack)
+		local drawer_pos = drawer_net_index[first]["drawer_pos"]
+		local taken_stack = drawers.drawer_take_item(drawer_pos, stack)
 		if taken_stack then return taken_stack else return nil end
 	end
 	return nil
@@ -556,7 +557,7 @@ end
 register_controller()
 
 if default_loaded then
-	core.register_craft({
+	minetest.register_craft({
 		output = 'drawers:controller',
 		recipe = {
 			{'default:steel_ingot', 'default:diamond', 'default:steel_ingot'},
@@ -565,7 +566,7 @@ if default_loaded then
 		}
 	})
 elseif mcl_loaded then
-	core.register_craft({
+	minetest.register_craft({
 		output = 'drawers:controller',
 		recipe = {
 			{'mcl_core:iron_ingot', 'mcl_core:diamond', 'mcl_core:iron_ingot'},
@@ -576,7 +577,7 @@ elseif mcl_loaded then
 else
 	-- Because the rest of the drawers mod doesn't have a hard depend on
 	-- default, I changed the recipe to have an alternative
-	core.register_craft({
+	minetest.register_craft({
 		output = 'drawers:controller',
 		recipe = {
 			{'group:stone', 'group:stone',  'group:stone'},

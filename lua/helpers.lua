@@ -26,7 +26,7 @@ SOFTWARE.
 ]]
 
 -- Load support for intllib.
-local MP = core.get_modpath(core.get_current_modname())
+local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
 -- GUI
@@ -53,7 +53,7 @@ end
 
 function drawers.get_inv_image(name)
 	local texture = "blank.png"
-	local def = core.registered_items[name]
+	local def = minetest.registered_items[name]
 	if not def then return end
 
 	if def.inventory_image and #def.inventory_image > 0 then
@@ -71,11 +71,11 @@ function drawers.get_inv_image(name)
 		-- tiles: up, down, right, left, back, front
 		-- inventorycube: up, front, right
 		if #tiles <= 2 then
-			texture = core.inventorycube(tiles[1], tiles[1], tiles[1])
+			texture = minetest.inventorycube(tiles[1], tiles[1], tiles[1])
 		elseif #tiles <= 5 then
-			texture = core.inventorycube(tiles[1], tiles[3], tiles[3])
+			texture = minetest.inventorycube(tiles[1], tiles[3], tiles[3])
 		else -- full tileset
-			texture = core.inventorycube(tiles[1], tiles[6], tiles[3])
+			texture = minetest.inventorycube(tiles[1], tiles[6], tiles[3])
 		end
 	end
 
@@ -83,8 +83,8 @@ function drawers.get_inv_image(name)
 end
 
 function drawers.spawn_visuals(pos)
-	local node = core.get_node(pos)
-	local ndef = core.registered_nodes[node.name]
+	local node = minetest.get_node(pos)
+	local ndef = minetest.registered_nodes[node.name]
 	local drawerType = ndef.groups.drawer
 
 	-- data for the new visual
@@ -93,13 +93,13 @@ function drawers.spawn_visuals(pos)
 
 	if drawerType == 1 then -- 1x1 drawer
 		drawers.last_visual_id = ""
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name"))
+		drawers.last_texture = drawers.get_inv_image(minetest.get_meta(pos):get_string("name"))
 
-		local bdir = core.facedir_to_dir(node.param2)
+		local bdir = minetest.facedir_to_dir(node.param2)
 		local fdir = vector.new(-bdir.x, 0, -bdir.z)
 		local pos2 = vector.add(pos, vector.multiply(fdir, 0.45))
 
-		local obj = core.add_entity(pos2, "drawers:visual")
+		local obj = minetest.add_entity(pos2, "drawers:visual")
 		if not obj then return end
 
 		if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
@@ -108,7 +108,7 @@ function drawers.spawn_visuals(pos)
 
 		drawers.last_texture = nil
 	elseif drawerType == 2 then
-		local bdir = core.facedir_to_dir(node.param2)
+		local bdir = minetest.facedir_to_dir(node.param2)
 
 		local fdir1
 		local fdir2
@@ -123,14 +123,14 @@ function drawers.spawn_visuals(pos)
 		local objs = {}
 
 		drawers.last_visual_id = 1
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name1"))
+		drawers.last_texture = drawers.get_inv_image(minetest.get_meta(pos):get_string("name1"))
 		local pos1 = vector.add(pos, vector.multiply(fdir1, 0.45))
-		objs[1] = core.add_entity(pos1, "drawers:visual")
+		objs[1] = minetest.add_entity(pos1, "drawers:visual")
 
 		drawers.last_visual_id = 2
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name2"))
+		drawers.last_texture = drawers.get_inv_image(minetest.get_meta(pos):get_string("name2"))
 		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.45))
-		objs[2] = core.add_entity(pos2, "drawers:visual")
+		objs[2] = minetest.add_entity(pos2, "drawers:visual")
 
 		for i,obj in pairs(objs) do
 			if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
@@ -138,7 +138,7 @@ function drawers.spawn_visuals(pos)
 			if bdir.x > 0 then obj:set_yaw(1.5 * math.pi) end
 		end
 	else -- 2x2 drawer
-		local bdir = core.facedir_to_dir(node.param2)
+		local bdir = minetest.facedir_to_dir(node.param2)
 
 		local fdir1
 		local fdir2
@@ -169,24 +169,24 @@ function drawers.spawn_visuals(pos)
 		local objs = {}
 
 		drawers.last_visual_id = 1
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name1"))
+		drawers.last_texture = drawers.get_inv_image(minetest.get_meta(pos):get_string("name1"))
 		local pos1 = vector.add(pos, vector.multiply(fdir1, 0.45))
-		objs[1] = core.add_entity(pos1, "drawers:visual")
+		objs[1] = minetest.add_entity(pos1, "drawers:visual")
 
 		drawers.last_visual_id = 2
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name2"))
+		drawers.last_texture = drawers.get_inv_image(minetest.get_meta(pos):get_string("name2"))
 		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.45))
-		objs[2] = core.add_entity(pos2, "drawers:visual")
+		objs[2] = minetest.add_entity(pos2, "drawers:visual")
 
 		drawers.last_visual_id = 3
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name3"))
+		drawers.last_texture = drawers.get_inv_image(minetest.get_meta(pos):get_string("name3"))
 		local pos3 = vector.add(pos, vector.multiply(fdir3, 0.45))
-		objs[3] = core.add_entity(pos3, "drawers:visual")
+		objs[3] = minetest.add_entity(pos3, "drawers:visual")
 
 		drawers.last_visual_id = 4
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name4"))
+		drawers.last_texture = drawers.get_inv_image(minetest.get_meta(pos):get_string("name4"))
 		local pos4 = vector.add(pos, vector.multiply(fdir4, 0.45))
-		objs[4] = core.add_entity(pos4, "drawers:visual")
+		objs[4] = minetest.add_entity(pos4, "drawers:visual")
 
 
 		for i,obj in pairs(objs) do
@@ -198,7 +198,7 @@ function drawers.spawn_visuals(pos)
 end
 
 function drawers.remove_visuals(pos)
-	local objs = core.get_objects_inside_radius(pos, 0.56)
+	local objs = minetest.get_objects_inside_radius(pos, 0.56)
 	if not objs then return end
 
 	for _, obj in pairs(objs) do
@@ -215,7 +215,7 @@ end
 	visualid can be: "", "1", "2", ... or 1, 2, ...
 ]]
 function drawers.get_visual(pos, visualid)
-	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
+	local drawer_visuals = drawers.drawer_visuals[minetest.hash_node_position(pos)]
 	if not drawer_visuals then
 		return nil
 	end
@@ -230,8 +230,8 @@ function drawers.get_visual(pos, visualid)
 end
 
 function drawers.update_drawer_upgrades(pos)
-	local node = core.get_node(pos)
-	local ndef = core.registered_nodes[node.name]
+	local node = minetest.get_node(pos)
+	local ndef = minetest.registered_nodes[node.name]
 	local drawerType = ndef.groups.drawer
 
 	-- default number of slots/stacks
@@ -241,10 +241,10 @@ function drawers.update_drawer_upgrades(pos)
 	local storagePercent = 100
 
 	-- get info of all upgrades
-	local inventory = core.get_meta(pos):get_inventory():get_list("upgrades")
+	local inventory = minetest.get_meta(pos):get_inventory():get_list("upgrades")
 	for _,itemStack in pairs(inventory) do
 		local iname = itemStack:get_name()
-		local idef = core.registered_items[iname]
+		local idef = minetest.registered_items[iname]
 		local addPercent = idef.groups.drawer_upgrade or 0
 
 		storagePercent = storagePercent + addPercent
@@ -256,7 +256,7 @@ function drawers.update_drawer_upgrades(pos)
 	stackMaxFactor = stackMaxFactor / drawerType
 
 	-- set the new stack max factor in all visuals
-	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
+	local drawer_visuals = drawers.drawer_visuals[minetest.hash_node_position(pos)]
 	if not drawer_visuals then return end
 
 	for _,visual in pairs(drawer_visuals) do

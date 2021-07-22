@@ -25,10 +25,10 @@ SOFTWARE.
 ]]
 
 -- Load support for intllib.
-local MP = core.get_modpath(core.get_current_modname())
+local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
-core.register_entity("drawers:visual", {
+minetest.register_entity("drawers:visual", {
 	initial_properties = {
 		hp_max = 1,
 		physical = false,
@@ -43,7 +43,7 @@ core.register_entity("drawers:visual", {
 	},
 
 	get_staticdata = function(self)
-		return core.serialize({
+		return minetest.serialize({
 			drawer_posx = self.drawer_pos.x,
 			drawer_posy = self.drawer_pos.y,
 			drawer_posz = self.drawer_pos.z,
@@ -55,7 +55,7 @@ core.register_entity("drawers:visual", {
 
 	on_activate = function(self, staticdata, dtime_s)
 		-- Restore data
-		local data = core.deserialize(staticdata)
+		local data = minetest.deserialize(staticdata)
 		if data then
 			self.drawer_pos = {
 				x = data.drawer_posx,
@@ -78,7 +78,7 @@ core.register_entity("drawers:visual", {
 		end
 
 		local node = minetest.get_node(self.object:get_pos())
-		if core.get_item_group(node.name, "drawer") == 0 then
+		if minetest.get_item_group(node.name, "drawer") == 0 then
 			self.object:remove()
 			return
 		end
@@ -89,7 +89,7 @@ core.register_entity("drawers:visual", {
 		-- PLEASE contact me, if this is wrong
 		local vId = self.visualId
 		if vId == "" then vId = 1 end
-		local posstr = core.hash_node_position(self.drawer_pos)
+		local posstr = minetest.hash_node_position(self.drawer_pos)
 		if not drawers.drawer_visuals[posstr] then
 			drawers.drawer_visuals[posstr] = {[vId] = self}
 		else
@@ -97,10 +97,10 @@ core.register_entity("drawers:visual", {
 		end
 
 		-- get meta
-		self.meta = core.get_meta(self.drawer_pos)
+		self.meta = minetest.get_meta(self.drawer_pos)
 
 		-- collisionbox
-		node = core.get_node(self.drawer_pos)
+		node = minetest.get_node(self.drawer_pos)
 		local colbox
 		if self.drawerType ~= 2 then
 			if node.param2 == 1 or node.param2 == 3 then
@@ -153,8 +153,8 @@ core.register_entity("drawers:visual", {
 	end,
 
 	on_rightclick = function(self, clicker)
-		if core.is_protected(self.drawer_pos, clicker:get_player_name()) then
-			core.record_protection_violation(self.drawer_pos, clicker:get_player_name())
+		if minetest.is_protected(self.drawer_pos, clicker:get_player_name()) then
+			minetest.record_protection_violation(self.drawer_pos, clicker:get_player_name())
 			return
 		end
 
@@ -216,13 +216,13 @@ core.register_entity("drawers:visual", {
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
 		local node = minetest.get_node(self.object:get_pos())
 
-		if core.get_item_group(node.name, "drawer") == 0 then
+		if minetest.get_item_group(node.name, "drawer") == 0 then
 			self.object:remove()
 			return
 		end
 		local add_stack = not puncher:get_player_control().sneak
-		if core.is_protected(self.drawer_pos, puncher:get_player_name()) then
-		   core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
+		if minetest.is_protected(self.drawer_pos, puncher:get_player_name()) then
+		   minetest.record_protection_violation(self.drawer_pos, puncher:get_player_name())
 		   return
 		end
 		local inv = puncher:get_inventory()
@@ -254,7 +254,7 @@ core.register_entity("drawers:visual", {
 	end,
 
 	take_items = function(self, removeCount)
-		local meta = core.get_meta(self.drawer_pos)
+		local meta = minetest.get_meta(self.drawer_pos)
 
 		if self.count <= 0 then
 			return
@@ -341,8 +341,8 @@ core.register_entity("drawers:visual", {
 
 	updateInfotext = function(self)
 		local itemDescription = ""
-		if core.registered_items[self.itemName] then
-			itemDescription = core.registered_items[self.itemName].description
+		if minetest.registered_items[self.itemName] then
+			itemDescription = minetest.registered_items[self.itemName].description
 		end
 
 		if self.count <= 0 then
@@ -373,17 +373,17 @@ core.register_entity("drawers:visual", {
 	dropStack = function(self, itemStack)
 		-- print warning if dropping higher stack counts than allowed
 		if itemStack:get_count() > itemStack:get_stack_max() then
-			core.log("warning", "[drawers] Dropping item stack with higher count than allowed")
+			minetest.log("warning", "[drawers] Dropping item stack with higher count than allowed")
 		end
 		-- find a position containing air
-		local dropPos = core.find_node_near(self.drawer_pos, 1, {"air"}, false)
+		local dropPos = minetest.find_node_near(self.drawer_pos, 1, {"air"}, false)
 		-- if no pos found then drop on the top of the drawer
 		if not dropPos then
 			dropPos = self.pos
 			dropPos.y = dropPos.y + 1
 		end
 		-- drop the item stack
-		core.item_drop(itemStack, nil, dropPos)
+		minetest.item_drop(itemStack, nil, dropPos)
 	end,
 
 	dropItemOverload = function(self)
@@ -419,7 +419,7 @@ core.register_entity("drawers:visual", {
 	end,
 
 	play_interact_sound = function(self)
-		core.sound_play("drawers_interact", {
+		minetest.sound_play("drawers_interact", {
 			pos = self.object:get_pos(),
 			max_hear_distance = 6,
 			gain = 2.0
@@ -435,21 +435,21 @@ core.register_entity("drawers:visual", {
 	end
 })
 
-core.register_lbm({
+minetest.register_lbm({
 	name = "drawers:restore_visual",
 	nodenames = {"group:drawer"},
 	run_at_every_load = true,
 	action  = function(pos, node)
-		local meta = core.get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		-- create drawer upgrade inventory
 		meta:get_inventory():set_size("upgrades", 5)
 		-- set the formspec
 		meta:set_string("formspec", drawers.drawer_formspec)
 
 		-- count the drawer visuals
-		local drawerType = core.registered_nodes[node.name].groups.drawer
+		local drawerType = minetest.registered_nodes[node.name].groups.drawer
 		local foundVisuals = 0
-		local objs = core.get_objects_inside_radius(pos, 0.56)
+		local objs = minetest.get_objects_inside_radius(pos, 0.56)
 		if objs then
 			for _, obj in pairs(objs) do
 				if obj and obj:get_luaentity() and
