@@ -184,8 +184,7 @@ core.register_entity("drawers:visual", {
 				end
 
 				-- set new stack if not creative
-				if not (minetest.check_player_privs(clicker, "creative") or
-					minetest.is_creative_enabled("")) then
+				if not (minetest.is_creative_enabled(clicker:get_player_name())) then
 						inv:set_stack("main", i, leftover)
 				end
 				i = i + 1
