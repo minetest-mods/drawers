@@ -26,7 +26,7 @@ SOFTWARE.
 ]]
 
 -- Load support for intllib.
-local MP = minetest.get_modpath(minetest.get_current_modname())
+local MP = core.get_modpath(core.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
 drawers.node_box_simple = {
@@ -47,16 +47,16 @@ drawers.drawer_formspec = "size[9,7]" ..
 
 -- construct drawer
 function drawers.drawer_on_construct(pos)
-	local node = minetest.get_node(pos)
-	local ndef = minetest.registered_nodes[node.name]
+	local node = core.get_node(pos)
+	local ndef = core.registered_nodes[node.name]
 	local drawerType = ndef.groups.drawer
 
-	local base_stack_max = minetest.nodedef_default.stack_max or 99
+	local base_stack_max = core.nodedef_default.stack_max or 99
 	local stack_max_factor = ndef.drawer_stack_max_factor or 24 -- 3x8
 	stack_max_factor = math.floor(stack_max_factor / drawerType) -- drawerType => number of drawers in node
 
 	-- meta
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 
 	local i = 1
 	while i <= drawerType do
@@ -89,22 +89,22 @@ function drawers.drawer_on_destruct(pos)
 	drawers.remove_visuals(pos)
 
 	-- clean up visual cache
-	if drawers.drawer_visuals[minetest.hash_node_position(pos)] then
-		drawers.drawer_visuals[minetest.hash_node_position(pos)] = nil
+	if drawers.drawer_visuals[core.hash_node_position(pos)] then
+		drawers.drawer_visuals[core.hash_node_position(pos)] = nil
 	end
 end
 
 -- drop all items
 function drawers.drawer_on_dig(pos, node, player)
 	local drawerType = 1
-	if minetest.registered_nodes[node.name] then
-		drawerType = minetest.registered_nodes[node.name].groups.drawer
+	if core.registered_nodes[node.name] then
+		drawerType = core.registered_nodes[node.name].groups.drawer
 	end
-	if minetest.is_protected(pos,player:get_player_name()) then
-	   minetest.record_protection_violation(pos,player:get_player_name())
+	if core.is_protected(pos,player:get_player_name()) then
+	   core.record_protection_violation(pos,player:get_player_name())
 	   return 0
 	end
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 
 	local k = 1
 	while k <= drawerType do
@@ -122,9 +122,9 @@ function drawers.drawer_on_dig(pos, node, player)
 		while i <= j do
 			local rndpos = drawers.randomize_pos(pos)
 			if not (i == j) then
-				minetest.add_item(rndpos, name .. " " .. stack_max)
+				core.add_item(rndpos, name .. " " .. stack_max)
 			else
-				minetest.add_item(rndpos, name .. " " .. count % stack_max)
+				core.add_item(rndpos, name .. " " .. count % stack_max)
 			end
 			i = i + 1
 		end
@@ -137,18 +137,18 @@ function drawers.drawer_on_dig(pos, node, player)
 		for _,itemStack in pairs(upgrades) do
 			if itemStack:get_count() > 0 then
 				local rndpos = drawers.randomize_pos(pos)
-				minetest.add_item(rndpos, itemStack:get_name())
+				core.add_item(rndpos, itemStack:get_name())
 			end
 		end
 	end
 
 	-- remove node
-	minetest.node_dig(pos, node, player)
+	core.node_dig(pos, node, player)
 end
 
 function drawers.drawer_allow_metadata_inventory_put(pos, listname, index, stack, player)
-	if minetest.is_protected(pos,player:get_player_name()) then
-	   minetest.record_protection_violation(pos,player:get_player_name())
+	if core.is_protected(pos,player:get_player_name()) then
+	   core.record_protection_violation(pos,player:get_player_name())
 	   return 0
 	end
 	if listname ~= "upgrades" then
@@ -157,7 +157,7 @@ function drawers.drawer_allow_metadata_inventory_put(pos, listname, index, stack
 	if stack:get_count() > 1 then
 		return 0
 	end
-	if minetest.get_item_group(stack:get_name(), "drawer_upgrade") < 1 then
+	if core.get_item_group(stack:get_name(), "drawer_upgrade") < 1 then
 		return 0
 	end
 	return 1
@@ -193,7 +193,7 @@ end
 	Inserts an incoming stack into a drawer and uses all slots.
 ]]
 function drawers.drawer_insert_object_from_tube(pos, node, stack, direction)
-	local drawer_visuals = drawers.drawer_visuals[minetest.hash_node_position(pos)]
+	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
 	if not drawer_visuals then
         return stack
     end
@@ -231,7 +231,7 @@ end
 	Returns whether a stack can be (partially) inserted to any slot of a drawer.
 ]]
 function drawers.drawer_can_insert_stack_from_tube(pos, node, stack, direction)
-	local drawer_visuals = drawers.drawer_visuals[minetest.hash_node_position(pos)]
+	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
 	if not drawer_visuals then
 		return false
 	end
@@ -245,7 +245,7 @@ function drawers.drawer_can_insert_stack_from_tube(pos, node, stack, direction)
 end
 
 function drawers.drawer_take_item(pos, itemstack)
-	local drawer_visuals = drawers.drawer_visuals[minetest.hash_node_position(pos)]
+	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
 
 	if not drawer_visuals then
 		return ItemStack("")
@@ -269,7 +269,7 @@ end
 	Returns the content of a drawer slot.
 ]]
 function drawers.drawer_get_content(pos, visualid)
-	local drawer_meta = minetest.get_meta(pos)
+	local drawer_meta = core.get_meta(pos)
 
 	return {
 		name = drawer_meta:get_string("name" .. visualid),
@@ -299,11 +299,11 @@ function drawers.register_drawer(name, def)
 	def.on_metadata_inventory_put = drawers.add_drawer_upgrade
 	def.on_metadata_inventory_take = drawers.remove_drawer_upgrade
 
-	if minetest.get_modpath("screwdriver") and screwdriver then
+	if core.get_modpath("screwdriver") and screwdriver then
 		def.on_rotate = def.on_rotate or screwdriver.disallow
 	end
 
-	if minetest.get_modpath("pipeworks") and pipeworks then
+	if core.get_modpath("pipeworks") and pipeworks then
 		def.groups.tubedevice = 1
 		def.groups.tubedevice_receiver = 1
 		def.tube = def.tube or {}
@@ -318,7 +318,7 @@ function drawers.register_drawer(name, def)
 		def.after_dig_node = pipeworks.after_dig
 	end
 
-	local has_mesecons_mvps = minetest.get_modpath("mesecons_mvps")
+	local has_mesecons_mvps = core.get_modpath("mesecons_mvps")
 
 	if drawers.enable_1x1 then
 		-- normal drawer 1x1 = 1
@@ -329,8 +329,8 @@ function drawers.register_drawer(name, def)
 		def1.tiles2 = nil
 		def1.tiles4 = nil
 		def1.groups.drawer = 1
-		minetest.register_node(name .. "1", def1)
-		minetest.register_alias(name, name .. "1") -- 1x1 drawer is the default one
+		core.register_node(name .. "1", def1)
+		core.register_alias(name, name .. "1") -- 1x1 drawer is the default one
 		if has_mesecons_mvps then
 			-- don't let drawers be moved by pistons, visual glitches and
 			-- possible duplication bugs occur otherwise
@@ -347,7 +347,7 @@ function drawers.register_drawer(name, def)
 		def2.tiles2 = nil
 		def2.tiles4 = nil
 		def2.groups.drawer = 2
-		minetest.register_node(name .. "2", def2)
+		core.register_node(name .. "2", def2)
 		if has_mesecons_mvps then
 			mesecon.register_mvps_stopper(name .. "2")
 		end
@@ -362,7 +362,7 @@ function drawers.register_drawer(name, def)
 		def4.tiles2 = nil
 		def4.tiles4 = nil
 		def4.groups.drawer = 4
-		minetest.register_node(name .. "4", def4)
+		core.register_node(name .. "4", def4)
 		if has_mesecons_mvps then
 			mesecon.register_mvps_stopper(name .. "4")
 		end
@@ -370,7 +370,7 @@ function drawers.register_drawer(name, def)
 
 	if (not def.no_craft) and def.material then
 		if drawers.enable_1x1 then
-			minetest.register_craft({
+			core.register_craft({
 				output = name .. "1",
 				recipe = {
 					{def.material, def.material, def.material},
@@ -380,7 +380,7 @@ function drawers.register_drawer(name, def)
 			})
 		end
 		if drawers.enable_1x2 then
-			minetest.register_craft({
+			core.register_craft({
 				output = name .. "2 2",
 				recipe = {
 					{def.material, drawers.CHEST_ITEMSTRING, def.material},
@@ -390,7 +390,7 @@ function drawers.register_drawer(name, def)
 			})
 		end
 		if drawers.enable_2x2 then
-			minetest.register_craft({
+			core.register_craft({
 				output = name .. "4 4",
 				recipe = {
 					{drawers.CHEST_ITEMSTRING, def.material, drawers.CHEST_ITEMSTRING},
@@ -411,10 +411,10 @@ function drawers.register_drawer_upgrade(name, def)
 	local recipe_item = def.recipe_item or "air"
 	def.recipe_item = nil
 
-	minetest.register_craftitem(name, def)
+	core.register_craftitem(name, def)
 
 	if not def.no_craft then
-		minetest.register_craft({
+		core.register_craft({
 			output = name,
 			recipe = {
 				{recipe_item, "group:stick", recipe_item},
