@@ -183,8 +183,11 @@ core.register_entity("drawers:visual", {
 					inventoryChanged = true
 				end
 
-				-- set new stack
-				inv:set_stack("main", i, leftover)
+				-- set new stack if not creative
+				if not (minetest.check_player_privs(clicker, "creative") or
+					minetest.is_creative_enabled("")) then
+						inv:set_stack("main", i, leftover)
+				end
 				i = i + 1
 			end
 		else
@@ -199,8 +202,11 @@ core.register_entity("drawers:visual", {
 			if clicker:get_wielded_item():get_count() > leftover:get_count() then
 				inventoryChanged = true
 			end
-			-- set the leftover as new wielded item for the player
-			clicker:set_wielded_item(leftover)
+			-- set the leftover as new wielded item for the player if not creative
+			if not (minetest.check_player_privs(clicker, "creative") or
+				minetest.is_creative_enabled("")) then
+					clicker:set_wielded_item(leftover)
+			end
 		end
 
 		if inventoryChanged then
