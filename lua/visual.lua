@@ -153,7 +153,19 @@ core.register_entity("drawers:visual", {
 	end,
 
 	on_rightclick = function(self, clicker)
-		if core.is_protected(self.drawer_pos, clicker:get_player_name()) then
+		local upgrades = core.get_meta(self.drawer_pos):get_inventory():get_list("upgrades")
+		
+		local private = true
+		for _,itemStack in pairs(upgrades) do
+			local iname = itemStack:get_name()
+			local idef = core.registered_items[iname]
+			if idef.groups.drawer_public == 1 then
+				private = false
+				break
+			end
+		end
+		
+		if private and core.is_protected(self.drawer_pos, clicker:get_player_name()) then
 			core.record_protection_violation(self.drawer_pos, clicker:get_player_name())
 			return
 		end
@@ -209,14 +221,28 @@ core.register_entity("drawers:visual", {
 	end,
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
-		local node = minetest.get_node(self.object:get_pos())
+		local pos = self.object:get_pos()
+		local node = minetest.get_node(pos)
 
 		if core.get_item_group(node.name, "drawer") == 0 then
 			self.object:remove()
 			return
 		end
+
+		local upgrades = core.get_meta(pos):get_inventory():get_list("upgrades")
+		
+		local private = true
+		for _,itemStack in pairs(upgrades) do
+			local iname = itemStack:get_name()
+			local idef = core.registered_items[iname]
+			if idef.groups.drawer_public == 1 then
+				private = false
+				break
+			end
+		end
+
 		local add_stack = not puncher:get_player_control().sneak
-		if core.is_protected(self.drawer_pos, puncher:get_player_name()) then
+		if private and core.is_protected(self.drawer_pos, puncher:get_player_name()) then
 		   core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
 		   return
 		end

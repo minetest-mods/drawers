@@ -157,7 +157,7 @@ function drawers.drawer_allow_metadata_inventory_put(pos, listname, index, stack
 	if stack:get_count() > 1 then
 		return 0
 	end
-	if core.get_item_group(stack:get_name(), "drawer_upgrade") < 1 then
+	if core.get_item_group(stack:get_name(), "drawer_upgrade_any") < 1 then
 		return 0
 	end
 	return 1
@@ -405,15 +405,16 @@ end
 function drawers.register_drawer_upgrade(name, def)
 	def.groups = def.groups or {}
 	def.groups.drawer_upgrade = def.groups.drawer_upgrade or 100
+	def.groups.drawer_upgrade_any = 1
 	def.inventory_image = def.inventory_image or "drawers_upgrade_template.png"
 	def.stack_max = 1
 
-	local recipe_item = def.recipe_item or "air"
+	local recipe_item = def.recipe_item
 	def.recipe_item = nil
 
 	core.register_craftitem(name, def)
 
-	if not def.no_craft then
+	if not def.no_craft and recipe_item then
 		core.register_craft({
 			output = name,
 			recipe = {
@@ -421,6 +422,11 @@ function drawers.register_drawer_upgrade(name, def)
 				{"group:stick", "drawers:upgrade_template", "group:stick"},
 				{recipe_item, "group:stick", recipe_item}
 			}
+		})
+	elseif def.craft then
+		core.register_craft({
+			output = name,
+			recipe = def.craft
 		})
 	end
 end
