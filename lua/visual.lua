@@ -154,7 +154,7 @@ core.register_entity("drawers:visual", {
 
 	on_rightclick = function(self, clicker)
 		local upgrades = core.get_meta(self.drawer_pos):get_inventory():get_list("upgrades")
-		
+
 		local private = true
 		for _,itemStack in pairs(upgrades) do
 			local iname = itemStack:get_name()
@@ -164,7 +164,7 @@ core.register_entity("drawers:visual", {
 				break
 			end
 		end
-		
+
 		if private and core.is_protected(self.drawer_pos, clicker:get_player_name()) then
 			core.record_protection_violation(self.drawer_pos, clicker:get_player_name())
 			return
@@ -230,7 +230,7 @@ core.register_entity("drawers:visual", {
 		end
 
 		local upgrades = core.get_meta(pos):get_inventory():get_list("upgrades")
-		
+
 		local private = true
 		for _,itemStack in pairs(upgrades) do
 			local iname = itemStack:get_name()
