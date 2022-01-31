@@ -479,7 +479,7 @@ local function register_controller()
 		end
 
 		def.tube.can_insert = function(pos, node, stack, tubedir)
-			return controller_allow_metadata_inventory_put(pos, "src", nil, stack, nil)
+			return controller_allow_metadata_inventory_put(pos, "src", nil, stack, nil) > 0
 		end
 
 		def.tube.connect_sides = {
