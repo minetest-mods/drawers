@@ -3,7 +3,7 @@
 [![ContentDB](https://content.minetest.net/packages/LNJ/drawers/shields/downloads/)](https://content.minetest.net/packages/LNJ/drawers/)
 ![](https://github.com/minetest-mods/drawers/workflows/luacheck/badge.svg)
 
-Version 0.6.4, License: MIT
+Version 0.6.5, License: MIT
 
 ## Description
 This mod adds simple item storages showing the item's inventory image in the
