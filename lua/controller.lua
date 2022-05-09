@@ -261,6 +261,7 @@ local function controller_insert_to_drawers(pos, stack)
 	local inv = meta:get_inventory()
 
 	local drawer_net_index = controller_get_drawer_index(pos, stack:get_name())
+	local new_drawer = false
 
 	-- We check if there is a drawer with the item and it isn't full. We will
 	-- put the items we can into it.
@@ -273,11 +274,18 @@ local function controller_insert_to_drawers(pos, stack)
 		-- store, the drawer is not full, and the drawer entity is loaded, we
 		-- will put the items in the drawer
 		if content.name == stack:get_name() and
-				content.count < content.maxCount and
 				drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
-			return drawers.drawer_insert_object(drawer_pos, stack, visualid)
+			if content.count < content.maxCount then
+				return drawers.drawer_insert_object(drawer_pos, stack, visualid)
+			else
+				new_drawer = true
+			end
 		end
-	elseif drawer_net_index["empty"] then
+	else
+		new_drawer = true
+	end
+
+	if new_drawer and drawer_net_index["empty"] then
 		local drawer_pos = drawer_net_index["empty"]["drawer_pos"]
 		local visualid = drawer_net_index["empty"]["visualid"]
 		local content = drawers.drawer_get_content(drawer_pos, visualid)
@@ -334,7 +342,12 @@ local function controller_allow_metadata_inventory_put(pos, listname, index, sta
 		local drawer = drawer_net_index[stack:get_name()]
 
 		if drawers.drawer_get_content(drawer.drawer_pos, drawer.visualid).name == stack:get_name() then
-			return drawers.drawer_can_insert_stack(drawer.drawer_pos, stack, drawer["visualid"])
+			local can_store = drawers.drawer_can_insert_stack(drawer.drawer_pos, stack, drawer["visualid"])
+			-- If we have a drawer for this item, but can't put anything there, it's probably full
+			-- attempt to put in a new empty drawer
+			if can_store ~= 0 then
+				return can_store
+			end
 		end
 	end
 
