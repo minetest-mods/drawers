@@ -25,5 +25,6 @@ read_globals = {
 	"screwdriver",
 	"intllib",
 	"digilines",
-	"mesecon"
+	"mesecon",
+	"techage"
 }

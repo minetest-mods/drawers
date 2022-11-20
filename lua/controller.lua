@@ -47,6 +47,7 @@ local default_loaded = core.get_modpath("default") and default
 local mcl_loaded = core.get_modpath("mcl_core") and mcl_core
 local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
 local digilines_loaded = core.get_modpath("digilines") and digilines
+local techage_loaded = core.get_modpath("techage") and techage
 
 local function controller_formspec(pos)
 	local formspec =
@@ -500,6 +501,14 @@ local function register_controller()
 	end
 
 	core.register_node("drawers:controller", def)
+
+	if techage_loaded then
+		techage.register_node({"drawers:controller"}, {
+			on_push_item = function(pos, in_dir, stack)
+				return controller_insert_to_drawers(pos, stack)
+			end
+		})
+	end
 end
 
 -- register drawer controller
