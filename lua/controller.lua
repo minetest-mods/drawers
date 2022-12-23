@@ -39,9 +39,7 @@ deposit an item in certain situations. The table is only updated on an as needed
 basis, not by a specific time/interval. Controllers that have no items will not
 continue scanning drawers. ]]--
 
--- Load support for intllib.
-local MP = core.get_modpath(core.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator('drawers')
 
 local default_loaded = core.get_modpath("default") and default
 local mcl_loaded = core.get_modpath("mcl_core") and mcl_core

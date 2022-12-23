@@ -25,9 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
--- Load support for intllib.
-local MP = core.get_modpath(core.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator('drawers')
 
 drawers.node_box_simple = {
 	{-0.5, -0.5, -0.4375, 0.5, 0.5, 0.5},
