@@ -62,7 +62,7 @@ local function tile_to_image(tile, fallback_image)
 	local image = tile.name or tile.image
 	assert(image, "Tile definition has no image file specified")
 	if tile.color then
-		local colorstr = minetest.colorspec_to_colorstring(tile.color)
+		local colorstr = core.colorspec_to_colorstring(tile.color)
 		if colorstr then
 			return image .. "^[multiply:" .. colorstr
 		end
@@ -83,7 +83,7 @@ function drawers.get_inv_image(name)
 		local top = tile_to_image(tiles[1])
 		local left = tile_to_image(tiles[3], top)
 		local right = tile_to_image(tiles[5], left)
-		texture = minetest.inventorycube(top, left, right)
+		texture = core.inventorycube(top, left, right)
 	end
 
 	return texture
