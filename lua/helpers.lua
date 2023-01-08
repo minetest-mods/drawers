@@ -49,6 +49,27 @@ function drawers.gen_info_text(basename, count, factor, stack_max)
 	end
 end
 
+-- Get an image string from a tile definition
+local function tile_to_image(tile, fallback_image)
+	if not tile then
+		return fallback_image
+	end
+	local tile_type = type(tile)
+	if tile_type == "string" then
+		return tile
+	end
+	assert(tile_type == "table", "Tile definition is not a string or table")
+	local image = tile.name or tile.image
+	assert(image, "Tile definition has no image file specified")
+	if tile.color then
+		local colorstr = minetest.colorspec_to_colorstring(tile.color)
+		if colorstr then
+			return image .. "^[multiply:" .. colorstr
+		end
+	end
+	return image
+end
+
 function drawers.get_inv_image(name)
 	local texture = "blank.png"
 	local def = core.registered_items[name]
@@ -59,22 +80,10 @@ function drawers.get_inv_image(name)
 	else
 		if not def.tiles then return texture end
 		local tiles = table.copy(def.tiles)
-
-		for k,v in pairs(tiles) do
-			if type(v) == "table" then
-				tiles[k] = v.name
-			end
-		end
-
-		-- tiles: up, down, right, left, back, front
-		-- inventorycube: up, front, right
-		if #tiles <= 2 then
-			texture = core.inventorycube(tiles[1], tiles[1], tiles[1])
-		elseif #tiles <= 5 then
-			texture = core.inventorycube(tiles[1], tiles[3], tiles[3])
-		else -- full tileset
-			texture = core.inventorycube(tiles[1], tiles[6], tiles[3])
-		end
+		local top = tile_to_image(tiles[1])
+		local left = tile_to_image(tiles[3], top)
+		local right = tile_to_image(tiles[5], left)
+		texture = minetest.inventorycube(top, left, right)
 	end
 
 	return texture
