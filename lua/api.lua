@@ -35,9 +35,20 @@ drawers.node_box_simple = {
 	{-0.4375, -0.5, -0.5, 0.4375, -0.4375, -0.4375},
 }
 
+-- Set specific list size for MCL
+local formspec_size, x_offset
+if drawers.mcl_loaded then
+	formspec_size = "9,4"
+	x_offset = 0
+else
+	formspec_size = "8,4"
+	x_offset = 0.5
+end
+
 drawers.drawer_formspec = "size[9,6.7]" ..
 	"list[context;upgrades;2,0.5;5,1;]" ..
-	drawers.inventory_list ..
+	"list[current_player;main;" .. x_offset ..
+	",3;" .. formspec_size .. ";]" ..
 	"listring[context;upgrades]" ..
 	"listring[current_player;main]" ..
 	drawers.gui_bg ..
