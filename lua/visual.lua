@@ -151,7 +151,8 @@ core.register_entity("drawers:visual", {
 	end,
 
 	on_rightclick = function(self, clicker)
-		if core.is_protected(self.drawer_pos, clicker:get_player_name()) then
+		if core.is_protected(self.drawer_pos, clicker:get_player_name()) and
+			minetest.get_meta(self.drawer_pos):get_string("shared") ~= "true" then
 			core.record_protection_violation(self.drawer_pos, clicker:get_player_name())
 			return
 		end
@@ -214,7 +215,8 @@ core.register_entity("drawers:visual", {
 			return
 		end
 		local add_stack = not puncher:get_player_control().sneak
-		if core.is_protected(self.drawer_pos, puncher:get_player_name()) then
+		if core.is_protected(self.drawer_pos, puncher:get_player_name()) and
+			minetest.get_meta(self.drawer_pos):get_string("shared") ~= "true" then
 		   core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
 		   return
 		end
@@ -442,7 +444,7 @@ core.register_lbm({
 		-- create drawer upgrade inventory
 		meta:get_inventory():set_size("upgrades", 5)
 		-- set the formspec
-		meta:set_string("formspec", drawers.drawer_formspec)
+		meta:set_string("formspec", drawers.get_drawer_formspec(pos))
 
 		-- count the drawer visuals
 		local drawerType = core.registered_nodes[node.name].groups.drawer
