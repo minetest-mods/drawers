@@ -45,7 +45,8 @@ else
 	x_offset = 0.5
 end
 
-drawers.drawer_formspec = "size[9,6.7]" ..
+local drawers_formspec_data = {}
+local drawer_formspec = "size[9,6.7]" ..
 	"list[context;upgrades;2,0.5;5,1;]" ..
 	"list[current_player;main;" .. x_offset ..
 	",3;" .. formspec_size .. ";]" ..
@@ -54,6 +55,18 @@ drawers.drawer_formspec = "size[9,6.7]" ..
 	drawers.gui_bg ..
 	drawers.gui_slots ..
 	drawers.get_upgrade_slots_bg(2, 0.5)
+
+drawers.get_drawer_formspec = function(pos)
+	local shared
+	if minetest.get_meta(pos):get_string("shared") == "true" then
+		shared = "true"
+	else
+		shared = "false"
+	end
+
+	return drawer_formspec ..
+		"checkbox[3.5,2;shared;" .. S("Shared") .. ";" .. shared .. "]"
+end
 
 -- construct drawer
 local drawer_on_construct = function(pos)
@@ -89,9 +102,18 @@ local drawer_on_construct = function(pos)
 
 	-- create drawer upgrade inventory
 	meta:get_inventory():set_size("upgrades", 5)
+end
 
-	-- set the formspec
-	meta:set_string("formspec", drawers.drawer_formspec)
+-- show formspec on right click
+local drawer_on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+	if not clicker:is_player() then
+		return
+	end
+	local pname = clicker:get_player_name()
+	if not minetest.is_protected(pos, pname) then
+		drawers_formspec_data[pname] = pos
+		minetest.show_formspec(pname, "drawers:drawer", drawers.get_drawer_formspec(pos))
+	end
 end
 
 -- destruct drawer
@@ -302,6 +324,7 @@ function drawers.register_drawer(name, def)
 
 	-- events
 	def.on_construct = drawer_on_construct
+	def.on_rightclick = drawer_on_rightclick
 	def.on_destruct = drawer_on_destruct
 	def.on_dig = drawer_on_dig
 	def.allow_metadata_inventory_put = drawer_allow_metadata_inventory_put
@@ -435,3 +458,13 @@ function drawers.register_drawer_upgrade(name, def)
 	end
 end
 
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname ~= "drawers:drawer" then return end
+	local pname = player:get_player_name()
+	local pos = drawers_formspec_data[pname]
+	if pos and fields.shared then
+		local meta = minetest.get_meta(pos)
+		meta:set_string("shared", fields.shared)
+	end
+	drawers_formspec_data[pname] = nil
+end)
