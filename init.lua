@@ -31,6 +31,7 @@ local NS = minetest.get_translator('drawers')
 
 drawers = {}
 drawers.drawer_visuals = {}
+drawers.mcl_loaded = core.get_modpath("mcl_core") and mcl_core
 
 drawers.WOOD_ITEMSTRING = "group:wood"
 if core.get_modpath("default") and default then
