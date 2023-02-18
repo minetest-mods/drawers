@@ -35,6 +35,8 @@ drawers.node_box_simple = {
 	{-0.4375, -0.5, -0.5, 0.4375, -0.4375, -0.4375},
 }
 
+drawers.shared = minetest.settings:get_bool("drawers.shared", true)
+
 local drawers_formspec_data = {}
 local drawer_formspec = "size[9,6.7]" ..
 	"list[context;upgrades;2,0.5;5,1;]" ..
@@ -46,6 +48,10 @@ local drawer_formspec = "size[9,6.7]" ..
 	drawers.get_upgrade_slots_bg(2, 0.5)
 
 drawers.get_drawer_formspec = function(pos)
+	if not drawers.shared then
+		return drawers.drawer_formspec
+	end
+
 	local shared
 	if minetest.get_meta(pos):get_string("shared") == "true" then
 		shared = "true"
