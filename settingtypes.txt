@@ -1,0 +1,1 @@
+drawers.shared (Enable sharing drawers) bool true
