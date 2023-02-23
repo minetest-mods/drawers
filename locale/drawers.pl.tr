@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=@1 Szuflada
 @1 Drawers (1x2)=@1 Szuflady (1x2)
 @1 Drawers (2x2)=@1 Szuflady (2x2)
-Empty=Pusta
+Wooden=Drewniany
 Drawer Controller=Kontroler szuflady
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Ulepszenie szmaragdowej szuflady (x13)
 Mithril Drawer Upgrade (x13)=Ulepszenie szmaragdowej szuflady (x13)
 Wooden Trim=Drewniane wykończenia
 Drawer Upgrade Template=Szablon ulepszenia szuflady
-Wooden=Drewniany
+Empty=Pusta

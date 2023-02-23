@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=@1 Cassetto
 @1 Drawers (1x2)=@1 Cassetti (1x2)
 @1 Drawers (2x2)=@1 Cassetti (2x2)
-Empty=Vuoto
+Wooden=Di legno
 Drawer Controller=
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Miglioramento di smeraldo della cassettiera (x13)
 Mithril Drawer Upgrade (x13)=Miglioramento di smeraldo della cassettiera (x13)
 Wooden Trim=di legno
 Drawer Upgrade Template=Modello di miglioramento della cassettiera
-Wooden=Di legno
+Empty=Vuoto

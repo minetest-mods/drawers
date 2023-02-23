@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=@1schubfach
 @1 Drawers (1x2)=@1schubfächer (1×2)
 @1 Drawers (2x2)=@1schubfächer (2×2)
-Empty=Leer
+Wooden=Holz
 Drawer Controller=Schubfach Steuerung
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Smaragd-Schubfachverbesserung (×13)
 Mithril Drawer Upgrade (x13)=Smaragd-Schubfachverbesserung (×13)
 Wooden Trim=Holzverkleidung
 Drawer Upgrade Template=Schubfachverbesserungsvorlage
-Wooden=Holz
+Empty=Leer
