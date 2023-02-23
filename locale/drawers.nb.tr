@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=@1 Skuff
 @1 Drawers (1x2)=@1 Skuffer (1x2)
 @1 Drawers (2x2)=@1 Skuffer (2x2)
-Empty=Tom
+Wooden=Tre
 Drawer Controller=Skuffekontrollør
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Smaragdskuffoppgradering (x13)
 Mithril Drawer Upgrade (x13)=Smaragdskuffoppgradering (x13)
 Wooden Trim=Kledning i tre
 Drawer Upgrade Template=Mal for oppgradering av skuffer
-Wooden=Tre
+Empty=Tom

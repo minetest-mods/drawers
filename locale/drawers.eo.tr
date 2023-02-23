@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=@1 tirkesto
 @1 Drawers (1x2)=@1 tirkestoj (1×2)
 @1 Drawers (2x2)=@1 tirkestoj (2×2)
-Empty=Malplena
+Wooden=Ligna
 Drawer Controller=Regilo de tirkesto
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Smeralda plibonigo de tirkesto (×13)
 Mithril Drawer Upgrade (x13)=Smeralda plibonigo de tirkesto (×13)
 Wooden Trim=
 Drawer Upgrade Template=Ŝablono por plibonigo de tirkesto
-Wooden=Ligna
+Empty=Malplena

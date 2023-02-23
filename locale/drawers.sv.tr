@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=@1låda
 @1 Drawers (1x2)=@1lådor (1x2)
 @1 Drawers (2x2)=@1lådor (2x2)
-Empty=Tom
+Wooden=Trä
 Drawer Controller=Lådkontroll
 Digiline Channel=Digilinekanal
 Save=Spara
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Smaragdlådeuppgradering (x13)
 Mithril Drawer Upgrade (x13)=Mithrillådeuppgradering (x13)
 Wooden Trim=Trätrim
 Drawer Upgrade Template=Lådeuppgraderingsmall
-Wooden=Trä
+Empty=Tom
