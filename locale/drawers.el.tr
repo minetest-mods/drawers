@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=@1 συρτάρι
 @1 Drawers (1x2)=@1 συρτάρια (1x2)
 @1 Drawers (2x2)=@1 συρτάρια (2x2)
-Empty=Κενό
+Wooden=Ξύλινο
 Drawer Controller=Ελεγκτής συρταριού
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Σμαραγδένια αναβάθμιση συρ�
 Mithril Drawer Upgrade (x13)=
 Wooden Trim=
 Drawer Upgrade Template=
-Wooden=Ξύλινο
+Empty=Κενό

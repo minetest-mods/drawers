@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=@1 Çekmece
 @1 Drawers (1x2)=@1 Çekmece (1x2)
 @1 Drawers (2x2)=@1 Çekmece (2x2)
-Empty=Boş
+Wooden=Ahşap
 Drawer Controller=Çekmece Denetleyicisi
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Zümrüt Çekmece Yükseltme (x13)
 Mithril Drawer Upgrade (x13)=Zümrüt Çekmece Yükseltme (x13)
 Wooden Trim=Ahşap Döşeme
 Drawer Upgrade Template=Çekmece Yükseltme Şablonu
-Wooden=Ahşap
+Empty=Boş
