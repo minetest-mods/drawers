@@ -35,9 +35,9 @@ drawers.node_box_simple = {
 	{-0.4375, -0.5, -0.5, 0.4375, -0.4375, -0.4375},
 }
 
-drawers.drawer_formspec = "size[9,7]" ..
+drawers.drawer_formspec = "size[9,6.7]" ..
 	"list[context;upgrades;2,0.5;5,1;]" ..
-	"list[current_player;main;0.5,3;8,4;]" ..
+	"list[current_player;main;0.5,2.5;8,4;]" ..
 	"listring[context;upgrades]" ..
 	"listring[current_player;main]" ..
 	drawers.gui_bg ..
