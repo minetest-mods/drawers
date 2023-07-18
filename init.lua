@@ -58,8 +58,10 @@ drawers.CONTROLLER_RANGE = 14
 
 drawers.gui_bg = "bgcolor[#080808BB;true]"
 drawers.gui_slots = "listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]"
+drawers.inventory_list = "list[current_player;main;0.5,2.5;8,4;]"
 if (core.get_modpath("mcl_core")) and mcl_core then -- MCL2
 	drawers.gui_bg_img = "background[5,5;1,1;crafting_creative_bg.png;true]"
+	drawers.inventory_list = "list[current_player;main;0,2.5;9,4;]"
 else
 	drawers.gui_bg_img = "background[5,5;1,1;gui_formbg.png;true]"
 end
