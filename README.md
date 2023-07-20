@@ -21,7 +21,7 @@ drawer upgrades to your drawer! They are available in different sizes and are
 crafted by steel, gold, obsidian, diamonds or mithril.
 
 ## Notes
-This mod requires Minetest 0.4.14 or later. The `default` mod from MTG or the
+This mod requires Minetest 5.0 or later. The `default` mod from MTG or the
 MineClone 2 mods are only optional dependencies for crafting recipes.
 
 ## To-Do

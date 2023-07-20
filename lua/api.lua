@@ -41,7 +41,6 @@ drawers.drawer_formspec = "size[9,6.7]" ..
 	"listring[context;upgrades]" ..
 	"listring[current_player;main]" ..
 	drawers.gui_bg ..
-	drawers.gui_bg_img ..
 	drawers.gui_slots ..
 	drawers.get_upgrade_slots_bg(2, 0.5)
 
