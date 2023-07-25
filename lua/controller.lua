@@ -51,7 +51,6 @@ local function controller_formspec(pos)
 	local formspec =
 		"size[8,8.5]"..
 		drawers.gui_bg..
-		drawers.gui_bg_img..
 		drawers.gui_slots..
 		"label[0,0;" .. S("Drawer Controller") .. "]" ..
 		"list[current_name;src;3.5,1.75;1,1;]"..

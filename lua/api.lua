@@ -37,11 +37,10 @@ drawers.node_box_simple = {
 
 drawers.drawer_formspec = "size[9,6.7]" ..
 	"list[context;upgrades;2,0.5;5,1;]" ..
-	"list[current_player;main;0.5,2.5;8,4;]" ..
+	drawers.inventory_list ..
 	"listring[context;upgrades]" ..
 	"listring[current_player;main]" ..
 	drawers.gui_bg ..
-	drawers.gui_bg_img ..
 	drawers.gui_slots ..
 	drawers.get_upgrade_slots_bg(2, 0.5)
 
