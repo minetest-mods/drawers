@@ -1,7 +1,7 @@
 # textdomain: drawers
 @1 Drawer=
-@1 Drawers (1x2)=Mejora para Gavetas de Hierro (x2)
-@1 Drawers (2x2)=Mejora para Gavetas de Hierro (x2)
+@1 Drawers (1x2)=@1 Gavetas (x2)
+@1 Drawers (2x2)=@1 Gavetas (x2)
 Empty=Vacío
 Drawer Controller=Controlador de Gavetas
 Digiline Channel=
