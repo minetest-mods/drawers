@@ -1,7 +1,7 @@
 # textdomain: drawers
-@1 Drawer=@১ ড্রয়ার
-@1 Drawers (1x2)=@১ ড্রয়ার (১x২)
-@1 Drawers (2x2)=@১ ড্রয়ার (২x২)
+@1 Drawer=@1 ড্রয়ার
+@1 Drawers (1x2)=@1 ড্রয়ার (১x২)
+@1 Drawers (2x2)=@1 ড্রয়ার (২x২)
 Empty=খালি
 Drawer Controller=ড্রয়ার কন্ট্রোলার
 Digiline Channel=
