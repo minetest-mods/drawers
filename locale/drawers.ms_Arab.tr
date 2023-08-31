@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=لاچي @1
 @1 Drawers (1x2)=لاچي @1 جنيس 1x2
 @1 Drawers (2x2)=لاچي @1 جنيس 2x2
-Empty=کوسوڠ
+Wooden=کايو
 Drawer Controller=ڤڠاول لاچي
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=ناٴيق طرف لاچي - زمرود⹁ x13
 Mithril Drawer Upgrade (x13)=ناٴيق طرف لاچي - زمرود⹁ x13
 Wooden Trim=هياسن کايو
 Drawer Upgrade Template=تمڤلت ناٴيق طرف لاچي
-Wooden=کايو
+Empty=کوسوڠ
