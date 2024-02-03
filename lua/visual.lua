@@ -280,6 +280,11 @@ core.register_entity("drawers:visual", {
 			return 0
 		end
 
+		-- don't allow items with metadata
+		if #stack:get_meta():get_keys() > 0 then
+			return 0
+		end
+
 		-- don't allow unstackable stacks
 		if self.itemName == "" and stack:get_stack_max() ~= 1 then
 			return stack:get_count()
