@@ -288,6 +288,17 @@ if core.get_modpath("default") and default then
 		groups = {drawer_upgrade = 700},
 		recipe_item = "default:diamond"
 	})
+
+	drawers.register_drawer_upgrade("drawers:upgrade_public", {
+		description = S("Public Drawer Upgrade"),
+		inventory_image = "drawers_upgrade_public.png",
+		groups = {drawer_upgrade = 0, drawer_public = 1},
+		craft = {
+			{"group:stick","default:steel_ingot","group:stick"},
+			{"group:stick", "drawers:upgrade_template", "group:stick"},
+			{"group:stick","default:steel_ingot","group:stick"}
+		}
+	})
 elseif core.get_modpath("mcl_core") and mcl_core then
 	drawers.register_drawer_upgrade("drawers:upgrade_iron", {
 		description = S("Iron Drawer Upgrade (x2)"),
@@ -323,6 +334,18 @@ elseif core.get_modpath("mcl_core") and mcl_core then
 		groups = {drawer_upgrade = 1200},
 		recipe_item = "mcl_core:emerald"
 	})
+
+	drawers.register_drawer_upgrade("drawers:upgrade_public", {
+		description = S("Public Drawer Upgrade"),
+		inventory_image = "drawers_upgrade_public.png",
+		groups = {drawer_upgrade = 0, drawer_public = 1},
+		craft = {
+			{"group:stick","mcl_core:iron_ingot","group:stick"},
+			{"group:stick", "drawers:upgrade_template", "group:stick"},
+			{"group:stick","mcl_core:iron_ingot","group:stick"}
+		}
+	})
+
 end
 
 if core.get_modpath("moreores") then
