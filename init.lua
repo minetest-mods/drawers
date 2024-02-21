@@ -31,12 +31,13 @@ local NS = minetest.get_translator('drawers')
 
 drawers = {}
 drawers.drawer_visuals = {}
+drawers.mcl_loaded = core.get_modpath("mcl_core") and mcl_core
 
 drawers.WOOD_ITEMSTRING = "group:wood"
 if core.get_modpath("default") and default then
 	drawers.WOOD_SOUNDS = default.node_sound_wood_defaults()
 	drawers.CHEST_ITEMSTRING = "default:chest"
-elseif core.get_modpath("mcl_core") and mcl_core then -- MineClone 2
+elseif drawers.mcl_loaded then -- MineClone 2
 	drawers.CHEST_ITEMSTRING = "mcl_chests:chest"
 	if core.get_modpath("mcl_sounds") and mcl_sounds then
 		drawers.WOOD_SOUNDS = mcl_sounds.node_sound_wood_defaults()
@@ -58,9 +59,16 @@ drawers.CONTROLLER_RANGE = 14
 
 drawers.gui_bg = "bgcolor[#080808BB;true]"
 drawers.gui_slots = "listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]"
-drawers.inventory_list = "list[current_player;main;0.5,2.5;8,4;]"
-if (core.get_modpath("mcl_core")) and mcl_core then -- MCL2
-	drawers.inventory_list = "list[current_player;main;0,2.5;9,4;]"
+function drawers.inventory_list(posy)
+	local hotbar_row_posy = posy + 1.25
+	local inventory_list= "list[current_player;main;0.5,"..posy..";8,1;]" ..
+						  "list[current_player;main;0.5,"..hotbar_row_posy..";8,3;8]"
+	if drawers.mcl_loaded then -- MCL2
+		hotbar_row_posy = posy + 3.25
+		inventory_list = "list[current_player;main;0,"..posy..";9,3;9]" ..
+						 "list[current_player;main;0,"..hotbar_row_posy..";9,1;]"
+	end
+	return inventory_list
 end
 
 --
@@ -143,7 +151,7 @@ if core.get_modpath("default") and default then
 		drawer_stack_max_factor = 32, -- 4 * 8 normal chest size
 		material = "default:pine_wood"
 	})
-elseif core.get_modpath("mcl_core") and mcl_core then
+elseif drawers.mcl_loaded then
 	drawers.register_drawer("drawers:oakwood", {
 		description = S("Oak Wood"),
 		tiles1 = drawers.node_tiles_front_other("drawers_oak_wood_front_1.png",
@@ -288,7 +296,7 @@ if core.get_modpath("default") and default then
 		groups = {drawer_upgrade = 700},
 		recipe_item = "default:diamond"
 	})
-elseif core.get_modpath("mcl_core") and mcl_core then
+elseif drawers.mcl_loaded then
 	drawers.register_drawer_upgrade("drawers:upgrade_iron", {
 		description = S("Iron Drawer Upgrade (x2)"),
 		inventory_image = "drawers_upgrade_iron.png",
@@ -338,7 +346,7 @@ end
 -- Register drawer trim
 --
 
-if core.get_modpath("mcl_core") and mcl_core then
+if drawers.mcl_loaded then
 	core.register_node("drawers:trim", {
 		description = S("Wooden Trim"),
 		tiles = {"drawers_trim.png"},

@@ -42,20 +42,18 @@ continue scanning drawers. ]]--
 local S = minetest.get_translator('drawers')
 
 local default_loaded = core.get_modpath("default") and default
-local mcl_loaded = core.get_modpath("mcl_core") and mcl_core
 local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
 local digilines_loaded = core.get_modpath("digilines") and digilines
 local techage_loaded = core.get_modpath("techage") and techage
 
 local function controller_formspec(pos)
 	local formspec =
-		"size[8,8.5]"..
+		"size[9,8.5]"..
 		drawers.gui_bg..
 		drawers.gui_slots..
 		"label[0,0;" .. S("Drawer Controller") .. "]" ..
-		"list[current_name;src;3.5,1.75;1,1;]"..
-		"list[current_player;main;0,4.25;8,1;]"..
-		"list[current_player;main;0,5.5;8,3;8]"..
+		"list[current_name;src;4,1.75;1,1;]"..
+		drawers.inventory_list(4.25) ..
 		"listring[current_player;main]"..
 		"listring[current_name;src]"..
 		"listring[current_player;main]"
@@ -445,7 +443,7 @@ local function register_controller()
 	end
 
 	-- MCL2 requires a few different groups and parameters that MTG does not
-	if mcl_loaded then
+	if drawers.mcl_loaded then
 		def.groups = {
 			pickaxey = 1, stone = 1, building_block = 1, material_stone = 1
 		}
@@ -520,7 +518,7 @@ if default_loaded then
 			{'default:steel_ingot', 'default:diamond', 'default:steel_ingot'},
 		}
 	})
-elseif mcl_loaded then
+elseif drawers.mcl_loaded then
 	core.register_craft({
 		output = 'drawers:controller',
 		recipe = {
