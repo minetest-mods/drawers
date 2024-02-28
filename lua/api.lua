@@ -287,6 +287,7 @@ function drawers.register_drawer(name, def)
 	def.paramtype2 = "facedir"
 	def.legacy_facedir_simple = true
 	def.groups = def.groups or {}
+	def.is_ground_content = def.is_ground_content == true
 	def.drawer_stack_max_factor = def.drawer_stack_max_factor or 24
 
 	-- events

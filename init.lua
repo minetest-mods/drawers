@@ -351,6 +351,7 @@ if drawers.mcl_loaded then
 		description = S("Wooden Trim"),
 		tiles = {"drawers_trim.png"},
 		groups = {drawer_connector = 1, handy = 1, axey = 1, flammable = 3, wood = 1, building_block = 1, material_wood = 1},
+		is_ground_content = false,
 		_mcl_blast_resistance = 15,
 		_mcl_hardness = 2,
 	})
@@ -359,6 +360,7 @@ else
 		description = S("Wooden Trim"),
 		tiles = {"drawers_trim.png"},
 		groups = {drawer_connector = 1, choppy = 3, oddly_breakable_by_hand = 2},
+		is_ground_content = false,
 	})
 end
 
