@@ -420,6 +420,7 @@ local function register_controller()
 	def.paramtype = "light"
 	def.paramtype2 = "facedir"
 	def.legacy_facedir_simple = true
+	def.is_ground_content = false
 
 	-- add pipe connectors, if pipeworks is enabled
 	if pipeworks_loaded then
