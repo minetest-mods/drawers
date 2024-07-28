@@ -60,7 +60,7 @@ drawers.get_drawer_formspec = function(pos)
 	end
 
 	return drawer_formspec ..
-		"checkbox[3.5,2;shared;" .. S("Shared") .. ";" .. shared .. "]"
+		"checkbox[3.5,1.5;shared;" .. S("Shared") .. ";" .. shared .. "]"
 end
 
 -- construct drawer
