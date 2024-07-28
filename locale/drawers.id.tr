@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=Laci @1
 @1 Drawers (1x2)=Laci @1 (1x2)
 @1 Drawers (2x2)=Laci @1 (2x2)
-Empty=Kosong
+Wooden=Kayu
 Drawer Controller=Pengendali Laci
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Tingkatkan menjadi Laci Zamrud (x13)
 Mithril Drawer Upgrade (x13)=Tingkatkan menjadi Laci Zamrud (x13)
 Wooden Trim=Ukiran Kayu
 Drawer Upgrade Template=Templat Peningkatan Laci
-Wooden=Kayu
+Empty=Kosong

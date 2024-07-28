@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=@1 Lade
 @1 Drawers (1x2)=@1 Lades (1x2)
 @1 Drawers (2x2)=@1 Lades (2x2)
-Empty=Leeg
+Wooden=Houten
 Drawer Controller=
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Smaragden Lade upgrade (x13)
 Mithril Drawer Upgrade (x13)=Smaragden Lade upgrade (x13)
 Wooden Trim=Houten bekleding
 Drawer Upgrade Template=Lade Upgrade Template
-Wooden=Houten
+Empty=Leeg

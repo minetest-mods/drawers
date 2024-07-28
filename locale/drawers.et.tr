@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=@1 salv
 @1 Drawers (1x2)=@1 salved (1x2)
 @1 Drawers (2x2)=@1 salved (2x2)
-Empty=Tühi
+Wooden=Puidust
 Drawer Controller=Salve juhtpult
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Smaragd salve täiustus (x13)
 Mithril Drawer Upgrade (x13)=Smaragd salve täiustus (x13)
 Wooden Trim=Puitliist
 Drawer Upgrade Template=Salve täiustamise kava
-Wooden=Puidust
+Empty=Tühi

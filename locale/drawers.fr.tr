@@ -1,11 +1,12 @@
 # textdomain: drawers
+Shared=Partagé
 @1 Drawer=Tiroir @1
 @1 Drawers (1x2)=Tiroirs (1x2) @1
 @1 Drawers (2x2)=Tiroirs (2x2) @1
-Empty=Vide
+Wooden=En bois
 Drawer Controller=Contrôleur de Tiroirs
-Digiline Channel=
-Save=
+Digiline Channel=Canal Digilines
+Save=Sauvegarder
 @1 (@2% full)=@1 (@2% plein)
 @1 @2 (@3% full)=@1 @2 (@3% plein)
 Acacia Wood=Bois d'acacia
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Amélioration tiroir en émeraude (x13)
 Mithril Drawer Upgrade (x13)=Amélioration tiroir en émeraude (x13)
 Wooden Trim=Habillage en bois
 Drawer Upgrade Template=Amélioration modèle de tiroir
-Wooden=En bois
+Empty=Vide
