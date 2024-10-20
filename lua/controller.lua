@@ -378,6 +378,10 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 		return
 	end
 
+	if msg and type(msg) ~= "string" and type(msg) ~= "table" then
+		return -- Protect against ItemStack(...) errors
+	end
+
 	local item = ItemStack(msg)
 	local drawers_index = controller_get_drawer_index(pos, item:get_name())
 
