@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=Armário @1
 @1 Drawers (1x2)=Armários @1 (1x2)
 @1 Drawers (2x2)=Armários @1 (2x2)
-Empty=Vazio
+Wooden=Madeira
 Drawer Controller=Controlador de Armários
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Melhoria de Armário de Esmeralda (x13)
 Mithril Drawer Upgrade (x13)=Melhoria de Armário de Esmeralda (x13)
 Wooden Trim=Guarnição de Madeira
 Drawer Upgrade Template=Modelo de Melhoria de Armário
-Wooden=Madeira
+Empty=Vazio

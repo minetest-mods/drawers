@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=
 @1 Drawers (1x2)=
 @1 Drawers (2x2)=
-Empty=空的
+Wooden=木制
 Drawer Controller=
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=
 Mithril Drawer Upgrade (x13)=
 Wooden Trim=
 Drawer Upgrade Template=
-Wooden=木制
+Empty=空的

@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=@1 Ящик
 @1 Drawers (1x2)=@1 Ящики (1x2)
 @1 Drawers (2x2)=@1 Ящики (2x2)
-Empty=Пусто
+Wooden=Деревянный
 Drawer Controller=Контролер ящика
 Digiline Channel=Канал digiline
 Save=Сохранить
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Изумрудное улучшение ящика 
 Mithril Drawer Upgrade (x13)=Мифриловое улучшение ящика (x13)
 Wooden Trim=Деревянная отделка
 Drawer Upgrade Template=Шаблон улучшения ящика
-Wooden=Деревянный
+Empty=Пусто

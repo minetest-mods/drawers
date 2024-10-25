@@ -1,4 +1,5 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=
 @1 Drawers (1x2)=@1 Gavetas (x2)
 @1 Drawers (2x2)=@1 Gavetas (x2)
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Mejora para Gavetas de Esmeralda (x13)
 Mithril Drawer Upgrade (x13)=Mejora para Gavetas de Esmeralda (x13)
 Wooden Trim=Recorte De Madera
 Drawer Upgrade Template=Plantilla de mejoras para gavetas
-Wooden=De Madera
+Empty=Vacío
