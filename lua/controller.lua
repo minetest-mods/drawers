@@ -374,12 +374,57 @@ end
 local function controller_on_digiline_receive(pos, _, channel, msg)
 	local meta = core.get_meta(pos)
 
-	if channel ~= meta:get_string("digilineChannel") then
+	if not msg or channel ~= meta:get_string("digilineChannel") then
 		return
 	end
 
-	if msg and type(msg) ~= "string" and type(msg) ~= "table" then
-		return -- Protect against ItemStack(...) errors
+	if type(msg) == "string" then
+		if msg == "get" then
+			local found_drawers = {}
+			local index = index_drawers(pos)
+
+			-- Add each drawer in the network separately
+			local drawer_positions = {}
+			for _, drawer in pairs(index) do
+				local position = drawer.drawer_pos
+				local key = vector.to_string(position)
+				if not drawer_positions[key] then
+					drawer_positions[key] = position
+				end
+			end
+
+			for _, position in pairs(drawer_positions) do
+				local node = core.get_node(position)
+				local drawer_meta = core.get_meta(position)
+				local node_def = core.registered_nodes[node.name]
+				local drawer_type = node_def.groups.drawer
+
+				-- Record information of each slot
+				local slots = {}
+				for i = 1, drawer_type do
+					-- 1x1 drawers don't have numbers in the meta fields
+					if drawer_type == 1 then i = "" end
+					local slot_name = drawer_meta:get_string("name" .. i)
+					local slot_count = drawer_meta:get_int("count" .. i)
+					local slot_max = drawer_meta:get_int("max_count" .. i)
+
+					table.insert(slots, {
+						name = slot_name,
+						count = slot_count,
+						max = slot_max
+					})
+				end
+
+				table.insert(found_drawers, {position=position, slots=slots})
+			end
+
+			digiline:receptor_send(pos, digilines.rules.default, channel, found_drawers)
+			return
+		end
+
+	elseif type(msg) ~= "table" then
+		-- Protect against ItemStack(...) errors
+		return
 	end
 
 	local item = ItemStack(msg)
