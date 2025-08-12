@@ -297,6 +297,79 @@ local function controller_insert_to_drawers(pos, stack)
 	return stack
 end
 
+--[[
+	Returns an array of drawers in the drawer network with their positions and slot
+	data. Slot data includes stored item, item count, and max count.
+
+	Results can be paginated by specifying an `offset` and a `max_count`.
+]]
+local function controller_get_network_info(pos, offset, max_count)
+	local found_drawers = {}
+	local index = index_drawers(pos)
+
+	-- Add each drawer in the network separately
+	-- Sort them by their positions to keep order for pagination
+	local drawer_positions = {}
+	local drawer_count = 0
+	local keys = {}
+	for _, drawer in pairs(index) do
+		local position = drawer.drawer_pos
+		local key = vector.to_string(position)
+
+		if not drawer_positions[key] then
+			drawer_positions[key] = position
+			table.insert(keys, key)
+			drawer_count = drawer_count + 1
+		end
+	end
+	table.sort(keys)
+
+	for _, key in ipairs(keys) do
+		local position = drawer_positions[key]
+		local node = core.get_node(position)
+		local drawer_meta = core.get_meta(position)
+		local node_def = core.registered_nodes[node.name]
+		local drawer_type = node_def.groups.drawer
+
+		-- Record information of each slot
+		local slots = {}
+		for i = 1, drawer_type do
+			-- 1x1 drawers don't have numbers in the meta fields
+			if drawer_type == 1 then i = "" end
+			local slot_name = drawer_meta:get_string("name" .. i)
+			local slot_count = drawer_meta:get_int("count" .. i)
+			local slot_max = drawer_meta:get_int("max_count" .. i)
+
+			table.insert(slots, {
+				name = slot_name,
+				count = slot_count,
+				max = slot_max
+			})
+		end
+
+		table.insert(found_drawers, {position=position, slots=slots})
+	end
+
+	-- Offset must be an integer and >= 1
+	offset = (type(offset) == "number") and
+		math.max(1, math.floor(offset)) or 1
+	-- Max count must be an integer, >= 1, and <= MAX_MATCHES
+	max_count = (type(max_count) == "number") and
+		math.min(math.max(1, math.floor(max_count)),
+		drawers.CONTROLLER_MAX_MATCHES) or drawers.CONTROLLER_MAX_MATCHES
+
+	-- Paginate if results exceed our limits
+	if (drawer_count > max_count) or (offset > 1) then
+		local temp = {}
+		for i = offset, offset + max_count - 1 do
+			table.insert(temp, found_drawers[i])
+		end
+		found_drawers = temp
+	end
+
+	return found_drawers
+end
+
 local function controller_can_dig(pos, player)
 	local meta = core.get_meta(pos);
 	local inv = meta:get_inventory()
@@ -378,51 +451,15 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 		return
 	end
 
-	if type(msg) == "string" then
-		if msg == "get" then
-			local found_drawers = {}
-			local index = index_drawers(pos)
-
-			-- Add each drawer in the network separately
-			local drawer_positions = {}
-			for _, drawer in pairs(index) do
-				local position = drawer.drawer_pos
-				local key = vector.to_string(position)
-				if not drawer_positions[key] then
-					drawer_positions[key] = position
-				end
-			end
-
-			for _, position in pairs(drawer_positions) do
-				local node = core.get_node(position)
-				local drawer_meta = core.get_meta(position)
-				local node_def = core.registered_nodes[node.name]
-				local drawer_type = node_def.groups.drawer
-
-				-- Record information of each slot
-				local slots = {}
-				for i = 1, drawer_type do
-					-- 1x1 drawers don't have numbers in the meta fields
-					if drawer_type == 1 then i = "" end
-					local slot_name = drawer_meta:get_string("name" .. i)
-					local slot_count = drawer_meta:get_int("count" .. i)
-					local slot_max = drawer_meta:get_int("max_count" .. i)
-
-					table.insert(slots, {
-						name = slot_name,
-						count = slot_count,
-						max = slot_max
-					})
-				end
-
-				table.insert(found_drawers, {position=position, slots=slots})
-			end
-
-			digiline:receptor_send(pos, digilines.rules.default, channel, found_drawers)
+	if type(msg) == "table" then
+		if msg.command == "get" then
+			digiline:receptor_send(pos, digilines.rules.default, channel,
+				controller_get_network_info(pos, msg.offset, msg.max_count)
+			)
 			return
 		end
 
-	elseif type(msg) ~= "table" then
+	elseif type(msg) ~= "string" then
 		-- Protect against ItemStack(...) errors
 		return
 	end

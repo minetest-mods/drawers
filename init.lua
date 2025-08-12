@@ -52,6 +52,7 @@ drawers.enable_1x2 = not core.settings:get_bool("drawers_disable_1x2")
 drawers.enable_2x2 = not core.settings:get_bool("drawers_disable_2x2")
 
 drawers.CONTROLLER_RANGE = 14
+drawers.CONTROLLER_MAX_MATCHES = 50
 
 --
 -- GUI
