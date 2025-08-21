@@ -24,6 +24,7 @@ read_globals = {
 	"pipeworks",
 	"screwdriver",
 	"digilines",
+	"digiline",
 	"mesecon",
 	"techage"
 }
