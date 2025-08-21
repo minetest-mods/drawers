@@ -335,10 +335,10 @@ local function controller_get_network_info(pos, offset, max_count)
 		local slots = {}
 		for i = 1, drawer_type do
 			-- 1x1 drawers don't have numbers in the meta fields
-			if drawer_type == 1 then i = "" end
-			local slot_name = drawer_meta:get_string("name" .. i)
-			local slot_count = drawer_meta:get_int("count" .. i)
-			local slot_max = drawer_meta:get_int("max_count" .. i)
+			local slot_id = (drawer_type == 1 and "") or i
+			local slot_name = drawer_meta:get_string("name" .. slot_id)
+			local slot_count = drawer_meta:get_int("count" .. slot_id)
+			local slot_max = drawer_meta:get_int("max_count" .. slot_id)
 
 			table.insert(slots, {
 				name = slot_name,
