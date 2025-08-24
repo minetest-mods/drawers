@@ -305,16 +305,14 @@ end
 ]]
 local function controller_get_network_info(pos, offset, max_count)
 	local found_drawers = {}
-	local index = index_drawers(pos)
+	local connected_drawers = find_connected_drawers(pos)
 
 	-- Add each drawer in the network separately
 	-- Sort them by their positions to keep order for pagination
 	local drawer_positions = {}
 	local keys = {}
-	for _, drawer in pairs(index) do
-		local position = drawer.drawer_pos
+	for _, position in pairs(connected_drawers) do
 		local key = core.hash_node_position(position)
-
 		if not drawer_positions[key] then
 			drawer_positions[key] = position
 			table.insert(keys, key)
