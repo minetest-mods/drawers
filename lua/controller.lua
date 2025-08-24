@@ -351,12 +351,10 @@ local function controller_get_network_info(pos, offset, max_count)
 	end
 
 	-- Offset must be an integer and >= 1
-	offset = (type(offset) == "number") and
-		math.max(1, math.floor(offset)) or 1
+	offset = math.max(1, math.floor(tonumber(offset) or 1))
 	-- Max count must be an integer, >= 1, and <= MAX_MATCHES
-	max_count = (type(max_count) == "number") and
-		math.min(math.max(1, math.floor(max_count)),
-		drawers.CONTROLLER_MAX_MATCHES) or drawers.CONTROLLER_MAX_MATCHES
+	max_count = math.floor(tonumber(max_count) or drawers.CONTROLLER_MAX_MATCHES)
+	max_count = math.min(math.max(1, max_count), drawers.CONTROLLER_MAX_MATCHES)
 
 	-- Paginate if results exceed our limits
 	if (drawer_count > max_count) or (offset > 1) then
