@@ -307,18 +307,10 @@ local function controller_get_network_info(pos, offset, max_count)
 	local found_drawers = {}
 	local connected_drawers = find_connected_drawers(pos)
 
-	-- Add each drawer in the network separately
-	-- Sort them by their positions to keep order for pagination
-	local drawer_positions = {}
-	local keys = {}
-	for _, position in pairs(connected_drawers) do
-		local key = core.hash_node_position(position)
-		if not drawer_positions[key] then
-			drawer_positions[key] = position
-			table.insert(keys, key)
-		end
-	end
-	table.sort(keys)
+	-- Sort drawers by their positions to keep order for pagination
+	table.sort(connected_drawers, function(a, b)
+		return core.hash_node_position(a) < core.hash_node_position(b)
+	end)
 
 	-- Offset must be an integer and >= 1
 	offset = math.max(1, math.floor(tonumber(offset) or 1))
@@ -327,10 +319,9 @@ local function controller_get_network_info(pos, offset, max_count)
 	max_count = math.min(math.max(1, max_count), drawers.CONTROLLER_MAX_MATCHES)
 
 	for i = offset, offset + max_count - 1 do
-		local key = keys[i]
-		if not key then break end
+		local position = connected_drawers[i]
+		if not position then break end
 
-		local position = drawer_positions[key]
 		local node = core.get_node(position)
 		local drawer_meta = core.get_meta(position)
 		local node_def = core.registered_nodes[node.name]
