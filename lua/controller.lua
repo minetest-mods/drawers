@@ -310,21 +310,28 @@ local function controller_get_network_info(pos, offset, max_count)
 	-- Add each drawer in the network separately
 	-- Sort them by their positions to keep order for pagination
 	local drawer_positions = {}
-	local drawer_count = 0
 	local keys = {}
 	for _, drawer in pairs(index) do
 		local position = drawer.drawer_pos
-		local key = vector.to_string(position)
+		local key = core.hash_node_position(position)
 
 		if not drawer_positions[key] then
 			drawer_positions[key] = position
 			table.insert(keys, key)
-			drawer_count = drawer_count + 1
 		end
 	end
 	table.sort(keys)
 
-	for _, key in ipairs(keys) do
+	-- Offset must be an integer and >= 1
+	offset = math.max(1, math.floor(tonumber(offset) or 1))
+	-- Max count must be an integer, >= 1, and <= MAX_MATCHES
+	max_count = math.floor(tonumber(max_count) or drawers.CONTROLLER_MAX_MATCHES)
+	max_count = math.min(math.max(1, max_count), drawers.CONTROLLER_MAX_MATCHES)
+
+	for i = offset, offset + max_count - 1 do
+		local key = keys[i]
+		if not key then break end
+
 		local position = drawer_positions[key]
 		local node = core.get_node(position)
 		local drawer_meta = core.get_meta(position)
@@ -333,9 +340,9 @@ local function controller_get_network_info(pos, offset, max_count)
 
 		-- Record information of each slot
 		local slots = {}
-		for i = 1, drawer_type do
+		for slot = 1, drawer_type do
 			-- 1x1 drawers don't have numbers in the meta fields
-			local slot_id = (drawer_type == 1 and "") or i
+			local slot_id = (drawer_type == 1 and "") or slot
 			local slot_name = drawer_meta:get_string("name" .. slot_id)
 			local slot_count = drawer_meta:get_int("count" .. slot_id)
 			local slot_max = drawer_meta:get_int("max_count" .. slot_id)
@@ -348,21 +355,6 @@ local function controller_get_network_info(pos, offset, max_count)
 		end
 
 		table.insert(found_drawers, {position=position, slots=slots})
-	end
-
-	-- Offset must be an integer and >= 1
-	offset = math.max(1, math.floor(tonumber(offset) or 1))
-	-- Max count must be an integer, >= 1, and <= MAX_MATCHES
-	max_count = math.floor(tonumber(max_count) or drawers.CONTROLLER_MAX_MATCHES)
-	max_count = math.min(math.max(1, max_count), drawers.CONTROLLER_MAX_MATCHES)
-
-	-- Paginate if results exceed our limits
-	if (drawer_count > max_count) or (offset > 1) then
-		local temp = {}
-		for i = offset, offset + max_count - 1 do
-			table.insert(temp, found_drawers[i])
-		end
-		found_drawers = temp
 	end
 
 	return found_drawers
