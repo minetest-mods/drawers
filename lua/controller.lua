@@ -214,9 +214,11 @@ local function controller_get_drawer_index(pos, itemstring)
 	-- is in the index but it's full, run the index_drawers function.
 	local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
 	-- Compatibility
-	for item, index in pairs(drawer_net_index) do
-		if index.drawer_pos then
-			drawer_net_index[item] = {table.copy(index)}
+	if drawer_net_index then
+		for item, index in pairs(drawer_net_index) do
+			if index.drawer_pos then
+				drawer_net_index[item] = {table.copy(index)}
+			end
 		end
 	end
 
