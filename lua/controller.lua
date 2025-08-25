@@ -46,26 +46,6 @@ local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
 local digilines_loaded = core.get_modpath("digilines") and digilines
 local techage_loaded = core.get_modpath("techage") and techage
 
-local function controller_formspec(pos)
-	local formspec =
-		"size[9,8.5]"..
-		drawers.gui_bg..
-		drawers.gui_slots..
-		"label[0,0;" .. S("Drawer Controller") .. "]" ..
-		"list[current_name;src;4,1.75;1,1;]"..
-		drawers.inventory_list(4.25) ..
-		"listring[current_player;main]"..
-		"listring[current_name;src]"..
-		"listring[current_player;main]"
-
-	if digilines_loaded and pipeworks_loaded then
-		formspec = formspec .. "field[1,3.5;4,1;digilineChannel;" .. S("Digiline Channel") .. ";${digilineChannel}]"
-		formspec = formspec .. "button_exit[5,3.2;2,1;saveChannel;" .. S("Save") .. "]"
-	end
-
-	return formspec
-end
-
 local function is_valid_drawer_index_slot(net_index, item_name)
 	local item_index = net_index and net_index[item_name]
 	if not (item_index and item_index.drawer_positions and item_index.visualid) then
@@ -256,6 +236,7 @@ local function controller_insert_to_drawers(pos, stack)
 	local item_name = stack:get_name()
 	local drawer_net_index = controller_get_drawer_index(pos, item_name)
 	local leftover = ItemStack(stack)
+	local distribute = meta:get_string("distribute") == "true"
 
 	-- Fill partially filled drawers first
 	if drawer_net_index[item_name] then
@@ -271,7 +252,7 @@ local function controller_insert_to_drawers(pos, stack)
 					content.count < content.maxCount and
 					drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
 				leftover = drawers.drawer_insert_object(drawer_pos, leftover, visualid)
-				if leftover:is_empty() then
+				if leftover:is_empty() or not distribute then
 					break
 				end
 			end
@@ -297,7 +278,7 @@ local function controller_insert_to_drawers(pos, stack)
 				drawer_net_index[item_name] = drawer_net_index[item_name] or {}
 				table.insert(drawer_net_index[item_name], {drawer_pos=drawer_pos, visualid=visualid})
 
-				if leftover:is_empty() then
+				if leftover:is_empty() or not distribute then
 					break
 				end
 			else
@@ -312,6 +293,32 @@ local function controller_insert_to_drawers(pos, stack)
 	return leftover
 end
 
+local function controller_update_formspec(pos)
+	local meta = core.get_meta(pos)
+
+	local formspec =
+		"size[9,8.5]"..
+		drawers.gui_bg..
+		drawers.gui_slots..
+		"label[0,0;" .. S("Drawer Controller") .. "]" ..
+		"list[current_name;src;4,1.75;1,1;]"..
+		drawers.inventory_list(4.25) ..
+		"listring[current_player;main]"..
+		"listring[current_name;src]"..
+		"listring[current_player;main]"
+
+	local distribute = meta:get_string("distribute") == "true" and "true" or "false"
+	local checkbox_x = 0.7
+	if digilines_loaded and pipeworks_loaded then
+		formspec = formspec .. "field[0.8,3.5;3,1;digilineChannel;" .. S("Digiline Channel") .. ";${digilineChannel}]"
+		formspec = formspec .. "button_exit[3.5,3.2;2,1;saveChannel;" .. S("Save") .. "]"
+		checkbox_x = 5.7
+	end
+	formspec = formspec .. "checkbox[" .. checkbox_x .. ",3.2;distribute;" .. S("Drawer Distribution") .. ";" .. distribute .. "]"
+
+	meta:set_string("formspec", formspec)
+end
+
 local function controller_can_dig(pos, player)
 	local meta = core.get_meta(pos);
 	local inv = meta:get_inventory()
@@ -321,7 +328,7 @@ end
 local function controller_on_construct(pos)
 	local meta = core.get_meta(pos)
 	meta:set_string("drawers_table_index", "")
-	meta:set_string("formspec", controller_formspec(pos))
+	controller_update_formspec(pos)
 
 	meta:get_inventory():set_size("src", 1)
 end
@@ -342,6 +349,7 @@ local function controller_allow_metadata_inventory_put(pos, listname, index, sta
 	local item_name = stack:get_name()
 	local leftover = ItemStack(stack)
 	local drawer_net_index = controller_get_drawer_index(pos, item_name)
+	local distribute = core.get_meta(pos):get_string("distribute") == "true"
 
 	if drawer_net_index[item_name] then
 		for _, drawer in ipairs(drawer_net_index[item_name]) do
@@ -351,8 +359,8 @@ local function controller_allow_metadata_inventory_put(pos, listname, index, sta
 			if drawers.drawer_get_content(drawer_pos, visualid).name == item_name then
 				local can_insert = drawers.drawer_can_insert_stack(drawer_pos, leftover, visualid)
 				leftover:take_item(can_insert)
-				if leftover:is_empty() then
-					return stack:get_count()
+				if can_insert > 0 and (leftover:is_empty() or not distribute) then
+					return stack:get_count() - leftover:get_count()
 				end
 			end
 		end
@@ -366,8 +374,8 @@ local function controller_allow_metadata_inventory_put(pos, listname, index, sta
 			if drawers.drawer_get_content(drawer_pos, visualid).name == "" then
 				local can_insert = drawers.drawer_can_insert_stack(drawer_pos, leftover, visualid)
 				leftover:take_item(can_insert)
-				if leftover:is_empty() then
-					return stack:get_count()
+				if can_insert > 0 and (leftover:is_empty() or not distribute) then
+					return stack:get_count() - leftover:get_count()
 				end
 			end
 		end
@@ -424,12 +432,14 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 	end
 
 	local taken_stack = ItemStack()
+	local distribute = meta:get_string("distribute") == "true"
 	for _, drawer in ipairs(index) do
 		local from_drawer = drawers.drawer_take_item(drawer.drawer_pos, stack)
-		stack:take_item(from_drawer:get_count())
+		local drawer_amount = from_drawer:get_count()
+		stack:take_item(drawer_amount)
 		taken_stack:add_item(from_drawer)
 
-		if stack:is_empty() then
+		if drawer_amount > 0 and (stack:is_empty() or not distribute) then
 			break
 		end
 	end
@@ -449,6 +459,11 @@ local function controller_on_receive_fields(pos, formname, fields, sender)
 	if fields.saveChannel then
 		meta:set_string("digilineChannel", fields.digilineChannel)
 	end
+	if fields.distribute then
+		meta:set_string("distribute", fields.distribute)
+	end
+
+	controller_update_formspec(pos)
 end
 
 -- Registers the drawer controller

@@ -5,7 +5,8 @@
 Empty=Пусто
 Drawer Controller=Контролер ящиков
 Digiline Channel=Канал digiline
-Save=Сохранить
+Save=
+Drawer Distribution=Сохранить
 @1 (@2% full)=@1 (заполнен на @2%)
 @1 @2 (@3% full)=@1 @2 (заполнен на @3%)
 Acacia Wood=акации

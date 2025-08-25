@@ -5,7 +5,8 @@
 Empty=Пусто
 Drawer Controller=Контролер Шухляд
 Digiline Channel=Канал Digiline
-Save=Зберегти
+Save=
+Drawer Distribution=Зберегти
 @1 (@2% full)=@1 (заповнена на @2%)
 @1 @2 (@3% full)=@2 x@1 (заповнена на @3%)
 Acacia Wood=акації
