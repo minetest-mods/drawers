@@ -341,18 +341,18 @@ local function controller_on_blast(pos)
 	return drops
 end
 
-local function controller_allow_metadata_inventory_put(pos, listname, index, stack, player)
+local function controller_allow_metadata_inventory_put(pos, listname, _, stack, player)
 	if (player and core.is_protected(pos, player:get_player_name())) or listname ~= "src" then
 		return 0
 	end
 
-	local item_name = stack:get_name()
 	local leftover = ItemStack(stack)
-	local drawer_net_index = controller_get_drawer_index(pos, item_name)
+	local stack_name = stack:get_name()
+	local drawer_net_index = controller_get_drawer_index(pos, stack_name)
 	local distribute = core.get_meta(pos):get_string("distribute") == "true"
 
-	if drawer_net_index[item_name] then
-		for _, drawer in ipairs(drawer_net_index[item_name]) do
+	local function try_index(index, item_name)
+		for _, drawer in ipairs(drawer_net_index[index]) do
 			local drawer_pos = drawer.drawer_pos
 			local visualid = drawer.visualid
 
@@ -360,25 +360,14 @@ local function controller_allow_metadata_inventory_put(pos, listname, index, sta
 				local can_insert = drawers.drawer_can_insert_stack(drawer_pos, leftover, visualid)
 				leftover:take_item(can_insert)
 				if can_insert > 0 and (leftover:is_empty() or not distribute) then
-					return stack:get_count() - leftover:get_count()
+					return true
 				end
 			end
 		end
 	end
 
-	if drawer_net_index["empty"] then
-		for _, drawer in ipairs(drawer_net_index["empty"]) do
-			local drawer_pos = drawer.drawer_pos
-			local visualid = drawer.visualid
-
-			if drawers.drawer_get_content(drawer_pos, visualid).name == "" then
-				local can_insert = drawers.drawer_can_insert_stack(drawer_pos, leftover, visualid)
-				leftover:take_item(can_insert)
-				if can_insert > 0 and (leftover:is_empty() or not distribute) then
-					return stack:get_count() - leftover:get_count()
-				end
-			end
-		end
+	if not try_index(stack_name, stack_name) then
+		try_index("empty", "")
 	end
 
 	return stack:get_count() - leftover:get_count()
