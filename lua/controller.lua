@@ -352,7 +352,10 @@ local function controller_allow_metadata_inventory_put(pos, listname, _, stack, 
 	local distribute = core.get_meta(pos):get_string("distribute") == "true"
 
 	local function try_index(index, item_name)
-		for _, drawer in ipairs(drawer_net_index[index]) do
+		index = drawer_net_index[index]
+		if not index then return end
+
+		for _, drawer in ipairs(index) do
 			local drawer_pos = drawer.drawer_pos
 			local visualid = drawer.visualid
 
