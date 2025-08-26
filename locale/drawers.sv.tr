@@ -5,8 +5,8 @@
 Empty=Tom
 Drawer Controller=Lådkontroll
 Digiline Channel=Digilinekanal
-Save=
-Drawer Distribution=Spara
+Save=Spara
+Drawer Distribution=
 @1 (@2% full)=@1 (@2% fullt)
 @1 @2 (@3% full)=@1 @2 (@3% fullt)
 Acacia Wood=Acaciaträ
