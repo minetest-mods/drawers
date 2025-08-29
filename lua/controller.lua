@@ -46,6 +46,8 @@ local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
 local digilines_loaded = core.get_modpath("digilines") and digilines
 local techage_loaded = core.get_modpath("techage") and techage
 
+local max_matches = tonumber(core.settings:get("drawers.controller_max_matches")) or 50
+
 local function controller_formspec(pos)
 	local formspec =
 		"size[9,8.5]"..
@@ -314,9 +316,9 @@ local function controller_get_network_info(pos, offset, max_count)
 
 	-- Offset must be an integer and >= 1
 	offset = math.max(1, math.floor(tonumber(offset) or 1))
-	-- Max count must be an integer, >= 1, and <= MAX_MATCHES
-	max_count = math.floor(tonumber(max_count) or drawers.CONTROLLER_MAX_MATCHES)
-	max_count = math.min(math.max(1, max_count), drawers.CONTROLLER_MAX_MATCHES)
+	-- Max count must be an integer, >= 1, and <= max_matches
+	max_count = math.floor(tonumber(max_count) or max_matches)
+	max_count = math.min(math.max(1, max_count), max_matches)
 
 	for i = offset, offset + max_count - 1 do
 		local position = connected_drawers[i]
