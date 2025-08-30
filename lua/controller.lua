@@ -46,41 +46,19 @@ local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
 local digilines_loaded = core.get_modpath("digilines") and digilines
 local techage_loaded = core.get_modpath("techage") and techage
 
-local function controller_formspec(pos)
-	local formspec =
-		"size[9,8.5]"..
-		drawers.gui_bg..
-		drawers.gui_slots..
-		"label[0,0;" .. S("Drawer Controller") .. "]" ..
-		"list[current_name;src;4,1.75;1,1;]"..
-		drawers.inventory_list(4.25) ..
-		"listring[current_player;main]"..
-		"listring[current_name;src]"..
-		"listring[current_player;main]"
-
-	if digilines_loaded and pipeworks_loaded then
-		formspec = formspec .. "field[1,3.5;4,1;digilineChannel;" .. S("Digiline Channel") .. ";${digilineChannel}]"
-		formspec = formspec .. "button_exit[5,3.2;2,1;saveChannel;" .. S("Save") .. "]"
+local function is_valid_drawer_index_slot(net_index, item_name)
+	local item_index = net_index and net_index[item_name]
+	if not (item_index and item_index.drawer_positions and item_index.visualid) then
+		return false
 	end
 
-	return formspec
-end
+	for _, position in ipairs(item_index.drawer_positions) do
+		if not (position.x and position.y and position.z) then
+			return false
+		end
+	end
 
-local function is_valid_drawer_index_slot(net_index, item_name)
-	return net_index and
-			net_index[item_name] and
-			net_index[item_name].drawer_pos and
-			net_index[item_name].drawer_pos.x and
-			net_index[item_name].drawer_pos.y and
-			net_index[item_name].drawer_pos.z and
-			net_index[item_name].visualid
-end
-
-local function controller_index_slot(pos, visualid)
-	return {
-		drawer_pos = pos,
-		visualid = visualid
-	}
+	return true
 end
 
 local function compare_pos(pos1, pos2)
@@ -148,24 +126,10 @@ local function add_drawer_to_inventory(controllerInventory, pos)
 		local item_id = meta:get_string("name" .. slot_id)
 		local drawer_meta_entity_infotext = meta:get_string("entity_infotext" .. slot_id)
 
-		if item_id == "" and not controllerInventory["empty"] then
-			controllerInventory["empty"] = controller_index_slot(pos, slot_id)
-		elseif item_id ~= "" then
-			-- If we already indexed this item previously, check which drawer
-			-- has the most space and have that one be the one indexed
-			if controllerInventory[item_id] then
-				local content = drawers.drawer_get_content(controllerInventory[item_id].drawer_pos, controllerInventory[item_id].visualid)
-				local new_content = drawers.drawer_get_content(pos, slot_id)
-
-				-- If the already indexed drawer has less space, we override the
-				-- table index for that item with the new drawer
-				if (new_content.maxCount - new_content.count) > (content.maxCount - content.count) then
-					controllerInventory[item_id] = controller_index_slot(pos, slot_id)
-				end
-			else
-				controllerInventory[item_id] = controller_index_slot(pos, slot_id)
-			end
-		end
+		-- keep track of each instance of an item (or lack thereof)
+		local key = (item_id == "" and "empty") or item_id
+		controllerInventory[key] = controllerInventory[key] or {}
+		table.insert(controllerInventory[key], {drawer_pos=pos, visualid=slot_id})
 
 		i = i + 1
 	end
@@ -217,32 +181,34 @@ end
 
 --[[
 	Returns a table of all stored itemstrings in the drawer network with their
-	drawer position and visualid.
+	drawer positions and visualid.
 
 	It uses the cached data, if possible, but if the itemstring is not contained
 	the network is reindexed.
 ]]
 local function controller_get_drawer_index(pos, itemstring)
 	local meta = core.get_meta(pos)
+	local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
 
 	-- If the index has not been created, the item isn't in the index, the
 	-- item in the drawer is no longer the same item in the index, or the item
 	-- is in the index but it's full, run the index_drawers function.
-	local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
-
-	-- If the index has not been created
-	-- If the item isn't in the index (or the index is corrupted)
 	if not is_valid_drawer_index_slot(drawer_net_index, itemstring) then
 		drawer_net_index = index_drawers(pos)
 		meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
 
 	-- There is a valid entry in the index: check that the entry is still up-to-date
 	else
-		local content = drawers.drawer_get_content(
-			drawer_net_index[itemstring].drawer_pos,
-			drawer_net_index[itemstring].visualid)
+		local up_to_date = true
+		for _, index in ipairs(drawer_net_index[itemstring]) do
+			local content = drawers.drawer_get_content(index.drawer_pos, index.visualid)
+			if content.name ~= itemstring or content.count >= content.maxCount then
+				up_to_date = false
+				break
+			end
+		end
 
-		if content.name ~= itemstring or content.count >= content.maxCount then
+		if not up_to_date then
 			drawer_net_index = index_drawers(pos)
 			meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
 		end
@@ -256,45 +222,90 @@ local function controller_insert_to_drawers(pos, stack)
 	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 
-	local drawer_net_index = controller_get_drawer_index(pos, stack:get_name())
+	local item_name = stack:get_name()
+	local drawer_net_index = controller_get_drawer_index(pos, item_name)
+	local leftover = ItemStack(stack)
+	local distribute = meta:get_string("distribute") == "true"
 
-	-- We check if there is a drawer with the item and it isn't full. We will
-	-- put the items we can into it.
-	if drawer_net_index[stack:get_name()] then
-		local drawer_pos = drawer_net_index[stack:get_name()]["drawer_pos"]
-		local visualid = drawer_net_index[stack:get_name()]["visualid"]
-		local content = drawers.drawer_get_content(drawer_pos, visualid)
+	-- Fill partially filled drawers first
+	if drawer_net_index[item_name] then
+		for _, drawer in ipairs(drawer_net_index[item_name]) do
+			local drawer_pos = drawer.drawer_pos
+			local visualid = drawer.visualid
 
-		-- If the the item in the drawer is the same as the one we are trying to
-		-- store, the drawer is not full, and the drawer entity is loaded, we
-		-- will put the items in the drawer
-		if content.name == stack:get_name() and
-				content.count < content.maxCount and
-				drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
-			return drawers.drawer_insert_object(drawer_pos, stack, visualid)
-		end
-	elseif drawer_net_index["empty"] then
-		local drawer_pos = drawer_net_index["empty"]["drawer_pos"]
-		local visualid = drawer_net_index["empty"]["visualid"]
-		local content = drawers.drawer_get_content(drawer_pos, visualid)
-
-		-- If the drawer is still empty and the drawer entity is loaded, we will
-		-- put the items in the drawer
-		if content.name == "" and drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
-			local leftover = drawers.drawer_insert_object(drawer_pos, stack, visualid)
-
-			-- Add the item to the drawers table index and set the empty one to nil
-			drawer_net_index["empty"] = nil
-			drawer_net_index[stack:get_name()] = controller_index_slot(drawer_pos, visualid)
-
-			-- Set the controller metadata
-			meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
-
-			return leftover
+			-- If the the item in the drawer is the same as the one we are
+			-- trying to store, the drawer is not full, and the drawer entity is
+			-- loaded, we will put the items in the drawer
+			local content = drawers.drawer_get_content(drawer_pos, visualid)
+			if content.name == item_name and
+					content.count < content.maxCount and
+					drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
+				leftover = drawers.drawer_insert_object(drawer_pos, leftover, visualid)
+				if leftover:is_empty() or not distribute then
+					break
+				end
+			end
 		end
 	end
 
-	return stack
+	-- Fill empty drawers if any leftover remains
+	if not leftover:is_empty() and drawer_net_index["empty"] then
+		local i = 1
+		while i <= #drawer_net_index["empty"] do
+			local drawer = drawer_net_index["empty"][i]
+			local drawer_pos = drawer.drawer_pos
+			local visualid = drawer.visualid
+
+			-- If the drawer is still empty and the drawer entity is loaded, we
+			-- will put the items in the drawer
+			local content = drawers.drawer_get_content(drawer_pos, visualid)
+			if content.name == "" and drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
+				leftover = drawers.drawer_insert_object(drawer_pos, leftover, visualid)
+
+				-- Add the item to the drawers table index and remove the empty one
+				table.remove(drawer_net_index["empty"], i)
+				drawer_net_index[item_name] = drawer_net_index[item_name] or {}
+				table.insert(drawer_net_index[item_name], {drawer_pos=drawer_pos, visualid=visualid})
+
+				if leftover:is_empty() or not distribute then
+					break
+				end
+			else
+				i = i + 1
+			end
+		end
+
+		-- Set the controller metadata
+		meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
+	end
+
+	return leftover
+end
+
+local function controller_update_formspec(pos)
+	local meta = core.get_meta(pos)
+
+	local formspec =
+		"size[9,8.5]"..
+		drawers.gui_bg..
+		drawers.gui_slots..
+		"label[0,0;" .. S("Drawer Controller") .. "]" ..
+		"list[current_name;src;4,1.75;1,1;]"..
+		drawers.inventory_list(4.25) ..
+		"listring[current_player;main]"..
+		"listring[current_name;src]"..
+		"listring[current_player;main]"
+
+	local distribute = meta:get_string("distribute") == "true" and "true" or "false"
+	local checkbox_x = 0.7
+	if digilines_loaded and pipeworks_loaded then
+		formspec = formspec .. "field[0.8,3.5;3,1;digilineChannel;" .. S("Digiline Channel") .. ";${digilineChannel}]"
+		formspec = formspec .. "button_exit[3.5,3.2;2,1;saveChannel;" .. S("Save") .. "]"
+		checkbox_x = 5.7
+	end
+	formspec = formspec .. "checkbox[" .. checkbox_x .. ",3.2;distribute;" .. S("Drawer Distribution") .. ";" .. distribute .. "]"
+
+	meta:set_string("formspec", formspec)
 end
 
 local function controller_can_dig(pos, player)
@@ -306,7 +317,7 @@ end
 local function controller_on_construct(pos)
 	local meta = core.get_meta(pos)
 	meta:set_string("drawers_table_index", "")
-	meta:set_string("formspec", controller_formspec(pos))
+	controller_update_formspec(pos)
 
 	meta:get_inventory():set_size("src", 1)
 end
@@ -319,30 +330,39 @@ local function controller_on_blast(pos)
 	return drops
 end
 
-local function controller_allow_metadata_inventory_put(pos, listname, index, stack, player)
+local function controller_allow_metadata_inventory_put(pos, listname, _, stack, player)
 	if (player and core.is_protected(pos, player:get_player_name())) or listname ~= "src" then
 		return 0
 	end
 
-	local drawer_net_index = controller_get_drawer_index(pos, stack:get_name())
+	local leftover = ItemStack(stack)
+	local stack_name = stack:get_name()
+	local drawer_net_index = controller_get_drawer_index(pos, stack_name)
+	local distribute = core.get_meta(pos):get_string("distribute") == "true"
 
-	if drawer_net_index[stack:get_name()] then
-		local drawer = drawer_net_index[stack:get_name()]
+	local function try_index(index, item_name)
+		index = drawer_net_index[index]
+		if not index then return end
 
-		if drawers.drawer_get_content(drawer.drawer_pos, drawer.visualid).name == stack:get_name() then
-			return drawers.drawer_can_insert_stack(drawer.drawer_pos, stack, drawer["visualid"])
+		for _, drawer in ipairs(index) do
+			local drawer_pos = drawer.drawer_pos
+			local visualid = drawer.visualid
+
+			if drawers.drawer_get_content(drawer_pos, visualid).name == item_name then
+				local can_insert = drawers.drawer_can_insert_stack(drawer_pos, leftover, visualid)
+				leftover:take_item(can_insert)
+				if can_insert > 0 and (leftover:is_empty() or not distribute) then
+					return true
+				end
+			end
 		end
 	end
 
-	if drawer_net_index["empty"] then
-		local drawer = drawer_net_index["empty"]
-
-		if drawers.drawer_get_content(drawer.drawer_pos, drawer.visualid).name == "" then
-			return drawers.drawer_can_insert_stack(drawer.drawer_pos, stack, drawer.visualid)
-		end
+	if not try_index(stack_name, stack_name) then
+		try_index("empty", "")
 	end
 
-	return 0
+	return stack:get_count() - leftover:get_count()
 end
 
 local function controller_allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
@@ -382,20 +402,32 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 		return -- Protect against ItemStack(...) errors
 	end
 
-	local item = ItemStack(msg)
-	local drawers_index = controller_get_drawer_index(pos, item:get_name())
+	local stack = ItemStack(msg)
+	local item_name = stack:get_name()
+	local drawers_index = controller_get_drawer_index(pos, item_name)
+	local index = drawers_index[item_name]
 
-	if not drawers_index[item:get_name()] then
+	if not index then
 		-- we can't do anything: the requested item doesn't exist
 		return
 	end
 
-	local taken_stack = drawers.drawer_take_item(
-		drawers_index[item:get_name()]["drawer_pos"], item)
-	local dir = core.facedir_to_dir(core.get_node(pos).param2)
+	local taken_stack = ItemStack()
+	local distribute = meta:get_string("distribute") == "true"
+	for _, drawer in ipairs(index) do
+		local from_drawer = drawers.drawer_take_item(drawer.drawer_pos, stack)
+		local drawer_amount = from_drawer:get_count()
+		stack:take_item(drawer_amount)
+		taken_stack:add_item(from_drawer)
+
+		if drawer_amount > 0 and (stack:is_empty() or not distribute) then
+			break
+		end
+	end
 
 	-- prevent crash if taken_stack ended up with a nil value
-	if taken_stack then
+	if taken_stack and not taken_stack:is_empty() then
+		local dir = core.facedir_to_dir(core.get_node(pos).param2)
 		pipeworks.tube_inject_item(pos, pos, dir, taken_stack:to_string())
 	end
 end
@@ -408,6 +440,11 @@ local function controller_on_receive_fields(pos, formname, fields, sender)
 	if fields.saveChannel then
 		meta:set_string("digilineChannel", fields.digilineChannel)
 	end
+	if fields.distribute then
+		meta:set_string("distribute", fields.distribute)
+	end
+
+	controller_update_formspec(pos)
 end
 
 -- Registers the drawer controller
@@ -513,6 +550,26 @@ end
 
 -- register drawer controller
 register_controller()
+
+core.register_lbm({
+	label = "Update cached controller index",
+	name = "drawers:update_controller_index",
+	nodenames = {"drawers:controller"},
+	run_at_every_load = false,
+	action = function(pos, node)
+		local meta = core.get_meta(pos)
+		local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
+		if drawer_net_index then
+			for item, index in pairs(drawer_net_index) do
+				if index.drawer_pos then
+					drawer_net_index[item] = {table.copy(index)}
+				end
+			end
+		end
+		meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
+		controller_update_formspec(pos)
+	end
+})
 
 if default_loaded then
 	core.register_craft({
