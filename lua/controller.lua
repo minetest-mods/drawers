@@ -188,22 +188,11 @@ end
 ]]
 local function controller_get_drawer_index(pos, itemstring)
 	local meta = core.get_meta(pos)
+	local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
 
 	-- If the index has not been created, the item isn't in the index, the
 	-- item in the drawer is no longer the same item in the index, or the item
 	-- is in the index but it's full, run the index_drawers function.
-	local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
-	-- Compatibility
-	if drawer_net_index then
-		for item, index in pairs(drawer_net_index) do
-			if index.drawer_pos then
-				drawer_net_index[item] = {table.copy(index)}
-			end
-		end
-	end
-
-	-- If the index has not been created
-	-- If the item isn't in the index (or the index is corrupted)
 	if not is_valid_drawer_index_slot(drawer_net_index, itemstring) then
 		drawer_net_index = index_drawers(pos)
 		meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
@@ -561,6 +550,26 @@ end
 
 -- register drawer controller
 register_controller()
+
+core.register_lbm({
+	label = "Update cached controller index",
+	name = "drawers:update_controller_index",
+	nodenames = {"drawers:controller"},
+	run_at_every_load = false,
+	action = function(pos, node)
+		local meta = core.get_meta(pos)
+		local drawer_net_index = core.deserialize(meta:get_string("drawers_table_index"))
+		if drawer_net_index then
+			for item, index in pairs(drawer_net_index) do
+				if index.drawer_pos then
+					drawer_net_index[item] = {table.copy(index)}
+				end
+			end
+		end
+		meta:set_string("drawers_table_index", core.serialize(drawer_net_index))
+		controller_update_formspec(pos)
+	end
+})
 
 if default_loaded then
 	core.register_craft({
