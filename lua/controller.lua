@@ -262,8 +262,8 @@ local function controller_insert_to_drawers(pos, stack)
 			if content.name == "" and drawers.drawer_visuals[core.hash_node_position(drawer_pos)] then
 				leftover = drawers.drawer_insert_object(drawer_pos, leftover, visualid)
 
-				-- Add the item to the drawers table index and set the empty one to nil
-				drawer_net_index["empty"][i] = nil
+				-- Add the item to the drawers table index and remove the empty one
+				table.remove(drawer_net_index["empty"], i)
 				drawer_net_index[item_name] = drawer_net_index[item_name] or {}
 				table.insert(drawer_net_index[item_name], {drawer_pos=drawer_pos, visualid=visualid})
 
