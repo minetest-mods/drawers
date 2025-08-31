@@ -48,6 +48,27 @@ local techage_loaded = core.get_modpath("techage") and techage
 
 local max_matches = tonumber(core.settings:get("drawers.controller_max_matches")) or 50
 
+-- Cache content IDS of all registered drawer items
+local controller_content_id
+local drawer_content_ids = {}
+for name, _ in pairs(core.registered_items) do
+	if core.get_item_group(name, "drawer") > 0 or core.get_item_group(name, "drawer_connector") > 0 then
+		drawer_content_ids[core.get_content_id(name)] = true
+	end
+end
+
+-- Cache position offsets to find connected drawers
+local offsets = {}
+for dx = -1, 1 do
+	for dy = -1, 1 do
+		for dz = -1, 1 do
+			if dx ~= 0 or dy ~= 0 or dz ~= 0 then
+				table.insert(offsets, vector.new(dx, dy, dz))
+			end
+		end
+	end
+end
+
 local function controller_formspec(pos)
 	local formspec =
 		"size[9,8.5]"..
@@ -173,28 +194,40 @@ local function add_drawer_to_inventory(controllerInventory, pos)
 	end
 end
 
-local function find_connected_drawers(controller_pos, pos, foundPositions)
-	foundPositions = foundPositions or {}
-	pos = pos or controller_pos
+local function find_connected_drawers(controller_pos)
+	local minp = vector.subtract(controller_pos, drawers.CONTROLLER_RANGE)
+	local maxp = vector.add(controller_pos, drawers.CONTROLLER_RANGE)
 
-	local newPositions = core.find_nodes_in_area(
-		{x = pos.x - 1, y = pos.y - 1, z = pos.z - 1},
-		{x = pos.x + 1, y = pos.y + 1, z = pos.z + 1},
-		{"group:drawer", "group:drawer_connector"}
-	)
+	local vm = VoxelManip()
+	local emin, emax = vm:read_from_map(minp, maxp)
+	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
+	local data = vm:get_data()
 
-	for _,p in ipairs(newPositions) do
-		-- check that this node hasn't been scanned yet
-		if not compare_pos(pos, p) and not contains_pos(foundPositions, p)
-		   and pos_in_range(controller_pos, pos) then
-			-- add new position
-			table.insert(foundPositions, p)
-			-- search for other drawers from the new pos
-			find_connected_drawers(controller_pos, p, foundPositions)
+	local found = {}
+	local visited = {}
+
+	local function dfs(pos)
+		local index = area:indexp(pos)
+		if visited[index] then return end
+		visited[index] = true
+
+		local content_id = data[index]
+		if drawer_content_ids[content_id] then
+			table.insert(found, pos)
+		elseif content_id ~= controller_content_id then
+			return
+		end
+
+		for _, offset in ipairs(offsets) do
+			local neighbor = vector.add(pos, offset)
+			if pos_in_range(controller_pos, neighbor) then
+				dfs(neighbor)
+			end
 		end
 	end
 
-	return foundPositions
+	dfs(controller_pos)
+	return found
 end
 
 local function index_drawers(pos)
@@ -564,6 +597,7 @@ local function register_controller()
 	end
 
 	core.register_node("drawers:controller", def)
+	controller_content_id = core.get_content_id("drawers:controller")
 
 	if techage_loaded then
 		techage.register_node({"drawers:controller"}, {
