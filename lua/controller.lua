@@ -50,6 +50,7 @@ local max_matches = tonumber(core.settings:get("drawers.controller_max_matches")
 
 -- Cache content IDS of all registered drawer items
 local controller_content_id
+local trim_content_id = core.get_content_id("drawers:trim")
 local drawer_content_ids = {}
 for name, _ in pairs(core.registered_items) do
 	if core.get_item_group(name, "drawer") > 0 or core.get_item_group(name, "drawer_connector") > 0 then
@@ -213,7 +214,9 @@ local function find_connected_drawers(controller_pos)
 
 		local content_id = data[index]
 		if drawer_content_ids[content_id] then
-			table.insert(found, pos)
+			if content_id ~= trim_content_id then
+				table.insert(found, pos)
+			end
 		elseif content_id ~= controller_content_id then
 			return
 		end
