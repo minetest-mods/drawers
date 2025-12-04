@@ -506,7 +506,28 @@ local function register_controller()
 		techage.register_node({"drawers:controller"}, {
 			on_push_item = function(pos, in_dir, stack)
 				return controller_insert_to_drawers(pos, stack)
-			end
+			end,
+			on_pull_item = function(pos, in_dir, num, item_name)
+				if not item_name then
+					return
+				end
+
+				local item = ItemStack(item_name)
+				local drawers_index = controller_get_drawer_index(pos, item:get_name())
+
+				if not drawers_index[item:get_name()] then
+					-- we can't do anything: the requested item doesn't exist
+					return
+				end
+
+				item:set_count(num)
+				local taken_stack = drawers.drawer_take_item(drawers_index[item:get_name()]["drawer_pos"], item)
+
+				-- prevent crash if taken_stack ended up with a nil value
+				if taken_stack then
+					return taken_stack
+				end
+			end,
 		})
 	end
 end
