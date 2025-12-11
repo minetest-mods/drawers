@@ -394,7 +394,7 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 		drawers_index[item:get_name()]["drawer_pos"], item)
 	local dir = core.facedir_to_dir(core.get_node(pos).param2)
 
-	-- prevent crash if taken_stack ended up with a nil value
+	-- prevent error if taken_stack ended up with a nil value
 	if taken_stack then
 		pipeworks.tube_inject_item(pos, pos, dir, taken_stack:to_string())
 	end
@@ -506,7 +506,23 @@ local function register_controller()
 		techage.register_node({"drawers:controller"}, {
 			on_push_item = function(pos, in_dir, stack)
 				return controller_insert_to_drawers(pos, stack)
-			end
+			end,
+			on_pull_item = function(pos, in_dir, num, item_name)
+				if not item_name then
+					return
+				end
+
+				local item = ItemStack(item_name)
+				local drawers_index = controller_get_drawer_index(pos, item:get_name())
+
+				if not drawers_index[item:get_name()] then
+					-- we can't do anything: the requested item doesn't exist
+					return
+				end
+
+				item:set_count(num)
+				return drawers.drawer_take_item(drawers_index[item:get_name()]["drawer_pos"], item)
+			end,
 		})
 	end
 end
