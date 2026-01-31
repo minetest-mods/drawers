@@ -1,8 +1,9 @@
 # textdomain: drawers
+Shared=
 @1 Drawer=Šuplík @1
 @1 Drawers (1x2)=Šuplíky @1 (1x2)
 @1 Drawers (2x2)=Šuplíky @1 (2x2)
-Empty=Prázdný
+Wooden=Dřevěný
 Drawer Controller=
 Digiline Channel=
 Save=
@@ -25,4 +26,4 @@ Emerald Drawer Upgrade (x13)=Emeraldové vylepšení šuplíku (x13)
 Mithril Drawer Upgrade (x13)=Emeraldové vylepšení šuplíku (x13)
 Wooden Trim=Dřevěný Ořez
 Drawer Upgrade Template=Šablona vylepšení šuplíku
-Wooden=Dřevěný
+Empty=Prázdný

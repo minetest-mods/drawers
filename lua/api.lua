@@ -35,7 +35,10 @@ drawers.node_box_simple = {
 	{-0.4375, -0.5, -0.5, 0.4375, -0.4375, -0.4375},
 }
 
-drawers.drawer_formspec = "size[9,6.7]" ..
+drawers.shared = minetest.settings:get_bool("drawers.shared", true)
+
+local drawers_formspec_data = {}
+local drawer_formspec = "size[9,6.7]" ..
 	"list[context;upgrades;2,0.5;5,1;]" ..
 	drawers.inventory_list(2.5) ..
 	"listring[context;upgrades]" ..
@@ -44,8 +47,24 @@ drawers.drawer_formspec = "size[9,6.7]" ..
 	drawers.gui_slots ..
 	drawers.get_upgrade_slots_bg(2, 0.5)
 
+drawers.get_drawer_formspec = function(pos)
+	if not drawers.shared then
+		return drawers.drawer_formspec
+	end
+
+	local shared
+	if minetest.get_meta(pos):get_string("shared") == "true" then
+		shared = "true"
+	else
+		shared = "false"
+	end
+
+	return drawer_formspec ..
+		"checkbox[3.5,1.5;shared;" .. S("Shared") .. ";" .. shared .. "]"
+end
+
 -- construct drawer
-function drawers.drawer_on_construct(pos)
+local drawer_on_construct = function(pos)
 	local node = core.get_node(pos)
 	local ndef = core.registered_nodes[node.name]
 	local drawerType = ndef.groups.drawer
@@ -78,13 +97,22 @@ function drawers.drawer_on_construct(pos)
 
 	-- create drawer upgrade inventory
 	meta:get_inventory():set_size("upgrades", 5)
+end
 
-	-- set the formspec
-	meta:set_string("formspec", drawers.drawer_formspec)
+-- show formspec on right click
+local drawer_on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+	if not clicker:is_player() then
+		return
+	end
+	local pname = clicker:get_player_name()
+	if not minetest.is_protected(pos, pname) then
+		drawers_formspec_data[pname] = pos
+		minetest.show_formspec(pname, "drawers:drawer", drawers.get_drawer_formspec(pos))
+	end
 end
 
 -- destruct drawer
-function drawers.drawer_on_destruct(pos)
+local drawer_on_destruct = function(pos)
 	drawers.remove_visuals(pos)
 
 	-- clean up visual cache
@@ -94,7 +122,7 @@ function drawers.drawer_on_destruct(pos)
 end
 
 -- drop all items
-function drawers.drawer_on_dig(pos, node, player)
+local drawer_on_dig = function(pos, node, player)
 	local drawerType = 1
 	if core.registered_nodes[node.name] then
 		drawerType = core.registered_nodes[node.name].groups.drawer
@@ -145,7 +173,7 @@ function drawers.drawer_on_dig(pos, node, player)
 	core.node_dig(pos, node, player)
 end
 
-function drawers.drawer_allow_metadata_inventory_put(pos, listname, index, stack, player)
+local drawer_allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 	if core.is_protected(pos,player:get_player_name()) then
 	   core.record_protection_violation(pos,player:get_player_name())
 	   return 0
@@ -162,14 +190,14 @@ function drawers.drawer_allow_metadata_inventory_put(pos, listname, index, stack
 	return 1
 end
 
-function drawers.add_drawer_upgrade(pos, listname, index, stack, player)
+local add_drawer_upgrade = function(pos, listname, index, stack, player)
 	-- only do anything if adding to upgrades
 	if listname ~= "upgrades" then return end
 
 	drawers.update_drawer_upgrades(pos)
 end
 
-function drawers.remove_drawer_upgrade(pos, listname, index, stack, player)
+local remove_drawer_upgrade = function(pos, listname, index, stack, player)
 	-- only do anything if adding to upgrades
 	if listname ~= "upgrades" then return end
 
@@ -291,13 +319,14 @@ function drawers.register_drawer(name, def)
 	def.drawer_stack_max_factor = def.drawer_stack_max_factor or 24
 
 	-- events
-	def.on_construct = drawers.drawer_on_construct
-	def.on_destruct = drawers.drawer_on_destruct
-	def.on_dig = drawers.drawer_on_dig
-	def.allow_metadata_inventory_put = drawers.drawer_allow_metadata_inventory_put
-	def.allow_metadata_inventory_take = drawers.drawer_allow_metadata_inventory_put
-	def.on_metadata_inventory_put = drawers.add_drawer_upgrade
-	def.on_metadata_inventory_take = drawers.remove_drawer_upgrade
+	def.on_construct = drawer_on_construct
+	def.on_rightclick = drawer_on_rightclick
+	def.on_destruct = drawer_on_destruct
+	def.on_dig = drawer_on_dig
+	def.allow_metadata_inventory_put = drawer_allow_metadata_inventory_put
+	def.allow_metadata_inventory_take = drawer_allow_metadata_inventory_put
+	def.on_metadata_inventory_put = add_drawer_upgrade
+	def.on_metadata_inventory_take = remove_drawer_upgrade
 
 	if minetest.get_modpath("screwdriver") and screwdriver then
 		def.on_rotate = def.on_rotate or screwdriver.disallow
@@ -425,3 +454,13 @@ function drawers.register_drawer_upgrade(name, def)
 	end
 end
 
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname ~= "drawers:drawer" then return end
+	local pname = player:get_player_name()
+	local pos = drawers_formspec_data[pname]
+	if pos and fields.shared then
+		local meta = minetest.get_meta(pos)
+		meta:set_string("shared", fields.shared)
+	end
+	drawers_formspec_data[pname] = nil
+end)
