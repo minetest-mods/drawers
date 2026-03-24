@@ -114,44 +114,63 @@ function drawers.drawer_on_dig(pos, node, player)
 	if core.registered_nodes[node.name] then
 		drawerType = core.registered_nodes[node.name].groups.drawer
 	end
-	if core.is_protected(pos,player:get_player_name()) then
-	   core.record_protection_violation(pos,player:get_player_name())
-	   return 0
+
+	-- Handle player being nil (e.g., if called via core.dig_node with no digger)
+	local name = player and player:get_player_name() or ""
+	if core.is_protected(pos, name) then
+		core.record_protection_violation(pos, name)
+		return false
 	end
+
 	local meta = core.get_meta(pos)
+	local inv = player and player:get_inventory()
 
-	local k = 1
-	while k <= drawerType do
-		-- don't add a number in meta fields for 1x1 drawers
-		local vid = tostring(k)
-		if drawerType == 1 then vid = "" end
-		local count = meta:get_int("count"..vid)
-		local name = meta:get_string("name"..vid)
+	-- Helper to give to player OR drop on ground
+	local function give_or_drop(stack)
+		if stack:is_empty() then return end
 
-		-- drop the items
-		local stack_max = ItemStack(name):get_stack_max()
-
-		local j = math.floor(count / stack_max) + 1
-		local i = 1
-		while i <= j do
-			local rndpos = drawers.randomize_pos(pos)
-			if i ~= j then
-				core.add_item(rndpos, name .. " " .. stack_max)
-			else
-				core.add_item(rndpos, name .. " " .. count % stack_max)
-			end
-			i = i + 1
+		local leftover = stack
+		if inv then
+			leftover = inv:add_item("main", stack)
 		end
-		k = k + 1
+
+		if not leftover:is_empty() then
+			-- Use the player for item_drop if they exist, otherwise use the position
+			if player then
+				core.item_drop(leftover, player, drawers.randomize_pos(pos))
+			else
+				core.add_item(drawers.randomize_pos(pos), leftover)
+			end
+		end
 	end
 
-	-- drop all drawer upgrades
-	local upgrades = meta:get_inventory():get_list("upgrades")
+	-- Transfer drawer upgrades
+	local upgrade_inv = meta:get_inventory()
+	local upgrades = upgrade_inv:get_list("upgrades")
 	if upgrades then
-		for _,itemStack in pairs(upgrades) do
-			if itemStack:get_count() > 0 then
-				local rndpos = drawers.randomize_pos(pos)
-				core.add_item(rndpos, itemStack:get_name())
+		for _, stack in ipairs(upgrades) do
+			give_or_drop(stack)
+		end
+	end
+
+	-- Transfer drawer contents
+	for k = 1, drawerType do
+		local slot_suffix = tostring(k)
+		if drawerType == 1 then slot_suffix = "" end
+
+		local item_name = meta:get_string("name" .. slot_suffix)
+		local count = meta:get_int("count" .. slot_suffix)
+
+		if item_name ~= "" then
+			local stack_max = ItemStack(item_name):get_stack_max()
+
+			while count > 0 do
+				local batch = math.min(count, stack_max)
+				local stack = ItemStack(item_name)
+				stack:set_count(batch)
+
+				give_or_drop(stack)
+				count = count - batch
 			end
 		end
 	end
