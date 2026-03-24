@@ -440,3 +440,36 @@ function drawers.register_drawer_upgrade(name, def)
 	end
 end
 
+core.register_chatcommand("drawers_fix", {
+	description = "Refreshes nearby drawer contents' visual indicators.\n" ..
+		"Should not be necessary except to update in bulk on an old save.",
+	privs = { interact = true },
+	func = function(name)
+		local player = core.get_player_by_name(name)
+		if not player then
+			return
+		end
+
+		local t1 = core.get_us_time()
+		local player_pos = player:get_pos()
+		local pos1 = vector.subtract(player_pos, 10)
+		local pos2 = vector.add(player_pos, 10)
+		local pos_list = core.find_nodes_in_area(pos1, pos2, { "group:drawer" })
+
+		for _, pos in ipairs(pos_list) do
+			local objects = core.get_objects_inside_radius(pos, 0.5)
+			for _, obj in pairs(objects) do
+				local ent = obj:get_luaentity()
+				if ent and ent.name == "drawers:visual" then
+					obj:remove()
+				end
+			end
+			drawers.spawn_visuals(pos)
+		end
+
+		local t2 = core.get_us_time()
+		local milliseconds = math.floor((t2 - t1) / 1000)
+
+		return true, "Restored " .. #pos_list .. " drawers in " .. milliseconds .. " ms"
+	end
+})

@@ -5,6 +5,9 @@ License of source code:
 -----------------------
 Copyright (C) 2017-2020 Linus Jahn <lnj@kaidan.im>
 Copyright (C) 2016 Mango Tango <mtango688@gmail.com>
+`/drawers_fix` command copyright (C) 2021 Pandorabox. MIT.
+ - <https://github.com/pandorabox-io/pandorabox_custom/blob/master/chat/drawers_fix.lua>
+ - Slight modifications (C) 2026 AbbyRead. MIT.
 
 MIT License
 
