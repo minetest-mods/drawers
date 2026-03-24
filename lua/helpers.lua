@@ -70,23 +70,77 @@ local function tile_to_image(tile, fallback_image)
 	return image
 end
 
+-- Drawtypes where even inventorycube() is meaningless — use a single flat tile.
+local flat_sprite_drawtypes = {
+	torchlike        = true,
+	signlike         = true,
+	plantlike        = true,
+	plantlike_rooted = true,
+	firelike         = true,
+	raillike         = true,
+}
+
+-- Drawtypes that are cubic but use the same texture on all faces
+local all_same_face_drawtypes = {
+	allfaces          = true,
+	allfaces_optional = true,
+	glasslike         = true,
+	liquid            = true,
+	flowingliquid     = true,
+}
+
 function drawers.get_inv_image(name)
 	local texture = "blank.png"
+	if not name or name == "" then return texture end
 	local def = core.registered_items[name]
-	if not def then return end
+	if not def then return texture end
 
+	-- Best case: an explicit 2D inventory image is defined
 	if def.inventory_image and #def.inventory_image > 0 then
-		texture = def.inventory_image
-	else
-		if not def.tiles then return texture end
-		local tiles = table.copy(def.tiles)
-		local top = tile_to_image(tiles[1])
-		local left = tile_to_image(tiles[3], top)
-		local right = tile_to_image(tiles[5], left)
-		texture = core.inventorycube(top, left, right)
+		return def.inventory_image
 	end
 
-	return texture
+	-- Second best: an explicit 2D wield image
+	if def.wield_image and #def.wield_image > 0 then
+		return def.wield_image
+	end
+
+	if not def.tiles then return texture end
+
+	-- Drawtypes with no meaningful cube faces: single flat tile
+	if def.drawtype and flat_sprite_drawtypes[def.drawtype] then
+		return tile_to_image(def.tiles[1]) or texture
+	end
+
+	-- Drawtypes that are cubic but use the same texture on all faces
+	if def.drawtype and all_same_face_drawtypes[def.drawtype] then
+		local face = tile_to_image(def.tiles[1]) or texture
+		return core.inventorycube(face, face, face)
+	end
+
+	-- Connected texture nodes: composite the overlay (tiles[2]) over the base
+	-- (tiles[1]) so the full appearance is shown, not just the bare base texture.
+	if def.drawtype == "connected" then
+		local base    = tile_to_image(def.tiles[1], texture)
+		local overlay = def.tiles[2] and tile_to_image(def.tiles[2]) or nil
+		local face    = overlay and (base .. "^" .. overlay) or base
+		return core.inventorycube(face, face, face)
+	end
+
+	-- glasslike_framed: tiles[2] is the inner fill, tiles[1] is the frame overlay.
+	-- Composite fill first, then frame on top.
+	if def.drawtype == "glasslike_framed" or def.drawtype == "glasslike_framed_optional" then
+		local fill  = def.tiles[2] and tile_to_image(def.tiles[2]) or nil
+		local frame = tile_to_image(def.tiles[1], texture)
+		local face  = fill and (fill .. "^" .. frame) or frame
+		return core.inventorycube(face, face, face)
+	end
+
+	-- Full cubes and nodeboxes: isometric cube preview from top/left/right tiles
+	local top   = tile_to_image(def.tiles[1])
+	local right = tile_to_image(def.tiles[3], def.tiles[2] or top)
+	local left  = tile_to_image(def.tiles[6], right) -- fallback: right
+	return core.inventorycube(top, left, right)
 end
 
 function drawers.update_drawer_upgrades(pos)
