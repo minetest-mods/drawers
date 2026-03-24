@@ -39,7 +39,7 @@ deposit an item in certain situations. The table is only updated on an as needed
 basis, not by a specific time/interval. Controllers that have no items will not
 continue scanning drawers. ]]--
 
-local S = minetest.get_translator('drawers')
+local S = core.get_translator('drawers')
 
 local default_loaded = core.get_modpath("default") and default
 local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
