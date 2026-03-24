@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
-local S = minetest.get_translator('drawers')
+local S = core.get_translator('drawers')
 
 do -- Drawer node box scope
 
@@ -314,11 +314,11 @@ function drawers.register_drawer(name, def)
 	def.on_metadata_inventory_put = drawers.add_drawer_upgrade
 	def.on_metadata_inventory_take = drawers.remove_drawer_upgrade
 
-	if minetest.get_modpath("screwdriver") and screwdriver then
+	if core.get_modpath("screwdriver") and screwdriver then
 		def.on_rotate = def.on_rotate or screwdriver.disallow
 	end
 
-	if minetest.get_modpath("pipeworks") and pipeworks then
+	if core.get_modpath("pipeworks") and pipeworks then
 		def.groups.tubedevice = 1
 		def.groups.tubedevice_receiver = 1
 		def.tube = def.tube or {}
@@ -333,7 +333,7 @@ function drawers.register_drawer(name, def)
 		def.after_dig_node = pipeworks.after_dig
 	end
 
-	local has_mesecons_mvps = minetest.get_modpath("mesecons_mvps")
+	local has_mesecons_mvps = core.get_modpath("mesecons_mvps")
 
 	if drawers.enable_1x1 then
 		-- normal drawer 1x1 = 1
