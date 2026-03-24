@@ -334,7 +334,21 @@ function drawers.register_drawer(name, def)
 	def.on_metadata_inventory_take = drawers.remove_drawer_upgrade
 
 	if core.get_modpath("screwdriver") and screwdriver then
-		def.on_rotate = def.on_rotate or screwdriver.disallow
+		def.on_rotate = function(pos, node, user, mode, new_param2)
+			-- Only allow y-axis rotation
+			if mode ~= screwdriver.ROTATE_FACE then
+				return false
+			end
+
+			node.param2 = new_param2
+			core.swap_node(pos, node)
+
+			-- Remove and re-spawn visuals so they align with the new rotation
+			drawers.remove_visuals(pos)
+			drawers.spawn_visuals(pos)
+
+			return true
+		end
 	end
 
 	if core.get_modpath("pipeworks") and pipeworks then
