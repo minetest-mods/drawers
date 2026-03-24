@@ -420,7 +420,7 @@ core.register_entity("drawers:visual", {
 		core.sound_play("drawers_interact", {
 			pos = self.object:get_pos(),
 			max_hear_distance = 6,
-			gain = 2.0
+			gain = 0.8
 		})
 	end,
 
