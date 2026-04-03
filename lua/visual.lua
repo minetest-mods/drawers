@@ -56,8 +56,20 @@ local function use_node_visual(item_def)
 	return false
 end
 
+local function spawn_entity(pos, dir, id, yaw, itemname)
+	drawers.last_visual_id = id
+	drawers.last_texture = drawers.get_inv_image(itemname)
+
+	pos = vector.add(pos, vector.multiply(dir, 0.45))
+	local obj = core.add_entity(pos, "drawers:visual")
+	if obj then
+		obj:set_yaw(yaw)
+	end
+end
+
 function drawers.spawn_visuals(pos)
 	local node = core.get_node(pos)
+	local meta = core.get_meta(pos)
 	local ndef = core.registered_nodes[node.name]
 	local drawerType = ndef.groups.drawer
 
@@ -66,43 +78,24 @@ function drawers.spawn_visuals(pos)
 	drawers.last_drawer_type = drawerType
 
 	if drawerType == 1 then -- 1x1 drawer
-		drawers.last_visual_id = ""
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name"))
-
 		local bdir = core.facedir_to_dir(node.param2)
+		local yaw = facedir_yaw(bdir)
+
 		local fdir = vector.new(-bdir.x, 0, -bdir.z)
-		local pos2 = vector.add(pos, vector.multiply(fdir, 0.45))
+		spawn_entity(pos, fdir, "", yaw, meta:get_string("name"))
 
-		local obj = core.add_entity(pos2, "drawers:visual")
-		if not obj then return end
-
-		obj:set_yaw(facedir_yaw(bdir))
-
-		drawers.last_texture = nil
 	elseif drawerType == 2 then -- 1x2 drawer
 		local bdir = core.facedir_to_dir(node.param2)
+		local yaw = facedir_yaw(bdir)
 
 		local fdir1 = vector.new(-bdir.x, 0.5, -bdir.z)
 		local fdir2 = vector.new(-bdir.x, -0.5, -bdir.z)
+		spawn_entity(pos, fdir1, 1, yaw, meta:get_string("name1"))
+		spawn_entity(pos, fdir2, 2, yaw, meta:get_string("name2"))
 
-		local objs = {}
-
-		drawers.last_visual_id = 1
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name1"))
-		local pos1 = vector.add(pos, vector.multiply(fdir1, 0.45))
-		objs[1] = core.add_entity(pos1, "drawers:visual")
-
-		drawers.last_visual_id = 2
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name2"))
-		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.45))
-		objs[2] = core.add_entity(pos2, "drawers:visual")
-
-		local yaw = facedir_yaw(bdir)
-		for _, obj in pairs(objs) do
-			obj:set_yaw(yaw)
-		end
 	else -- 2x2 drawer
 		local bdir = core.facedir_to_dir(node.param2)
+		local yaw = facedir_yaw(bdir)
 
 		local fdir1, fdir2, fdir3, fdir4
 		if facedir(node.param2) == 2 then
@@ -127,32 +120,10 @@ function drawers.spawn_visuals(pos)
 			fdir4 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
 		end
 
-		local objs = {}
-
-		drawers.last_visual_id = 1
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name1"))
-		local pos1 = vector.add(pos, vector.multiply(fdir1, 0.45))
-		objs[1] = core.add_entity(pos1, "drawers:visual")
-
-		drawers.last_visual_id = 2
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name2"))
-		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.45))
-		objs[2] = core.add_entity(pos2, "drawers:visual")
-
-		drawers.last_visual_id = 3
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name3"))
-		local pos3 = vector.add(pos, vector.multiply(fdir3, 0.45))
-		objs[3] = core.add_entity(pos3, "drawers:visual")
-
-		drawers.last_visual_id = 4
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name4"))
-		local pos4 = vector.add(pos, vector.multiply(fdir4, 0.45))
-		objs[4] = core.add_entity(pos4, "drawers:visual")
-
-		local yaw = facedir_yaw(bdir)
-		for _, obj in pairs(objs) do
-			obj:set_yaw(yaw)
-		end
+		spawn_entity(pos, fdir1, 1, yaw, meta:get_string("name1"))
+		spawn_entity(pos, fdir2, 2, yaw, meta:get_string("name2"))
+		spawn_entity(pos, fdir3, 3, yaw, meta:get_string("name3"))
+		spawn_entity(pos, fdir4, 4, yaw, meta:get_string("name4"))
 	end
 end
 
