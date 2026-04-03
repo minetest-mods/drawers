@@ -2,26 +2,7 @@
 Minetest Mod Storage Drawers - A Mod adding storage drawers
 
 Copyright (C) 2017-2019 Linus Jahn <lnj@kaidan.im>
-
-MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+SPDX-License-Identifier: MIT
 ]]
 
 local S = core.get_translator('drawers')
@@ -31,6 +12,9 @@ local small_vs = { x = 0.25, y = 0.25, z = 0.0001 }
 local large_vs = { x = 0.5,  y = 0.5,  z = 0.0001 }
 local small_sprite_vs = { x = 0.3, y = 0.3 }
 local large_sprite_vs = { x = 0.6, y = 0.6 }
+
+-- Required for `visual = "node"`
+local MIN_PROTOCOL_VERSION = 48 -- 5.12.0
 
 -- Compute yaw from facedir direction so all four orientations are correct.
 -- bdir is the vector the drawer face points toward (from core.facedir_to_dir).
@@ -657,3 +641,13 @@ core.register_lbm({
 		drawers.spawn_visuals(pos)
 	end
 })
+
+-- Inform players about potential visual issues
+core.register_on_joinplayer(function(player)
+	local player_name = player:get_player_name()
+	local info = core.get_player_information(player_name)
+	if info and info.protocol_version < MIN_PROTOCOL_VERSION then
+		core.chat_send_player(player_name, S("drawers: Your Luanti/Minetest is"
+			.. " no longer supported. You might experience visual issues."))
+	end
+end)
