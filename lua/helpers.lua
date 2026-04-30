@@ -52,7 +52,7 @@ end
 -- Get an image string from a tile definition
 local function tile_to_image(tile, fallback_image)
 	if not tile then
-		return fallback_image
+		return tile_to_image(fallback_image)
 	end
 	local tile_type = type(tile)
 	if tile_type == "string" then
