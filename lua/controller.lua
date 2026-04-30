@@ -126,14 +126,43 @@ local function pos_in_range(pos1, pos2)
 end
 
 local function add_drawer_to_inventory(controllerInventory, pos)
+	local node = core.get_node(pos)
 	-- the number of slots is saved as drawer group
-	local slots = core.get_item_group(core.get_node(pos).name, "drawer")
+	local slots = core.get_item_group(node.name, "drawer")
 	if not slots then
 		return
 	end
 
 	local meta = core.get_meta(pos)
 	if not meta then
+		return
+	end
+
+	local is_compacting = core.get_item_group(node.name, "compacting_drawer") > 0
+
+	if is_compacting then
+		local pooled = meta:get_int("comp_pooled_count")
+		if pooled == 0 then
+			-- Empty compacting drawer: offer slot 1 as empty slot
+			if not controllerInventory["empty"] then
+				controllerInventory["empty"] = controller_index_slot(pos, "1")
+			end
+		else
+			for i = 1, slots do
+				local item_id = meta:get_string("comp_name_" .. i)
+				if item_id ~= "" then
+					if controllerInventory[item_id] then
+						local content = drawers.drawer_get_content(controllerInventory[item_id].drawer_pos, controllerInventory[item_id].visualid)
+						local new_content = drawers.drawer_get_content(pos, tostring(i))
+						if (new_content.maxCount - new_content.count) > (content.maxCount - content.count) then
+							controllerInventory[item_id] = controller_index_slot(pos, tostring(i))
+						end
+					else
+						controllerInventory[item_id] = controller_index_slot(pos, tostring(i))
+					end
+				end
+			end
+		end
 		return
 	end
 

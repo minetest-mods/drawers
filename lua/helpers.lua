@@ -90,8 +90,19 @@ local all_same_face_drawtypes = {
 }
 
 function drawers.get_inv_image(name)
+	if not name or name == "" then
+		return "blank.png"
+	end
+
+	-- Use the engine's native API when available.
+	-- Complex nodes return a virtual [inventorypreview:*] texture that the
+	-- client renders with the same pipeline as the inventory.
+	if core.get_item_inventory_texture then
+		return core.get_item_inventory_texture(name)
+	end
+
+	-- Fallback for older engine versions
 	local texture = "blank.png"
-	if not name or name == "" then return texture end
 	local def = core.registered_items[name]
 	if not def then return texture end
 
@@ -167,7 +178,10 @@ function drawers.update_drawer_upgrades(pos)
 	--						i.e.: 150% / 100 => 1.50
 	stackMaxFactor = math.floor(stackMaxFactor * (storagePercent / 100))
 	-- calculate stack_max factor for a single drawer
-	stackMaxFactor = stackMaxFactor / drawerType
+	-- (compacting drawers share pooled storage, so don't divide by slot count)
+	if core.get_item_group(node.name, "compacting_drawer") == 0 then
+		stackMaxFactor = stackMaxFactor / drawerType
+	end
 
 	-- set the new stack max factor in all visuals
 	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
@@ -190,4 +204,8 @@ end
 
 function drawers.node_tiles_front_other(front, other)
 	return {other, other, other, other, other, front}
+end
+
+function drawers.node_tiles_half(front, half_side, side)
+	return {side, side, half_side, half_side, side, front}
 end

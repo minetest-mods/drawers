@@ -48,6 +48,16 @@ do -- Drawer node box scope
         { -F, -H, -H,  F, -F, -F }, -- bottom-side 16th-of-node sized bar
     }
 
+    drawers.node_box_half = {
+    --  { x1, y1, z1, x2, y2, z2 }
+    --  --------------------------
+        { -H, -H,  frame_thickness,  H,  H,  H }, -- main block, half depth (back half)
+        { -H, -H,  0, -F,  H,  frame_thickness }, -- left-side   frame at center plane
+        {  F, -H,  0,  H,  H,  frame_thickness }, -- right-side  frame at center plane
+        { -F,  F,  0,  F,  H,  frame_thickness }, -- top-side    frame at center plane
+        { -F, -H,  0,  F, -F,  frame_thickness }, -- bottom-side frame at center plane
+    }
+
 end
 
 drawers.drawer_formspec = "size[9,6.7]" ..
@@ -303,6 +313,25 @@ end
 ]]
 function drawers.drawer_get_content(pos, visualid)
 	local drawer_meta = core.get_meta(pos)
+	local node = core.get_node(pos)
+	if core.get_item_group(node.name, "compacting_drawer") > 0 then
+		local slot = tonumber(visualid) or 1
+		local name = drawer_meta:get_string("comp_name_" .. slot)
+		local rate = drawer_meta:get_int("comp_rate_" .. slot)
+		local pooled = drawer_meta:get_int("comp_pooled_count")
+		local max_pooled = drawer_meta:get_int("comp_max_pooled")
+		local count = 0
+		local maxCount = 0
+		if rate > 0 then
+			count = math.floor(pooled / rate)
+			maxCount = math.floor(max_pooled / rate)
+		end
+		return {
+			name = name,
+			count = count,
+			maxCount = maxCount
+		}
+	end
 
 	return {
 		name = drawer_meta:get_string("name" .. visualid),
@@ -314,15 +343,28 @@ end
 function drawers.register_drawer(name, def)
 	def.description = def.description or S("Wooden")
 	def.drawtype = "nodebox"
-	def.node_box = {type = "fixed", fixed = drawers.node_box_simple}
-	def.collision_box = {type = "regular"}
-	def.selection_box = {type = "fixed", fixed = drawers.node_box_simple}
-	def.paramtype = "light"
-	def.paramtype2 = "facedir"
-	def.legacy_facedir_simple = true
 	def.groups = def.groups or {}
 	def.is_ground_content = def.is_ground_content == true
 	def.drawer_stack_max_factor = def.drawer_stack_max_factor or 24
+
+	-- Support half-depth drawers
+	local is_half = def.half == true
+	local suffix = is_half and "_half" or ""
+	if is_half then
+		def.node_box = {type = "fixed", fixed = drawers.node_box_half}
+		def.collision_box = {type = "fixed", fixed = drawers.node_box_half}
+		def.selection_box = {type = "fixed", fixed = drawers.node_box_half}
+		def.groups.drawer_half = 1
+	else
+		def.node_box = {type = "fixed", fixed = drawers.node_box_simple}
+		def.collision_box = {type = "regular"}
+		def.selection_box = {type = "fixed", fixed = drawers.node_box_simple}
+		def.groups.drawer_full = 1
+	end
+
+	def.paramtype = "light"
+	def.paramtype2 = "facedir"
+	def.legacy_facedir_simple = true
 
 	-- events
 	def.on_construct = drawers.drawer_on_construct
@@ -371,55 +413,60 @@ function drawers.register_drawer(name, def)
 	if drawers.enable_1x1 then
 		-- normal drawer 1x1 = 1
 		local def1 = table.copy(def)
-		def1.description = S("@1 Drawer", def.description)
+		def1.description = is_half and S("@1 Half Drawer", def.description)
+									  or S("@1 Drawer", def.description)
 		def1.tiles = def.tiles or def.tiles1
 		def1.tiles1 = nil
 		def1.tiles2 = nil
 		def1.tiles4 = nil
 		def1.groups.drawer = 1
-		core.register_node(name .. "1", def1)
-		core.register_alias(name, name .. "1") -- 1x1 drawer is the default one
+		core.register_node(name .. suffix .. "1", def1)
+		if not is_half then
+			core.register_alias(name, name .. "1") -- 1x1 drawer is the default one
+		end
 		if has_mesecons_mvps then
 			-- don't let drawers be moved by pistons, visual glitches and
 			-- possible duplication bugs occur otherwise
-			mesecon.register_mvps_stopper(name .. "1")
+			mesecon.register_mvps_stopper(name .. suffix .. "1")
 		end
 	end
 
 	if drawers.enable_1x2 then
 		-- 1x2 = 2
 		local def2 = table.copy(def)
-		def2.description = S("@1 Drawers (1x2)", def.description)
+		def2.description = is_half and S("@1 Half Drawers (1x2)", def.description)
+									  or S("@1 Drawers (1x2)", def.description)
 		def2.tiles = def.tiles2
 		def2.tiles1 = nil
 		def2.tiles2 = nil
 		def2.tiles4 = nil
 		def2.groups.drawer = 2
-		core.register_node(name .. "2", def2)
+		core.register_node(name .. suffix .. "2", def2)
 		if has_mesecons_mvps then
-			mesecon.register_mvps_stopper(name .. "2")
+			mesecon.register_mvps_stopper(name .. suffix .. "2")
 		end
 	end
 
 	if drawers.enable_2x2 then
 		-- 2x2 = 4
 		local def4 = table.copy(def)
-		def4.description = S("@1 Drawers (2x2)", def.description)
+		def4.description = is_half and S("@1 Half Drawers (2x2)", def.description)
+									  or S("@1 Drawers (2x2)", def.description)
 		def4.tiles = def.tiles4
 		def4.tiles1 = nil
 		def4.tiles2 = nil
 		def4.tiles4 = nil
 		def4.groups.drawer = 4
-		core.register_node(name .. "4", def4)
+		core.register_node(name .. suffix .. "4", def4)
 		if has_mesecons_mvps then
-			mesecon.register_mvps_stopper(name .. "4")
+			mesecon.register_mvps_stopper(name .. suffix .. "4")
 		end
 	end
 
 	if (not def.no_craft) and def.material then
 		if drawers.enable_1x1 then
 			core.register_craft({
-				output = name .. "1",
+				output = name .. suffix .. "1",
 				recipe = {
 					{def.material, def.material, def.material},
 					{    "", drawers.CHEST_ITEMSTRING,  ""   },
@@ -429,7 +476,7 @@ function drawers.register_drawer(name, def)
 		end
 		if drawers.enable_1x2 then
 			core.register_craft({
-				output = name .. "2 2",
+				output = name .. suffix .. "2 2",
 				recipe = {
 					{def.material, drawers.CHEST_ITEMSTRING, def.material},
 					{def.material,       def.material,       def.material},
@@ -439,7 +486,7 @@ function drawers.register_drawer(name, def)
 		end
 		if drawers.enable_2x2 then
 			core.register_craft({
-				output = name .. "4 4",
+				output = name .. suffix .. "4 4",
 				recipe = {
 					{drawers.CHEST_ITEMSTRING, def.material, drawers.CHEST_ITEMSTRING},
 					{      def.material,       def.material,       def.material      },

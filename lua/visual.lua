@@ -8,8 +8,6 @@ SPDX-License-Identifier: MIT
 local S = core.get_translator('drawers')
 
 -- Finicky drawer visual rendering (vs for "visual size")
-local small_vs = { x = 0.25, y = 0.25, z = 0.0001 }
-local large_vs = { x = 0.5,  y = 0.5,  z = 0.0001 }
 local small_sprite_vs = { x = 0.3, y = 0.3 }
 local large_sprite_vs = { x = 0.6, y = 0.6 }
 
@@ -20,123 +18,137 @@ local MIN_PROTOCOL_VERSION = 48 -- 5.12.0
 -- bdir is the vector the drawer face points toward (from core.facedir_to_dir).
 -- The entity must face *toward the viewer*, i.e. opposite to bdir.
 local function facedir_yaw(bdir)
-	return math.atan2(-bdir.x, -bdir.z)
+    return math.atan2(-bdir.x, -bdir.z)
 end
 
 -- Strip color bits from param2 before comparing facedir values.
 local function facedir(param2)
-	return param2 % 32
+    return param2 % 32
 end
 
--- Nodes whose geometry can't be meaningfully represented as a flat sprite.
--- Use visual = "node" so the engine renders the actual mesh.
-local COMPLEX_DRAWTYPES = {
-	nodebox = true,
-	mesh    = true,
-	fencelike = true,
-}
-local function use_node_visual(item_def)
-	if not item_def then return false end
-	if COMPLEX_DRAWTYPES[item_def.drawtype] then
-		local has_2d = (item_def.inventory_image and #item_def.inventory_image > 0)
-			or (item_def.wield_image and #item_def.wield_image > 0)
-		return not has_2d
-	end
-	-- Animated tiles with no explicit 2D image: render as node so the
-	-- engine handles the animation rather than us mangling the spritesheet.
-	if item_def.tiles then
-		for _, tile in ipairs(item_def.tiles) do
-			if type(tile) == "table" and tile.animation then
-				local has_2d = (item_def.inventory_image and #item_def.inventory_image > 0)
-					or (item_def.wield_image and #item_def.wield_image > 0)
-				return not has_2d
-			end
-		end
-	end
-	return false
-end
+local function spawn_entity(pos, dir, id, yaw, itemname, front_offset)
+    front_offset = front_offset or 0.45
+    drawers.last_visual_id = id
+    drawers.last_texture = drawers.get_inv_image(itemname)
 
-local function spawn_entity(pos, dir, id, yaw, itemname)
-	drawers.last_visual_id = id
-	drawers.last_texture = drawers.get_inv_image(itemname)
+    -- Decompose dir into facing direction (front/back) and lateral offset (slot position)
+    local bdir = core.facedir_to_dir(core.get_node(pos).param2)
+    local facing_dir = vector.new(-bdir.x, 0, -bdir.z)
+    local lateral = vector.subtract(dir, facing_dir)
 
-	pos = vector.add(pos, vector.multiply(dir, 0.45))
-	local obj = core.add_entity(pos, "drawers:visual")
-	if obj then
-		obj:set_yaw(yaw)
-	end
+    pos = vector.add(pos, vector.add(
+        vector.multiply(facing_dir, front_offset),
+        vector.multiply(lateral, 0.45)
+    ))
+    core.add_entity(pos, "drawers:visual")
 end
 
 function drawers.spawn_visuals(pos)
-	local node = core.get_node(pos)
-	local meta = core.get_meta(pos)
-	local ndef = core.registered_nodes[node.name]
-	local drawerType = ndef.groups.drawer
+    local node = core.get_node(pos)
+    local meta = core.get_meta(pos)
+    local ndef = core.registered_nodes[node.name]
+    local drawerType = ndef.groups.drawer
 
-	-- data for the new visual
-	drawers.last_drawer_pos = pos
-	drawers.last_drawer_type = drawerType
+    -- data for the new visual
+    drawers.last_drawer_pos = pos
+    drawers.last_drawer_type = drawerType
 
-	if drawerType == 1 then -- 1x1 drawer
-		local bdir = core.facedir_to_dir(node.param2)
-		local yaw = facedir_yaw(bdir)
+    local is_half = core.get_item_group(node.name, "drawer_half") > 0
+    local front_offset = is_half and -0.05 or 0.45
 
-		local fdir = vector.new(-bdir.x, 0, -bdir.z)
-		spawn_entity(pos, fdir, "", yaw, meta:get_string("name"))
+    if drawerType == 1 then -- 1x1 drawer
+        local bdir = core.facedir_to_dir(node.param2)
+        local yaw = facedir_yaw(bdir)
 
-	elseif drawerType == 2 then -- 1x2 drawer
-		local bdir = core.facedir_to_dir(node.param2)
-		local yaw = facedir_yaw(bdir)
+        local fdir = vector.new(-bdir.x, 0, -bdir.z)
+        spawn_entity(pos, fdir, "", yaw, meta:get_string("name"), front_offset)
+    elseif drawerType == 2 then -- 1x2 drawer or 2-tier compacting
+        local bdir = core.facedir_to_dir(node.param2)
+        local yaw = facedir_yaw(bdir)
 
-		local fdir1 = vector.new(-bdir.x, 0.5, -bdir.z)
-		local fdir2 = vector.new(-bdir.x, -0.5, -bdir.z)
-		spawn_entity(pos, fdir1, 1, yaw, meta:get_string("name1"))
-		spawn_entity(pos, fdir2, 2, yaw, meta:get_string("name2"))
+        local fdir1 = vector.new(-bdir.x, 0.5, -bdir.z)
+        local fdir2 = vector.new(-bdir.x, -0.5, -bdir.z)
+        local n1 = meta:get_string("name1")
+        local n2 = meta:get_string("name2")
+        if core.get_item_group(node.name, "compacting_drawer") > 0 then
+            n1 = meta:get_string("comp_name_1")
+            n2 = meta:get_string("comp_name_2")
+        end
+        spawn_entity(pos, fdir1, 1, yaw, n1, front_offset)
+        spawn_entity(pos, fdir2, 2, yaw, n2, front_offset)
+    elseif drawerType == 3 then -- 3-tier compacting drawer
+        local bdir = core.facedir_to_dir(node.param2)
+        local yaw = facedir_yaw(bdir)
 
-	else -- 2x2 drawer
-		local bdir = core.facedir_to_dir(node.param2)
-		local yaw = facedir_yaw(bdir)
+        local fdir1, fdir2, fdir3
+        local n1 = meta:get_string("comp_name_1")
+        local n2 = meta:get_string("comp_name_2")
+        local n3 = meta:get_string("comp_name_3")
+        if facedir(node.param2) == 2 then
+            fdir1 = vector.new(-bdir.x, 0.5, -bdir.z)
+            fdir2 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
+            fdir3 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
+        elseif facedir(node.param2) == 0 then
+            fdir1 = vector.new(-bdir.x, 0.5, -bdir.z)
+            fdir2 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
+            fdir3 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
+        elseif facedir(node.param2) == 1 then
+            fdir1 = vector.new(-bdir.x, 0.5, -bdir.z)
+            fdir2 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
+            fdir3 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
+        else
+            fdir1 = vector.new(-bdir.x, 0.5, -bdir.z)
+            fdir2 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
+            fdir3 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
+        end
 
-		local fdir1, fdir2, fdir3, fdir4
-		if facedir(node.param2) == 2 then
-			fdir1 = vector.new(-bdir.x + 0.5, 0.5, -bdir.z)
-			fdir2 = vector.new(-bdir.x - 0.5, 0.5, -bdir.z)
-			fdir3 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
-			fdir4 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
-		elseif facedir(node.param2) == 0 then
-			fdir1 = vector.new(-bdir.x - 0.5, 0.5, -bdir.z)
-			fdir2 = vector.new(-bdir.x + 0.5, 0.5, -bdir.z)
-			fdir3 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
-			fdir4 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
-		elseif facedir(node.param2) == 1 then
-			fdir1 = vector.new(-bdir.x, 0.5, -bdir.z + 0.5)
-			fdir2 = vector.new(-bdir.x, 0.5, -bdir.z - 0.5)
-			fdir3 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
-			fdir4 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
-		else
-			fdir1 = vector.new(-bdir.x, 0.5, -bdir.z - 0.5)
-			fdir2 = vector.new(-bdir.x, 0.5, -bdir.z + 0.5)
-			fdir3 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
-			fdir4 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
-		end
+        spawn_entity(pos, fdir1, 1, yaw, n1, front_offset)
+        spawn_entity(pos, fdir2, 2, yaw, n2, front_offset)
+        spawn_entity(pos, fdir3, 3, yaw, n3, front_offset)
+    else -- 2x2 drawer
+        local bdir = core.facedir_to_dir(node.param2)
+        local yaw = facedir_yaw(bdir)
 
-		spawn_entity(pos, fdir1, 1, yaw, meta:get_string("name1"))
-		spawn_entity(pos, fdir2, 2, yaw, meta:get_string("name2"))
-		spawn_entity(pos, fdir3, 3, yaw, meta:get_string("name3"))
-		spawn_entity(pos, fdir4, 4, yaw, meta:get_string("name4"))
-	end
+        local fdir1, fdir2, fdir3, fdir4
+        if facedir(node.param2) == 2 then
+            fdir1 = vector.new(-bdir.x + 0.5, 0.5, -bdir.z)
+            fdir2 = vector.new(-bdir.x - 0.5, 0.5, -bdir.z)
+            fdir3 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
+            fdir4 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
+        elseif facedir(node.param2) == 0 then
+            fdir1 = vector.new(-bdir.x - 0.5, 0.5, -bdir.z)
+            fdir2 = vector.new(-bdir.x + 0.5, 0.5, -bdir.z)
+            fdir3 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
+            fdir4 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
+        elseif facedir(node.param2) == 1 then
+            fdir1 = vector.new(-bdir.x, 0.5, -bdir.z + 0.5)
+            fdir2 = vector.new(-bdir.x, 0.5, -bdir.z - 0.5)
+            fdir3 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
+            fdir4 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
+        else
+            fdir1 = vector.new(-bdir.x, 0.5, -bdir.z - 0.5)
+            fdir2 = vector.new(-bdir.x, 0.5, -bdir.z + 0.5)
+            fdir3 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
+            fdir4 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
+        end
+
+        spawn_entity(pos, fdir1, 1, yaw, meta:get_string("name1"), front_offset)
+        spawn_entity(pos, fdir2, 2, yaw, meta:get_string("name2"), front_offset)
+        spawn_entity(pos, fdir3, 3, yaw, meta:get_string("name3"), front_offset)
+        spawn_entity(pos, fdir4, 4, yaw, meta:get_string("name4"), front_offset)
+    end
 end
 
 function drawers.remove_visuals(pos)
-	local objs = core.get_objects_inside_radius(pos, 0.56)
-	if not objs then return end
+    local objs = core.get_objects_inside_radius(pos, 0.56)
+    if not objs then return end
 
-	for _, obj in pairs(objs) do
-		if obj and obj:get_luaentity() and
-			obj:get_luaentity().name == "drawers:visual" then
-			obj:remove()
-		end
-	end
+    for _, obj in pairs(objs) do
+        if obj and obj:get_luaentity() and
+            obj:get_luaentity().name == "drawers:visual" then
+            obj:remove()
+        end
+    end
 end
 
 --[[
@@ -145,480 +157,708 @@ end
 	visualid can be: "", "1", "2", ... or 1, 2, ...
 ]]
 function drawers.get_visual(pos, visualid)
-	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
-	if not drawer_visuals then
-		return nil
-	end
+    local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
+    if not drawer_visuals then
+        return nil
+    end
 
-	-- not a real index (starts with 1)
-	local index = tonumber(visualid)
-	if visualid == "" then
-		index = 1
-	end
+    -- not a real index (starts with 1)
+    local index = tonumber(visualid)
+    if visualid == "" then
+        index = 1
+    end
 
-	return drawer_visuals[index]
+    return drawer_visuals[index]
 end
 
 core.register_entity("drawers:visual", {
-	initial_properties = {
-		hp_max = 1,
-		physical = false,
-		collide_with_objects = false,
-		collisionbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0}, -- for param2 0, 2
-		visual = "upright_sprite", -- "wielditem" for items without inv img?
-		visual_size = {x = 0.6, y = 0.6},
-		textures = {"blank.png"},
-		spritediv = {x = 1, y = 1},
-		initial_sprite_basepos = {x = 0, y = 0},
-		is_visible = true,
-	},
+    initial_properties = {
+        hp_max = 1,
+        physical = false,
+        collide_with_objects = false,
+        collisionbox = { -0.4374, -0.4374, 0, 0.4374, 0.4374, 0 }, -- for param2 0, 2
+        visual = "upright_sprite",                                 -- "wielditem" for items without inv img?
+        visual_size = { x = 0.6, y = 0.6 },
+        textures = { "blank.png" },
+        spritediv = { x = 1, y = 1 },
+        initial_sprite_basepos = { x = 0, y = 0 },
+        is_visible = true,
+    },
 
-	get_staticdata = function(self)
-		return core.serialize({
-			drawer_posx = self.drawer_pos.x,
-			drawer_posy = self.drawer_pos.y,
-			drawer_posz = self.drawer_pos.z,
-			texture = self.texture,
-			drawerType = self.drawerType,
-			visualId = self.visualId,
-			yaw = self.object:get_yaw(), -- Persist yaw across chunk reloads
-		})
-	end,
+    get_staticdata = function(self)
+        return core.serialize({
+            drawer_posx = self.drawer_pos.x,
+            drawer_posy = self.drawer_pos.y,
+            drawer_posz = self.drawer_pos.z,
+            texture = self.texture,
+            drawerType = self.drawerType,
+            visualId = self.visualId,
+            rotation = self.object:get_rotation(), -- Persist full rotation
+        })
+    end,
 
-	on_activate = function(self, staticdata, dtime_s)
-		-- Restore data
-		local data = core.deserialize(staticdata)
-		if data then
-			self.drawer_pos = {
-				x = data.drawer_posx,
-				y = data.drawer_posy,
-				z = data.drawer_posz,
-			}
-			self.texture = data.texture
-			self.drawerType = data.drawerType or 1
-			self.visualId = data.visualId or ""
+    on_activate = function(self, staticdata, dtime_s)
+        -- Restore data
+        local data = core.deserialize(staticdata)
+        if data then
+            self.drawer_pos = {
+                x = data.drawer_posx,
+                y = data.drawer_posy,
+                z = data.drawer_posz,
+            }
+            self.texture = data.texture
+            self.drawerType = data.drawerType or 1
+            self.visualId = data.visualId or ""
 
-			-- Restore yaw saved at serialize time
-			if data.yaw then
-				self.object:set_yaw(data.yaw)
-			end
+            -- Restore rotation saved at serialize time
+            if data.rotation then
+                self.object:set_rotation(data.rotation)
+            elseif data.yaw then
+                -- backwards compatibility
+                self.object:set_rotation({ x = 0, y = data.yaw, z = 0 })
+            end
 
-			-- backwards compatibility
-			if self.texture == "drawers_empty.png" then
-				self.texture = "blank.png"
-			end
-		else
-			self.drawer_pos = drawers.last_drawer_pos
-			self.texture = drawers.last_texture or "blank.png"
-			self.visualId = drawers.last_visual_id
-			self.drawerType = drawers.last_drawer_type
-		end
+            -- backwards compatibility
+            if self.texture == "drawers_empty.png" then
+                self.texture = "blank.png"
+            end
+        else
+            self.drawer_pos = drawers.last_drawer_pos
+            self.texture = drawers.last_texture or "blank.png"
+            self.visualId = drawers.last_visual_id
+            self.drawerType = drawers.last_drawer_type
+        end
 
-		local node = core.get_node(self.object:get_pos())
-		if core.get_item_group(node.name, "drawer") == 0 then
-			self.object:remove()
-			return
-		end
+        local node = core.get_node(self.object:get_pos())
+        if core.get_item_group(node.name, "drawer") == 0 then
+            self.object:remove()
+            return
+        end
 
-		-- add self to public drawer visuals
-		-- this is needed because there is no other way to get this class
-		-- only the underlying LuaEntitySAO
-		-- PLEASE contact me, if this is wrong
-		local vId = self.visualId
-		if vId == "" then vId = 1 end
-		local posstr = core.hash_node_position(self.drawer_pos)
-		if not drawers.drawer_visuals[posstr] then
-			drawers.drawer_visuals[posstr] = {[vId] = self}
-		else
-			drawers.drawer_visuals[posstr][vId] = self
-		end
+        -- add self to public drawer visuals
+        -- this is needed because there is no other way to get this class
+        -- only the underlying LuaEntitySAO
+        -- PLEASE contact me, if this is wrong
+        local vId = self.visualId
+        if vId == "" then vId = 1 end
+        local posstr = core.hash_node_position(self.drawer_pos)
+        if not drawers.drawer_visuals[posstr] then
+            drawers.drawer_visuals[posstr] = { [vId] = self }
+        else
+            drawers.drawer_visuals[posstr][vId] = self
+        end
 
-		-- get meta
-		self.meta = core.get_meta(self.drawer_pos)
+        -- get meta
+        self.meta = core.get_meta(self.drawer_pos)
 
-		-- collisionbox
-		-- Fix: use facedir() to strip color bits before comparing param2
-		node = core.get_node(self.drawer_pos)
-		local colbox
-		if self.drawerType ~= 2 then
-			if facedir(node.param2) == 1 or facedir(node.param2) == 3 then
-				colbox = {0, -0.4374, -0.4374,  0, 0.4374, 0.4374}
-			else
-				colbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0} -- for param2 = 0 or 2
-			end
-			-- only half the size if it's a small drawer
-			if self.drawerType > 1 then
-				for i,j in pairs(colbox) do
-					colbox[i] = j * 0.5
-				end
-			end
-		else
-			if facedir(node.param2) == 1 or facedir(node.param2) == 3 then
-				colbox = {0, -0.2187, -0.4374,  0, 0.2187, 0.4374}
-			else
-				colbox = {-0.4374, -0.2187, 0,  0.4374, 0.2187, 0} -- for param2 = 0 or 2
-			end
-		end
+        -- collisionbox
+        -- Fix: use facedir() to strip color bits before comparing param2
+        node = core.get_node(self.drawer_pos)
+        local colbox
+        if self.drawerType ~= 2 then
+            if facedir(node.param2) == 1 or facedir(node.param2) == 3 then
+                colbox = { 0, -0.4374, -0.4374, 0, 0.4374, 0.4374 }
+            else
+                colbox = { -0.4374, -0.4374, 0, 0.4374, 0.4374, 0 } -- for param2 = 0 or 2
+            end
+            -- only half the size if it's a small drawer
+            if self.drawerType > 1 then
+                for i, j in pairs(colbox) do
+                    colbox[i] = j * 0.5
+                end
+            end
+        else
+            if facedir(node.param2) == 1 or facedir(node.param2) == 3 then
+                colbox = { 0, -0.2187, -0.4374, 0, 0.2187, 0.4374 }
+            else
+                colbox = { -0.4374, -0.2187, 0, 0.4374, 0.2187, 0 } -- for param2 = 0 or 2
+            end
+        end
 
-		-- drawer values
-		local vid = self.visualId
-		self.count = self.meta:get_int("count"..vid)
-		self.itemName = self.meta:get_string("name"..vid)
-		self.maxCount = self.meta:get_int("max_count"..vid)
-		self.itemStackMax = self.meta:get_int("base_stack_max"..vid)
-		self.stackMaxFactor = self.meta:get_int("stack_max_factor"..vid)
+        -- drawer values
+        local vid = self.visualId
+        self.count = self.meta:get_int("count" .. vid)
+        self.itemName = self.meta:get_string("name" .. vid)
+        self.maxCount = self.meta:get_int("max_count" .. vid)
+        self.itemStackMax = self.meta:get_int("base_stack_max" .. vid)
+        self.stackMaxFactor = self.meta:get_int("stack_max_factor" .. vid)
 
-		-- infotext
-		local infotext = self.meta:get_string("entity_infotext"..vid) .. "\n\n\n\n\n"
+        -- compacting drawer support
+        local compacting = core.get_item_group(node.name, "compacting_drawer")
+        if compacting > 0 then
+            self.is_compacting = true
+            self.drawerType = compacting
+            self.compSlot = tonumber(self.visualId) or 1
+            self.itemName = self.meta:get_string("comp_name_" .. self.compSlot)
+            self.convRate = self.meta:get_int("comp_rate_" .. self.compSlot)
+            self.itemStackMax = self.meta:get_int("comp_stack_max_" .. self.compSlot)
+            if self.itemStackMax == 0 then self.itemStackMax = 64 end
+            self.pooledCount = self.meta:get_int("comp_pooled_count")
+            if self.convRate > 0 then
+                self.count = math.floor(self.pooledCount / self.convRate)
+            else
+                self.count = 0
+            end
+            local max_pooled = self.meta:get_int("comp_max_pooled")
+            if self.convRate > 0 then
+                self.maxCount = math.floor(max_pooled / self.convRate)
+            else
+                self.maxCount = 0
+            end
+            self.stackMaxFactor = (self.convRate > 0 and self.itemStackMax > 0)
+                and math.floor(max_pooled / self.convRate / self.itemStackMax) or 32
+        else
+            self.is_compacting = false
+        end
 
-		self.object:set_properties({
-			collisionbox = colbox,
-			infotext = infotext,
-		})
+        -- infotext (disabled when eye_spy is loaded, as it provides its own HUD)
+        if not drawers.eye_spy_loaded then
+            local infotext
+            if self.is_compacting then
+                infotext = self.meta:get_string("entity_infotext_" .. (self.compSlot or 1)) .. "\n\n\n\n\n"
+            else
+                infotext = self.meta:get_string("entity_infotext" .. vid) .. "\n\n\n\n\n"
+            end
+            self.object:set_properties({
+                collisionbox = colbox,
+                infotext = infotext,
+            })
+        else
+            self.object:set_properties({
+                collisionbox = colbox,
+            })
+        end
 
-		self:updateTexture()
+        self:updateTexture()
 
-		-- make entity undestroyable
-		self.object:set_armor_groups({immortal = 1})
-	end,
+        -- make entity undestroyable
+        self.object:set_armor_groups({ immortal = 1 })
+    end,
 
-	on_rightclick = function(self, clicker)
-		if core.is_protected(self.drawer_pos, clicker:get_player_name()) then
-			core.record_protection_violation(self.drawer_pos, clicker:get_player_name())
-			return
-		end
+    on_rightclick = function(self, clicker)
+        if core.is_protected(self.drawer_pos, clicker:get_player_name()) then
+            core.record_protection_violation(self.drawer_pos, clicker:get_player_name())
+            return
+        end
 
-		-- used to check if we need to play a sound in the end
-		local inventoryChanged = false
+        -- used to check if we need to play a sound in the end
+        local inventoryChanged = false
 
-		-- When the player uses the drawer with their bare hand all
-		-- stacks from the inventory will be added to the drawer.
-		if self.itemName ~= "" and
-		   clicker:get_wielded_item():get_name() == "" and
-		   not clicker:get_player_control().sneak then
-			-- try to insert all items from inventory
-			local i = 0
-			local inv = clicker:get_inventory()
+        -- When the player uses the drawer with their bare hand all
+        -- stacks from the inventory will be added to the drawer.
+        local pooled = self.is_compacting and self.meta:get_int("comp_pooled_count") or 0
+        local has_items = self.is_compacting and (pooled > 0) or (self.itemName ~= "")
+        if has_items and
+            clicker:get_wielded_item():get_name() == "" and
+            not clicker:get_player_control().sneak then
+            -- try to insert all items from inventory
+            local i = 0
+            local inv = clicker:get_inventory()
 
-			while i <= inv:get_size("main") do
-				-- set current stack to leftover of insertion
-				local leftover = self.try_insert_stack(
-					self,
-					inv:get_stack("main", i),
-					true
-				)
+            while i <= inv:get_size("main") do
+                -- set current stack to leftover of insertion
+                local leftover = self.try_insert_stack(
+                    self,
+                    inv:get_stack("main", i),
+                    true
+                )
 
-				-- check if something was added
-				if leftover:get_count() < inv:get_stack("main", i):get_count() then
-					inventoryChanged = true
-				end
+                -- check if something was added
+                if leftover:get_count() < inv:get_stack("main", i):get_count() then
+                    inventoryChanged = true
+                end
 
-				-- set new stack
-				inv:set_stack("main", i, leftover)
-				i = i + 1
-			end
-		else
-			-- try to insert wielded item only
-			local leftover = self.try_insert_stack(
-				self,
-				clicker:get_wielded_item(),
-				not clicker:get_player_control().sneak
-			)
+                -- set new stack
+                inv:set_stack("main", i, leftover)
+                i = i + 1
+            end
+        else
+            -- try to insert wielded item only
+            local leftover = self.try_insert_stack(
+                self,
+                clicker:get_wielded_item(),
+                not clicker:get_player_control().sneak
+            )
 
-			-- check if something was added
-			if clicker:get_wielded_item():get_count() > leftover:get_count() then
-				inventoryChanged = true
-			end
-			-- set the leftover as new wielded item for the player
-			clicker:set_wielded_item(leftover)
-		end
+            -- check if something was added
+            if clicker:get_wielded_item():get_count() > leftover:get_count() then
+                inventoryChanged = true
+            end
+            -- set the leftover as new wielded item for the player
+            clicker:set_wielded_item(leftover)
+        end
 
-		if inventoryChanged then
-			self:play_interact_sound()
-		end
-	end,
+        if inventoryChanged then
+            self:play_interact_sound()
+        end
+    end,
 
-	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
-		local node = core.get_node(self.object:get_pos())
+    on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
+        local node = core.get_node(self.object:get_pos())
 
-		if core.get_item_group(node.name, "drawer") == 0 then
-			self.object:remove()
-			return
-		end
-		local add_stack = not puncher:get_player_control().sneak
-		if core.is_protected(self.drawer_pos, puncher:get_player_name()) then
-		   core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
-		   return
-		end
-		local inv = puncher:get_inventory()
-		if inv == nil then
-			return
-		end
-		local spaceChecker = ItemStack(self.itemName)
-		if add_stack then
-			spaceChecker:set_count(spaceChecker:get_stack_max())
-		end
-		if not inv:room_for_item("main", spaceChecker) then
-			return
-		end
+        if core.get_item_group(node.name, "drawer") == 0 then
+            self.object:remove()
+            return
+        end
+        local add_stack = not puncher:get_player_control().sneak
+        if self.is_compacting and self.convRate == 0 then
+            return
+        end
+        if core.is_protected(self.drawer_pos, puncher:get_player_name()) then
+            core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
+            return
+        end
+        local inv = puncher:get_inventory()
+        if inv == nil then
+            return
+        end
+        local spaceChecker = ItemStack(self.itemName)
+        if add_stack then
+            spaceChecker:set_count(spaceChecker:get_stack_max())
+        end
+        if not inv:room_for_item("main", spaceChecker) then
+            return
+        end
 
-		local stack
-		if add_stack then
-			stack = self:take_stack()
-		else
-			stack = self:take_items(1)
-		end
+        local stack
+        if add_stack then
+            stack = self:take_stack()
+        else
+            stack = self:take_items(1)
+        end
 
-		if stack ~= nil then
-			-- add removed stack to player's inventory
-			inv:add_item("main", stack)
+        if stack ~= nil then
+            -- add removed stack to player's inventory
+            inv:add_item("main", stack)
 
-			-- play the interact sound
-			self:play_interact_sound()
-		end
-	end,
+            -- play the interact sound
+            self:play_interact_sound()
+        end
+    end,
 
-	take_items = function(self, removeCount)
-		local meta = core.get_meta(self.drawer_pos)
+    take_items = function(self, removeCount)
+        local meta = core.get_meta(self.drawer_pos)
 
-		if self.count <= 0 then
-			return
-		end
+        if self.is_compacting then
+            local pooled = meta:get_int("comp_pooled_count")
+            if pooled <= 0 then
+                return nil
+            end
+            local rate = self.convRate
+            if rate == 0 then return nil end
+            local maxRemove = math.floor(pooled / rate)
+            if removeCount > maxRemove then removeCount = maxRemove end
+            if removeCount <= 0 then return nil end
 
-		if removeCount > self.count then
-			removeCount = self.count
-		end
+            local stack = ItemStack(self.itemName)
+            stack:set_count(removeCount)
+            meta:set_int("comp_pooled_count", pooled - removeCount * rate)
+            drawers.update_compacting_visuals(self.drawer_pos)
+            return stack
+        end
 
-		local stack = ItemStack(self.itemName)
-		stack:set_count(removeCount)
+        if self.count <= 0 then
+            return
+        end
 
-		-- update the drawer count
-		self.count = self.count - removeCount
+        if removeCount > self.count then
+            removeCount = self.count
+        end
 
-		self:updateInfotext()
-		self:updateTexture()
-		self:saveMetaData()
+        local stack = ItemStack(self.itemName)
+        stack:set_count(removeCount)
 
-		-- return the stack that was removed from the drawer
-		return stack
-	end,
+        -- update the drawer count
+        self.count = self.count - removeCount
 
-	take_stack = function(self)
-		return self:take_items(ItemStack(self.itemName):get_stack_max())
-	end,
+        self:updateInfotext()
+        self:updateTexture()
+        self:saveMetaData()
 
-	can_insert_stack = function(self, stack)
-		if stack:get_name() == "" or stack:get_count() <= 0 then
-			return 0
-		end
+        -- return the stack that was removed from the drawer
+        return stack
+    end,
 
-		-- don't allow items with metadata
-		if #stack:get_meta():get_keys() > 0 then
-			return 0
-		end
+    take_stack = function(self)
+        return self:take_items(ItemStack(self.itemName):get_stack_max())
+    end,
 
-		-- don't allow unstackable stacks
-		if self.itemName == "" and stack:get_stack_max() ~= 1 then
-			return stack:get_count()
-		end
+    can_insert_stack = function(self, stack)
+        if stack:get_name() == "" or stack:get_count() <= 0 then
+            return 0
+        end
 
-		if self.itemName ~= stack:get_name() then
-			return 0
-		end
+        -- don't allow items with metadata
+        if #stack:get_meta():get_keys() > 0 then
+            return 0
+        end
 
-		if (self.count + stack:get_count()) <= self.maxCount then
-			return stack:get_count()
-		end
-		return self.maxCount - self.count
-	end,
+        if self.is_compacting then
+            if self.pooledCount == 0 then
+                -- Empty: accept any non-unstackable item
+                return stack:get_stack_max() ~= 1 and stack:get_count() or 0
+            end
+            -- Check if item is one of our visible tiers
+            for i = 1, self.drawerType do
+                if self.meta:get_string("comp_name_" .. i) == stack:get_name() then
+                    local rate = self.meta:get_int("comp_rate_" .. i)
+                    if rate > 0 then
+                        local pooled = self.meta:get_int("comp_pooled_count")
+                        local max_pooled = self.meta:get_int("comp_max_pooled")
+                        local can_add = math.floor((max_pooled - pooled) / rate)
+                        return math.min(stack:get_count(), can_add)
+                    end
+                end
+            end
+            return 0
+        end
 
-	try_insert_stack = function(self, itemstack, insert_all)
-		local stackCount = itemstack:get_count()
-		local stackName = itemstack:get_name()
+        -- don't allow unstackable stacks
+        if self.itemName == "" and stack:get_stack_max() ~= 1 then
+            return stack:get_count()
+        end
 
-		local insertCount = self:can_insert_stack(itemstack)
+        if self.itemName ~= stack:get_name() then
+            return 0
+        end
 
-		if insertCount == 0 then
-			return itemstack
-		end
+        if (self.count + stack:get_count()) <= self.maxCount then
+            return stack:get_count()
+        end
+        return self.maxCount - self.count
+    end,
 
-		-- only add one, if player holding sneak key
-		if not insert_all then
-			insertCount = 1
-		end
+    try_insert_stack = function(self, itemstack, insert_all)
+        local stackCount = itemstack:get_count()
+        local stackName = itemstack:get_name()
 
-		-- in case the drawer was empty, initialize count, itemName, maxCount
-		if self.itemName == "" then
-			self.count = 0
-			self.itemName = itemstack:get_name()
-			self.maxCount = itemstack:get_stack_max() * self.stackMaxFactor
-			self.itemStackMax = itemstack:get_stack_max()
-		end
+        local insertCount = self:can_insert_stack(itemstack)
 
-		-- update everything
-		self.count = self.count + insertCount
-		self:updateInfotext()
-		self:updateTexture()
-		self:saveMetaData()
+        if insertCount == 0 then
+            return itemstack
+        end
 
-		-- return leftover
-		itemstack:take_item(insertCount)
-		if itemstack:get_count() == 0 then
-			return ItemStack("")
-		end
-		return itemstack
-	end,
+        -- only add one, if player holding sneak key
+        if not insert_all then
+            insertCount = 1
+        end
 
-	updateInfotext = function(self)
-		local item_def = core.registered_items[self.itemName]
-		local itemDescription = ""
-		if item_def then
-			itemDescription = item_def.short_description or item_def.description
-		end
+        if self.is_compacting then
+            -- Initialize if empty (this populates metadata for all slots)
+            local insert_rate = 0
+            local insert_slot = 1
 
-		if self.count <= 0 then
-			self.itemName = ""
-			self.meta:set_string("name"..self.visualId, self.itemName)
-			self.texture = "blank.png"
-			itemDescription = S("Empty")
-		end
+            if self.pooledCount == 0 then
+                local tiers = drawers.find_compact_tiers(stackName, self.drawerType)
+                local highest_rate = 1
+                local highest_stack_max = 64
+                for i, tier in ipairs(tiers) do
+                    self.meta:set_string("comp_name_" .. i, tier.name)
+                    self.meta:set_int("comp_rate_" .. i, tier.rate)
+                    local sm = ItemStack(tier.name):get_stack_max()
+                    self.meta:set_int("comp_stack_max_" .. i, sm)
+                    if tier.rate > highest_rate then
+                        highest_rate = tier.rate
+                        highest_stack_max = sm
+                    end
+                end
+                local node = core.get_node(self.drawer_pos)
+                local ndef = core.registered_nodes[node.name]
+                local factor = ndef and ndef.drawer_stack_max_factor or 32
+                local max_pooled = highest_stack_max * highest_rate * factor
+                self.meta:set_int("comp_max_pooled", max_pooled)
 
-		local infotext = drawers.gen_info_text(itemDescription,
-			self.count, self.stackMaxFactor, self.itemStackMax)
-		self.meta:set_string("entity_infotext"..self.visualId, infotext)
+                -- Find rate for the inserted item (local, do NOT touch self)
+                for i, tier in ipairs(tiers) do
+                    if tier.name == stackName then
+                        insert_rate = tier.rate
+                        insert_slot = i
+                        break
+                    end
+                end
+            else
+                -- Find rate for this item from metadata (local)
+                for i = 1, self.drawerType do
+                    if self.meta:get_string("comp_name_" .. i) == stackName then
+                        insert_rate = self.meta:get_int("comp_rate_" .. i)
+                        insert_slot = i
+                        break
+                    end
+                end
+            end
 
-		self.object:set_properties({
-			infotext = infotext .. "\n\n\n\n\n"
-		})
-	end,
+            if insert_rate == 0 then
+                return itemstack -- item not accepted
+            end
 
-	updateTexture = function(self)
-		local item_def = core.registered_items[self.itemName]
-		if use_node_visual(item_def) then
-			local _visual_size = (self.drawerType >= 2)
-				and small_vs or large_vs
-			self.texture = self.itemName
-			self.object:set_properties({
-				visual = "node",
-				node = { name = self.itemName },
-				visual_size = _visual_size,
-			})
-		else
-			self.texture = drawers.get_inv_image(self.itemName)
-			local _visual_size = (self.drawerType >= 2)
-				and small_sprite_vs or large_sprite_vs
-			self.object:set_properties({
-				visual = "upright_sprite",
-				visual_size = _visual_size,
-				textures = {self.texture}
-			})
-		end
-	end,
+            -- Add to pooled: read current value from meta to avoid
+            -- overwriting with stale cached self.pooledCount
+            local current_pooled = self.meta:get_int("comp_pooled_count")
+            self.meta:set_int("comp_pooled_count", current_pooled + insertCount * insert_rate)
+            drawers.update_compacting_visuals(self.drawer_pos)
 
-	dropStack = function(self, itemStack)
-		-- print warning if dropping higher stack counts than allowed
-		if itemStack:get_count() > itemStack:get_stack_max() then
-			core.log("warning", "[drawers] Dropping item stack with higher count than allowed")
-		end
-		-- find a position containing air
-		local dropPos = core.find_node_near(self.drawer_pos, 1, {"air"}, false)
-		-- if no pos found then drop on the top of the drawer
-		if not dropPos then
-			dropPos = self.object:get_pos()
-			dropPos.y = dropPos.y + 1
-		end
-		-- drop the item stack
-		core.item_drop(itemStack, nil, dropPos)
-	end,
+            itemstack:take_item(insertCount)
+            if itemstack:get_count() == 0 then
+                return ItemStack("")
+            end
+            return itemstack
+        end
 
-	dropItemOverload = function(self)
-		-- drop stacks until there are no more items than allowed
-		while self.count > self.maxCount do
-			-- remove the overflow
-			local removeCount = self.count - self.maxCount
-			-- if this is too much for a single stack, only take the
-			-- stack limit
-			if removeCount > self.itemStackMax then
-				removeCount = self.itemStackMax
-			end
-			-- remove this count from the drawer
-			self.count = self.count - removeCount
-			-- create a new item stack having the size of the remove
-			-- count
-			local stack = ItemStack(self.itemName)
-			stack:set_count(removeCount)
-			-- drop the stack
-			self:dropStack(stack)
-		end
-	end,
+        -- in case the drawer was empty, initialize count, itemName, maxCount
+        if self.itemName == "" then
+            self.count = 0
+            self.itemName = itemstack:get_name()
+            self.maxCount = itemstack:get_stack_max() * self.stackMaxFactor
+            self.itemStackMax = itemstack:get_stack_max()
+        end
 
-	setStackMaxFactor = function(self, stackMaxFactor)
-		self.stackMaxFactor = stackMaxFactor
-		self.maxCount = self.stackMaxFactor * self.itemStackMax
+        -- update everything
+        self.count = self.count + insertCount
+        self:updateInfotext()
+        self:updateTexture()
+        self:saveMetaData()
 
-		-- will drop possible overflowing items
-		self:dropItemOverload()
-		self:updateInfotext()
-		self:saveMetaData()
-	end,
+        -- return leftover
+        itemstack:take_item(insertCount)
+        if itemstack:get_count() == 0 then
+            return ItemStack("")
+        end
+        return itemstack
+    end,
 
-	play_interact_sound = function(self)
-		core.sound_play("drawers_interact", {
-			pos = self.object:get_pos(),
-			max_hear_distance = 6,
-			gain = 0.8
-		})
-	end,
+    updateInfotext = function(self)
+        local item_def = core.registered_items[self.itemName]
+        local itemDescription = ""
+        if item_def then
+            itemDescription = item_def.short_description or item_def.description
+        end
 
-	saveMetaData = function(self, meta)
-		self.meta:set_int("count"..self.visualId, self.count)
-		self.meta:set_string("name"..self.visualId, self.itemName)
-		self.meta:set_int("max_count"..self.visualId, self.maxCount)
-		self.meta:set_int("base_stack_max"..self.visualId, self.itemStackMax)
-		self.meta:set_int("stack_max_factor"..self.visualId, self.stackMaxFactor)
-	end
+        if self.is_compacting then
+            -- Only reset when the shared pool is empty, not when count of
+            -- a single tier happens to be 0 due to high conversion rate.
+            if self.pooledCount <= 0 then
+                self.itemName = ""
+                self.texture = "blank.png"
+                itemDescription = S("Empty")
+                for i = 1, self.drawerType do
+                    self.meta:set_string("comp_name_" .. i, "")
+                    self.meta:set_int("comp_rate_" .. i, 0)
+                end
+            end
+            local infotext = drawers.gen_info_text(itemDescription,
+                self.count, self.stackMaxFactor, self.itemStackMax)
+            self.meta:set_string("entity_infotext_" .. self.compSlot, infotext)
+            if not drawers.eye_spy_loaded then
+                self.object:set_properties({
+                    infotext = infotext .. "\n\n\n\n\n"
+                })
+            end
+            return
+        end
+
+        if self.count <= 0 then
+            self.itemName = ""
+            self.meta:set_string("name" .. self.visualId, self.itemName)
+            self.texture = "blank.png"
+            itemDescription = S("Empty")
+        end
+
+        local infotext = drawers.gen_info_text(itemDescription,
+            self.count, self.stackMaxFactor, self.itemStackMax)
+        self.meta:set_string("entity_infotext" .. self.visualId, infotext)
+
+        if not drawers.eye_spy_loaded then
+            self.object:set_properties({
+                infotext = infotext .. "\n\n\n\n\n"
+            })
+        end
+    end,
+
+    updateTexture = function(self)
+        local tex = drawers.get_inv_image(self.itemName) or "blank.png"
+        -- Compute drawer yaw once
+        local node = core.get_node(self.drawer_pos)
+        local bdir = core.facedir_to_dir(node.param2)
+        local yaw = math.atan2(-bdir.x, -bdir.z)
+        self.texture = tex
+        local _visual_size = (self.drawerType >= 2)
+            and small_sprite_vs or large_sprite_vs
+        self.object:set_properties({
+            visual = "upright_sprite",
+            visual_size = _visual_size,
+            textures = { self.texture }
+        })
+        self.object:set_rotation({ x = 0, y = yaw, z = 0 })
+    end,
+
+    dropStack = function(self, itemStack)
+        -- find a position containing air
+        local dropPos = core.find_node_near(self.drawer_pos, 1, { "air" }, false)
+        -- if no pos found then drop on the top of the drawer
+        if not dropPos then
+            dropPos = self.object:get_pos()
+            dropPos.y = dropPos.y + 1
+        end
+        -- drop the item stack
+        core.item_drop(itemStack, nil, dropPos)
+    end,
+
+    dropItemOverload = function(self)
+        if self.is_compacting then
+            local max_pooled = self.meta:get_int("comp_max_pooled")
+            local pooled = self.meta:get_int("comp_pooled_count")
+            while pooled > max_pooled do
+                local overflow = pooled - max_pooled
+                local removeCount = math.floor(overflow / self.convRate)
+                if removeCount > self.itemStackMax then
+                    removeCount = self.itemStackMax
+                end
+                if removeCount <= 0 then break end
+                pooled = pooled - removeCount * self.convRate
+                local stack = ItemStack(self.itemName)
+                stack:set_count(removeCount)
+                self:dropStack(stack)
+            end
+            self.meta:set_int("comp_pooled_count", pooled)
+            self:updateInfotext()
+            return
+        end
+        -- drop stacks until there are no more items than allowed
+        while self.count > self.maxCount do
+            -- remove the overflow
+            local removeCount = self.count - self.maxCount
+            -- if this is too much for a single stack, only take the
+            -- stack limit
+            if removeCount > self.itemStackMax then
+                removeCount = self.itemStackMax
+            end
+            -- remove this count from the drawer
+            self.count = self.count - removeCount
+            -- create a new item stack having the size of the remove
+            -- count
+            local stack = ItemStack(self.itemName)
+            stack:set_count(removeCount)
+            -- drop the stack
+            self:dropStack(stack)
+        end
+    end,
+
+    setStackMaxFactor = function(self, stackMaxFactor)
+        if self.is_compacting then
+            self.stackMaxFactor = stackMaxFactor
+            local highest_rate = 1
+            local highest_stack_max = 64
+            for i = 1, self.drawerType do
+                local rate = self.meta:get_int("comp_rate_" .. i)
+                if rate > highest_rate then
+                    highest_rate = rate
+                    local name = self.meta:get_string("comp_name_" .. i)
+                    if name ~= "" then
+                        highest_stack_max = ItemStack(name):get_stack_max()
+                    end
+                end
+            end
+            local max_pooled = highest_stack_max * highest_rate * stackMaxFactor
+            self.meta:set_int("comp_max_pooled", max_pooled)
+            if self.convRate > 0 then
+                self.maxCount = math.floor(max_pooled / self.convRate)
+            end
+            self:dropItemOverload()
+            self:updateInfotext()
+            self:saveMetaData()
+            drawers.update_compacting_visuals(self.drawer_pos)
+            return
+        end
+        self.stackMaxFactor = stackMaxFactor
+        self.maxCount = self.stackMaxFactor * self.itemStackMax
+
+        -- will drop possible overflowing items
+        self:dropItemOverload()
+        self:updateInfotext()
+        self:saveMetaData()
+    end,
+
+    play_interact_sound = function(self)
+        core.sound_play("drawers_interact", {
+            pos = self.object:get_pos(),
+            max_hear_distance = 6,
+            gain = 0.8
+        })
+    end,
+
+    saveMetaData = function(self, meta)
+        -- NOTE: for compacting drawers we do NOT save pooled_count here.
+        -- It is written directly to meta by try_insert_stack / take_items /
+        -- dropItemOverload to avoid overwriting with stale cached values.
+        if not self.is_compacting then
+            self.meta:set_int("count" .. self.visualId, self.count)
+            self.meta:set_string("name" .. self.visualId, self.itemName)
+            self.meta:set_int("max_count" .. self.visualId, self.maxCount)
+            self.meta:set_int("base_stack_max" .. self.visualId, self.itemStackMax)
+            self.meta:set_int("stack_max_factor" .. self.visualId, self.stackMaxFactor)
+        end
+    end
+})
+
+-- Cleanup old entities that may have been saved with a now-removed entity name
+core.register_lbm({
+    name              = "drawers:cleanup_old_entities",
+    nodenames         = { "group:drawer" },
+    run_at_every_load = true,
+    action            = function(pos, node)
+        local objs = core.get_objects_inside_radius(pos, 0.56)
+        if objs then
+            for _, obj in pairs(objs) do
+                local ent = obj:get_luaentity()
+                if ent and ent.name == "drawers:compacting_visual" then
+                    obj:remove()
+                end
+            end
+        end
+    end
 })
 
 core.register_lbm({
-	name = "drawers:restore_visual",
-	nodenames = {"group:drawer"},
-	run_at_every_load = true,
-	action  = function(pos, node)
-		local meta = core.get_meta(pos)
-		-- create drawer upgrade inventory
-		meta:get_inventory():set_size("upgrades", 5)
-		-- set the formspec
-		meta:set_string("formspec", drawers.drawer_formspec)
+    name              = "drawers:restore_visual",
+    nodenames         = { "group:drawer" },
+    run_at_every_load = true,
+    action            = function(pos, node)
+        local meta = core.get_meta(pos)
+        -- create drawer upgrade inventory
+        meta:get_inventory():set_size("upgrades", 5)
+        -- set the formspec
+        meta:set_string("formspec", drawers.drawer_formspec)
 
-		-- count the drawer visuals
-		local drawerType = core.registered_nodes[node.name].groups.drawer
-		local foundVisuals = 0
-		local objs = core.get_objects_inside_radius(pos, 0.56)
-		if objs then
-			for _, obj in pairs(objs) do
-				if obj and obj:get_luaentity() and
-						obj:get_luaentity().name == "drawers:visual" then
-					foundVisuals = foundVisuals + 1
-				end
-			end
-		end
-		-- if all drawer visuals were found, return
-		if foundVisuals == drawerType then
-			return
-		end
+        -- count the drawer visuals
+        local drawerType = core.registered_nodes[node.name].groups.drawer
+        local foundVisuals = 0
+        local objs = core.get_objects_inside_radius(pos, 0.56)
+        if objs then
+            for _, obj in pairs(objs) do
+                if obj and obj:get_luaentity() and
+                    obj:get_luaentity().name == "drawers:visual" then
+                    foundVisuals = foundVisuals + 1
+                end
+            end
+        end
+        -- if all drawer visuals were found, return
+        -- always respawn half drawers so old worlds get the new front_offset
+        if foundVisuals == drawerType and core.get_item_group(node.name, "drawer_half") == 0 then
+            return
+        end
 
-		-- not enough visuals found, remove existing and create new ones
-		drawers.remove_visuals(pos)
-		drawers.spawn_visuals(pos)
-	end
+        -- not enough visuals found, remove existing and create new ones
+        drawers.remove_visuals(pos)
+        drawers.spawn_visuals(pos)
+    end
 })
 
 -- Inform players about potential visual issues
 core.register_on_joinplayer(function(player)
-	local player_name = player:get_player_name()
-	local info = core.get_player_information(player_name)
-	if info and info.protocol_version < MIN_PROTOCOL_VERSION then
-		core.chat_send_player(player_name, S("drawers: Your Luanti/Minetest is"
-			.. " no longer supported. You might experience visual issues."))
-	end
+    local player_name = player:get_player_name()
+    local info = core.get_player_information(player_name)
+    if info and info.protocol_version < MIN_PROTOCOL_VERSION then
+        core.chat_send_player(player_name, S("drawers: Your Luanti/Minetest is"
+            .. " no longer supported. You might experience visual issues."))
+    end
 end)
