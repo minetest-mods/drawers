@@ -180,6 +180,7 @@ core.register_entity("drawers:visual", {
 			drawer_posz = self.drawer_pos.z,
 			texture = self.texture,
 			drawerType = self.drawerType,
+			locked = self.locked,
 			visualId = self.visualId,
 			yaw = self.object:get_yaw(), -- Persist yaw across chunk reloads
 		})
@@ -263,6 +264,7 @@ core.register_entity("drawers:visual", {
 		-- drawer values
 		local vid = self.visualId
 		self.count = self.meta:get_int("count"..vid)
+		self.locked = self.meta:get_int("locked"..vid) ~= 0
 		self.itemName = self.meta:get_string("name"..vid)
 		self.maxCount = self.meta:get_int("max_count"..vid)
 		self.itemStackMax = self.meta:get_int("base_stack_max"..vid)
@@ -288,22 +290,33 @@ core.register_entity("drawers:visual", {
 			return
 		end
 
+		local sneaking = clicker:get_player_control().sneak
+
+		local stackName = clicker:get_wielded_item():get_name()
+
+		if (not sneaking) and stackName == drawers.DRAWER_KEY_ITEMSTRING then
+			self.locked = not self.locked
+			self:updateInfotext()
+			self:updateTexture()
+			self:saveMetaData()
+			return
+		end
+
 		-- used to check if we need to play a sound in the end
 		local inventoryChanged = false
 
 		-- When the player uses the drawer with their bare hand all
 		-- stacks from the inventory will be added to the drawer.
 		if self.itemName ~= "" and
-		   clicker:get_wielded_item():get_name() == "" and
-		   not clicker:get_player_control().sneak then
+		   stackName == "" and
+		   not sneaking then
 			-- try to insert all items from inventory
 			local i = 0
 			local inv = clicker:get_inventory()
 
 			while i <= inv:get_size("main") do
 				-- set current stack to leftover of insertion
-				local leftover = self.try_insert_stack(
-					self,
+				local leftover = self:try_insert_stack(
 					inv:get_stack("main", i),
 					true
 				)
@@ -319,8 +332,7 @@ core.register_entity("drawers:visual", {
 			end
 		else
 			-- try to insert wielded item only
-			local leftover = self.try_insert_stack(
-				self,
+			local leftover = self:try_insert_stack(
 				clicker:get_wielded_item(),
 				not clicker:get_player_control().sneak
 			)
@@ -450,7 +462,7 @@ core.register_entity("drawers:visual", {
 		-- in case the drawer was empty, initialize count, itemName, maxCount
 		if self.itemName == "" then
 			self.count = 0
-			self.itemName = itemstack:get_name()
+			self.itemName = stackName
 			self.maxCount = itemstack:get_stack_max() * self.stackMaxFactor
 			self.itemStackMax = itemstack:get_stack_max()
 		end
@@ -463,7 +475,7 @@ core.register_entity("drawers:visual", {
 
 		-- return leftover
 		itemstack:take_item(insertCount)
-		if itemstack:get_count() == 0 then
+		if stackCount == 0 then
 			return ItemStack("")
 		end
 		return itemstack
@@ -476,15 +488,19 @@ core.register_entity("drawers:visual", {
 			itemDescription = item_def.short_description or item_def.description
 		end
 
-		if self.count <= 0 then
+		if self.count <= 0 and not self.locked then
 			self.itemName = ""
 			self.meta:set_string("name"..self.visualId, self.itemName)
 			self.texture = "blank.png"
 			itemDescription = S("Empty")
 		end
 
+		if itemDescription == "" then
+			itemDescription = S("Empty")
+		end
+
 		local infotext = drawers.gen_info_text(itemDescription,
-			self.count, self.stackMaxFactor, self.itemStackMax)
+			self.count, self.stackMaxFactor, self.itemStackMax, self.locked, self.itemName == "")
 		self.meta:set_string("entity_infotext"..self.visualId, infotext)
 
 		self.object:set_properties({
@@ -504,7 +520,7 @@ core.register_entity("drawers:visual", {
 				visual_size = _visual_size,
 			})
 		else
-			self.texture = drawers.get_inv_image(self.itemName)
+			self.texture = drawers.get_inv_image(self.itemName) .. (self.locked and "^drawers_locked.png" or "")
 			local _visual_size = (self.drawerType >= 2)
 				and small_sprite_vs or large_sprite_vs
 			self.object:set_properties({
@@ -570,8 +586,9 @@ core.register_entity("drawers:visual", {
 		})
 	end,
 
-	saveMetaData = function(self, meta)
+	saveMetaData = function(self)
 		self.meta:set_int("count"..self.visualId, self.count)
+		self.meta:set_int("locked"..self.visualId, self.locked and 1 or 0)
 		self.meta:set_string("name"..self.visualId, self.itemName)
 		self.meta:set_int("max_count"..self.visualId, self.maxCount)
 		self.meta:set_int("base_stack_max"..self.visualId, self.itemStackMax)

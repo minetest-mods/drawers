@@ -87,10 +87,12 @@ Copyright (C) 2014 Justin Aquadro (MIT):
   textures/drawers_dark_oak_wood_front_2.png
   textures/drawers_dark_oak_wood_front_4.png
   textures/drawers_dark_oak_wood.png
+  textures/drawers_drawer_key.png
   textures/drawers_junglewood_mcl_front_1.png
   textures/drawers_junglewood_mcl_front_2.png
   textures/drawers_junglewood_mcl_front_4.png
   textures/drawers_junglewood_mcl.png
+  textures/drawers_locked.png
   textures/drawers_oak_wood_front_1.png
   textures/drawers_oak_wood_front_2.png
   textures/drawers_oak_wood_front_4.png

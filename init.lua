@@ -26,7 +26,7 @@ SOFTWARE.
 
 local MP = core.get_modpath(core.get_current_modname())
 
-local S, NS = core.get_translator('drawers')
+local S = core.get_translator('drawers')
 
 drawers = {}
 drawers.drawer_visuals = {}
@@ -36,19 +36,31 @@ drawers.WOOD_ITEMSTRING = "group:wood"
 if core.get_modpath("default") and default then
 	drawers.WOOD_SOUNDS = default.node_sound_wood_defaults()
 	drawers.CHEST_ITEMSTRING = "default:chest"
+	drawers.KEY_RECIPE = {
+		{"default:gold_ingot"},
+		{"default:gold_ingot"},
+		{"drawers:upgrade_template"},
+	}
 elseif drawers.mcl_loaded then -- MineClone 2
 	drawers.CHEST_ITEMSTRING = "mcl_chests:chest"
 	if core.get_modpath("mcl_sounds") and mcl_sounds then
 		drawers.WOOD_SOUNDS = mcl_sounds.node_sound_wood_defaults()
 	end
+	drawers.KEY_RECIPE = {
+		{"mcl_core:gold_nugget", "mcl_core:gold_ingot"},
+		{"",                     "mcl_core:gold_ingot"},
+		{"",                     "drawers:upgrade_template"},
+	}
 else
 	drawers.CHEST_ITEMSTRING = "chest"
 end
-
+drawers.DRAWER_KEY_ITEMSTRING = "drawers:drawer_key"
 
 drawers.enable_1x1 = not core.settings:get_bool("drawers_disable_1x1")
 drawers.enable_1x2 = not core.settings:get_bool("drawers_disable_1x2")
 drawers.enable_2x2 = not core.settings:get_bool("drawers_disable_2x2")
+
+drawers.enable_drawer_key = not core.settings:get_bool("drawers_disable_drawer_key")
 
 drawers.CONTROLLER_RANGE = 14
 
@@ -389,4 +401,19 @@ core.register_craft({
 		{"group:stick", "group:stick", "group:stick"}
 	}
 })
+
+--
+-- Register key
+--
+
+if drawers.enable_drawer_key then
+	core.register_craftitem(drawers.DRAWER_KEY_ITEMSTRING, {
+		description = S("Drawer Key"),
+		inventory_image = "drawers_drawer_key.png"
+	})
+	core.register_craft({
+		output = drawers.DRAWER_KEY_ITEMSTRING,
+		recipe = drawers.KEY_RECIPE
+	})
+end
 

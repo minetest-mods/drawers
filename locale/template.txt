@@ -2,12 +2,15 @@
 @1 Drawer=
 @1 Drawers (1x2)=
 @1 Drawers (2x2)=
+Drawer Key=
 Empty=
 Drawer Controller=
 Digiline Channel=
 Save=
 @1 (@2% full)=
 @1 @2 (@3% full)=
+@1 (@2% full) (Locked)=
+@1 @2 (@3% full) (Locked)=
 Acacia Wood=
 Aspen Wood=
 Junglewood=
