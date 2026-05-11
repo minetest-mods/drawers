@@ -409,7 +409,8 @@ core.register_craft({
 if drawers.enable_drawer_key then
 	core.register_craftitem(drawers.DRAWER_KEY_ITEMSTRING, {
 		description = S("Drawer Key"),
-		inventory_image = "drawers_drawer_key.png"
+		inventory_image = "drawers_drawer_key.png",
+		stack_max = 1
 	})
 	core.register_craft({
 		output = drawers.DRAWER_KEY_ITEMSTRING,
