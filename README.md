@@ -1,4 +1,4 @@
-# Minetest Mod Storage Drawers
+# Luanti Mod Storage Drawers
 
 [![ContentDB](https://content.minetest.net/packages/LNJ/drawers/shields/downloads/)](https://content.minetest.net/packages/LNJ/drawers/)
 ![](https://github.com/minetest-mods/drawers/workflows/luacheck/badge.svg)
@@ -21,7 +21,7 @@ drawer upgrades to your drawer! They are available in different sizes and are
 crafted by steel, gold, obsidian, diamonds or mithril.
 
 ## Notes
-This mod requires Minetest 5.0 or later. The `default` mod from MTG or the
+This mod requires Luanti 5.0 or later. The `default` mod from MTG or the
 MineClone 2 mods are only optional dependencies for crafting recipes.
 
 ## To-Do
@@ -52,7 +52,6 @@ alternatively you can also [email](mailto:git@lnj.li) me.
 	— I reused some code by you. :)
 
 ## Links
-* [Minetest Forums](https://forum.minetest.net/viewtopic.php?f=9&t=17134)
-* [Minetest Wiki](http://wiki.minetest.net/Mods/Storage_Drawers)
+* [Luanti Forums](https://forum.luanti.org/viewtopic.php?f=9&t=17134)
 * [Weblate](https://hosted.weblate.org/projects/minetest/mod-storage-drawers/)
 * [GitHub](http://github.com/minetest-mods/drawers/)

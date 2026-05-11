@@ -11,12 +11,11 @@ read_globals = {
 	string = {fields = {"split"}},
 	table = {fields = {"copy", "getn"}},
 
-	-- Minetest
+	-- Luanti
 	"vector", "ItemStack",
 	"dump", "VoxelArea",
 
 	-- deps
-	"minetest",
 	"core",
 	"default",
 	"mcl_core",
