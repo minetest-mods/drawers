@@ -26,7 +26,7 @@ SOFTWARE.
 
 local MP = core.get_modpath(core.get_current_modname())
 
-local S, NS = core.get_translator('drawers')
+local S = core.get_translator('drawers')
 
 drawers = {}
 drawers.drawer_visuals = {}
