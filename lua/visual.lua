@@ -294,14 +294,6 @@ core.register_entity("drawers:visual", {
 
 		local stackName = clicker:get_wielded_item():get_name()
 
-		if (not sneaking) and stackName == drawers.DRAWER_KEY_ITEMSTRING then
-			self.locked = not self.locked
-			self:updateInfotext()
-			self:updateTexture()
-			self:saveMetaData()
-			return
-		end
-
 		-- used to check if we need to play a sound in the end
 		local inventoryChanged = false
 
@@ -357,7 +349,18 @@ core.register_entity("drawers:visual", {
 			self.object:remove()
 			return
 		end
-		local add_stack = not puncher:get_player_control().sneak
+
+		local control = puncher:get_player_control()
+
+		if control.aux1 then
+			self.locked = not self.locked
+			self:updateInfotext()
+			self:updateTexture()
+			self:saveMetaData()
+			return
+		end
+
+		local add_stack = not control.sneak
 		if core.is_protected(self.drawer_pos, puncher:get_player_name()) then
 		   core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
 		   return

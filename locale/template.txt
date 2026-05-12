@@ -2,7 +2,6 @@
 @1 Drawer=
 @1 Drawers (1x2)=
 @1 Drawers (2x2)=
-Drawer Key=
 Empty=
 Drawer Controller=
 Digiline Channel=
