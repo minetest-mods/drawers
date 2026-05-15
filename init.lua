@@ -1,5 +1,5 @@
 --[[
-Minetest Mod Storage Drawers - A Mod adding storage drawers
+Luanti Mod Storage Drawers - A Mod adding storage drawers
 
 Copyright (C) 2017-2020 Linus Jahn <lnj@kaidan.im>
 
@@ -27,7 +27,6 @@ SOFTWARE.
 local MP = core.get_modpath(core.get_current_modname())
 
 local S = core.get_translator('drawers')
-local NS = core.get_translator('drawers')
 
 drawers = {}
 drawers.drawer_visuals = {}
