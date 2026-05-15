@@ -343,6 +343,11 @@ core.register_entity("drawers:visual", {
 	end,
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
+		if core.is_protected(self.drawer_pos, puncher:get_player_name()) then
+			core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
+			return
+		end
+
 		local node = core.get_node(self.object:get_pos())
 
 		if core.get_item_group(node.name, "drawer") == 0 then
@@ -361,10 +366,6 @@ core.register_entity("drawers:visual", {
 		end
 
 		local add_stack = not control.sneak
-		if core.is_protected(self.drawer_pos, puncher:get_player_name()) then
-		   core.record_protection_violation(self.drawer_pos, puncher:get_player_name())
-		   return
-		end
 		local inv = puncher:get_inventory()
 		if inv == nil then
 			return
