@@ -36,16 +36,24 @@ function drawers.get_upgrade_slots_bg(x,y)
 	return out
 end
 
-function drawers.gen_info_text(basename, count, factor, stack_max)
+function drawers.gen_info_text(basename, count, factor, stack_max, is_locked, is_empty)
 	local maxCount = stack_max * factor
 	local percent = count / maxCount * 100
 	-- round the number (float -> int)
 	percent = math.floor(percent + 0.5)
 
-	if count == 0 then
-		return S("@1 (@2% full)", basename, tostring(percent))
+	if is_empty then
+		if is_locked then
+			return S("@1 (@2% full) (Locked)", basename, tostring(percent))
+		else
+			return S("@1 (@2% full)", basename, tostring(percent))
+		end
 	else
-		return S("@1 @2 (@3% full)", tostring(count), basename, tostring(percent))
+		if is_locked then
+			return S("@1 @2 (@3% full) (Locked)", tostring(count), basename, tostring(percent))
+		else
+			return S("@1 @2 (@3% full)", tostring(count), basename, tostring(percent))
+		end
 	end
 end
 

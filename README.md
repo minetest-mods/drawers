@@ -30,7 +30,7 @@ MineClone 2 mods are only optional dependencies for crafting recipes.
 - [ ] Add half-sized drawers
 - [x] Add 2x2 and 1x2 drawers
 - [ ] Add compacting drawers for auto-crafting blocks/ingots/fragments
-- [ ] Add a key (or something similar) for locking the item (so the item is
+- [x] Add a key (or something similar) for locking the item (so the item is
       also displayed at count 0)
 - [ ] Add duct tape to transport drawers
 - [x] Support pipeworks
