@@ -20,6 +20,26 @@ Do you have too many cobblestones for one drawer? No problem, just add some
 drawer upgrades to your drawer! They are available in different sizes and are
 crafted by steel, gold, obsidian, diamonds or mithril.
 
+## Digilines
+The drawer controller is digilines-compatible. To request an item from the
+surrounding drawers, send an itemstring to its channel:
+* `"default:dirt 15"`
+* `"default:cobble"`
+
+The items will be sent out the back of the drawer controller.
+
+To request the contents of a drawer network, send a table with the following
+format:
+
+1. `command` (string) - `"get"`
+2. `offset` (integer) - Used to paginate the results if the amount of drawers in
+	the network exceeds `drawers.CONTROLLER_MAX_COUNT`. Defaults to 1.
+3. `max_count` (integer) - Must be between 1 and `CONTROLLER_MAX_COUNT`.
+	Defaults to `CONTROLLER_MAX_COUNT`. Maximum amount of drawers to return.
+
+A table will be sent back on the same channel containing each drawer's position
+and the contents of each of their slots.
+
 ## Notes
 This mod requires Luanti 5.0 or later. The `default` mod from MTG or the
 MineClone 2 mods are only optional dependencies for crafting recipes.

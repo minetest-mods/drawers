@@ -14,6 +14,7 @@ read_globals = {
 	-- Luanti
 	"vector", "ItemStack",
 	"dump", "VoxelArea",
+	"VoxelManip",
 
 	-- deps
 	"core",
@@ -23,6 +24,7 @@ read_globals = {
 	"pipeworks",
 	"screwdriver",
 	"digilines",
+	"digiline",
 	"mesecon",
 	"techage"
 }

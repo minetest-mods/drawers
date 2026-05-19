@@ -77,7 +77,6 @@ end
 dofile(MP .. "/lua/helpers.lua")
 dofile(MP .. "/lua/visual.lua")
 dofile(MP .. "/lua/api.lua")
-dofile(MP .. "/lua/controller.lua")
 
 
 --
@@ -371,6 +370,12 @@ core.register_craft({
 		{"group:stick", "group:wood", "group:stick"}
 	}
 })
+
+--
+-- Register drawer controller
+--
+
+dofile(MP .. "/lua/controller.lua")
 
 --
 -- Register drawer upgrade template
