@@ -16,11 +16,90 @@ local large_sprite_vs = { x = 0.6, y = 0.6 }
 -- Required for `visual = "node"`
 local MIN_PROTOCOL_VERSION = 48 -- 5.12.0
 
--- Compute yaw from facedir direction so all four orientations are correct.
--- bdir is the vector the drawer face points toward (from core.facedir_to_dir).
--- The entity must face *toward the viewer*, i.e. opposite to bdir.
-local function facedir_yaw(bdir)
-	return math.atan2(-bdir.x, -bdir.z)
+local halfpi = math.pi / 2
+local facedir_to_objrot = {
+	vector.new(0, 0, 0) * halfpi,
+	vector.new(0, 3, 0) * halfpi,
+	vector.new(0, 2, 0) * halfpi,
+	vector.new(0, 1, 0) * halfpi,
+	vector.new(3, 1, 1) * halfpi,
+	vector.new(2, 1, 1) * halfpi,
+	vector.new(1, 1, 1) * halfpi,
+	vector.new(0, 1, 1) * halfpi,
+	vector.new(1, 3, 1) * halfpi,
+	vector.new(0, 3, 1) * halfpi,
+	vector.new(3, 3, 1) * halfpi,
+	vector.new(3, 3, 1) * halfpi,
+	vector.new(0, 0, 1) * halfpi,
+	vector.new(3, 0, 1) * halfpi,
+	vector.new(2, 0, 1) * halfpi,
+	vector.new(1, 0, 1) * halfpi,
+	vector.new(2, 2, 1) * halfpi,
+	vector.new(1, 2, 1) * halfpi,
+	vector.new(0, 2, 1) * halfpi,
+	vector.new(3, 2, 1) * halfpi,
+	vector.new(0, 0, 2) * halfpi,
+	vector.new(0, 1, 2) * halfpi,
+	vector.new(0, 2, 2) * halfpi,
+	vector.new(0, 3, 2) * halfpi,
+	vector.new(0, 0, 0) * halfpi,
+	vector.new(0, 3, 0) * halfpi,
+	vector.new(0, 2, 0) * halfpi,
+	vector.new(0, 1, 0) * halfpi,
+	vector.new(3, 1, 1) * halfpi,
+	vector.new(2, 1, 1) * halfpi,
+	vector.new(1, 1, 1) * halfpi,
+	vector.new(0, 1, 1) * halfpi,
+	vector.new(1, 3, 1) * halfpi,
+	vector.new(0, 3, 1) * halfpi,
+	vector.new(3, 3, 1) * halfpi,
+	vector.new(3, 3, 1) * halfpi,
+	vector.new(0, 0, 0) * halfpi,
+	vector.new(0, 3, 0) * halfpi,
+	vector.new(0, 2, 0) * halfpi,
+	vector.new(0, 1, 0) * halfpi,
+	vector.new(3, 1, 1) * halfpi,
+	vector.new(2, 1, 1) * halfpi,
+	vector.new(1, 1, 1) * halfpi,
+	vector.new(0, 1, 1) * halfpi,
+	vector.new(1, 3, 1) * halfpi,
+	vector.new(0, 3, 1) * halfpi,
+	vector.new(3, 3, 1) * halfpi,
+	vector.new(2, 3, 1) * halfpi,
+	vector.new(0, 0, 1) * halfpi,
+	vector.new(3, 0, 1) * halfpi,
+	vector.new(2, 0, 1) * halfpi,
+	vector.new(1, 0, 1) * halfpi,
+	vector.new(2, 2, 1) * halfpi,
+	vector.new(1, 2, 1) * halfpi,
+	vector.new(0, 2, 1) * halfpi,
+	vector.new(3, 2, 1) * halfpi,
+	vector.new(0, 0, 2) * halfpi,
+	vector.new(0, 1, 2) * halfpi,
+	vector.new(0, 2, 2) * halfpi,
+	vector.new(0, 3, 2) * halfpi,
+}
+
+local facedir_to_up_table = {
+	vector.new( 0,  1,  0),
+	vector.new( 0,  0,  1),
+	vector.new( 0,  0, -1),
+	vector.new( 1,  0,  0),
+	vector.new(-1,  0,  0),
+	vector.new( 0, -1,  0),
+}
+
+-- Compute rotation from facedir value so all 24 orientations are correct.
+-- facedir is the rotation component of the param2 of the drawer node.
+local facedir_rotation = function(facedir)
+	return facedir_to_objrot[facedir + 1]
+end
+
+-- Compute up direction from facedir value so all 24 orientations are correct.
+-- Used like core.facedir_to_dir but for the relative up direction rather than the backward direction.
+-- facedir is the rotation component of the param2 of the drawer node.
+local facedir_to_up = function(facedir)
+	return facedir_to_up_table[math.floor(facedir/4) + 1]
 end
 
 -- Strip color bits from param2 before comparing facedir values.
@@ -56,14 +135,14 @@ local function use_node_visual(item_def)
 	return false
 end
 
-local function spawn_entity(pos, dir, id, yaw, itemname)
+local function spawn_entity(pos, offset, id, rotation, itemname)
 	drawers.last_visual_id = id
 	drawers.last_texture = drawers.get_inv_image(itemname)
 
-	pos = vector.add(pos, vector.multiply(dir, 0.45))
+	pos = vector.add(pos, vector.multiply(offset, 0.45))
 	local obj = core.add_entity(pos, "drawers:visual")
 	if obj then
-		obj:set_yaw(yaw)
+		obj:set_rotation(rotation)
 	end
 end
 
@@ -77,53 +156,30 @@ function drawers.spawn_visuals(pos)
 	drawers.last_drawer_pos = pos
 	drawers.last_drawer_type = drawerType
 
+	local node_facedir = facedir(node.param2)
+	local fdir = -core.facedir_to_dir(node_facedir)
+	local udir = facedir_to_up(node_facedir)
+	local entity_rotation = facedir_rotation(node_facedir)
+
 	if drawerType == 1 then -- 1x1 drawer
-		local bdir = core.facedir_to_dir(node.param2)
-		local yaw = facedir_yaw(bdir)
-
-		local fdir = vector.new(-bdir.x, 0, -bdir.z)
-		spawn_entity(pos, fdir, "", yaw, meta:get_string("name"))
-
+		spawn_entity(pos, fdir, "", entity_rotation, meta:get_string("name"))
 	elseif drawerType == 2 then -- 1x2 drawer
-		local bdir = core.facedir_to_dir(node.param2)
-		local yaw = facedir_yaw(bdir)
-
-		local fdir1 = vector.new(-bdir.x, 0.5, -bdir.z)
-		local fdir2 = vector.new(-bdir.x, -0.5, -bdir.z)
-		spawn_entity(pos, fdir1, 1, yaw, meta:get_string("name1"))
-		spawn_entity(pos, fdir2, 2, yaw, meta:get_string("name2"))
-
+		local fdir1 = fdir + udir * 0.5
+		local fdir2 = fdir - udir * 0.5
+		spawn_entity(pos, fdir1, 1, entity_rotation, meta:get_string("name1"))
+		spawn_entity(pos, fdir2, 2, entity_rotation, meta:get_string("name2"))
 	else -- 2x2 drawer
-		local bdir = core.facedir_to_dir(node.param2)
-		local yaw = facedir_yaw(bdir)
+		local rdir = vector.cross(fdir, udir)
 
-		local fdir1, fdir2, fdir3, fdir4
-		if facedir(node.param2) == 2 then
-			fdir1 = vector.new(-bdir.x + 0.5, 0.5, -bdir.z)
-			fdir2 = vector.new(-bdir.x - 0.5, 0.5, -bdir.z)
-			fdir3 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
-			fdir4 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
-		elseif facedir(node.param2) == 0 then
-			fdir1 = vector.new(-bdir.x - 0.5, 0.5, -bdir.z)
-			fdir2 = vector.new(-bdir.x + 0.5, 0.5, -bdir.z)
-			fdir3 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
-			fdir4 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
-		elseif facedir(node.param2) == 1 then
-			fdir1 = vector.new(-bdir.x, 0.5, -bdir.z + 0.5)
-			fdir2 = vector.new(-bdir.x, 0.5, -bdir.z - 0.5)
-			fdir3 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
-			fdir4 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
-		else
-			fdir1 = vector.new(-bdir.x, 0.5, -bdir.z - 0.5)
-			fdir2 = vector.new(-bdir.x, 0.5, -bdir.z + 0.5)
-			fdir3 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
-			fdir4 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
-		end
+		local fdir1 = fdir + ( udir + rdir) * 0.5
+		local fdir2 = fdir + ( udir - rdir) * 0.5
+		local fdir3 = fdir + (-udir + rdir) * 0.5
+		local fdir4 = fdir + (-udir - rdir) * 0.5
 
-		spawn_entity(pos, fdir1, 1, yaw, meta:get_string("name1"))
-		spawn_entity(pos, fdir2, 2, yaw, meta:get_string("name2"))
-		spawn_entity(pos, fdir3, 3, yaw, meta:get_string("name3"))
-		spawn_entity(pos, fdir4, 4, yaw, meta:get_string("name4"))
+		spawn_entity(pos, fdir1, 1, entity_rotation, meta:get_string("name1"))
+		spawn_entity(pos, fdir2, 2, entity_rotation, meta:get_string("name2"))
+		spawn_entity(pos, fdir3, 3, entity_rotation, meta:get_string("name3"))
+		spawn_entity(pos, fdir4, 4, entity_rotation, meta:get_string("name4"))
 	end
 end
 
@@ -181,7 +237,7 @@ core.register_entity("drawers:visual", {
 			texture = self.texture,
 			drawerType = self.drawerType,
 			visualId = self.visualId,
-			yaw = self.object:get_yaw(), -- Persist yaw across chunk reloads
+			rotation = self.object:get_rotation(),
 		})
 	end,
 
@@ -201,6 +257,10 @@ core.register_entity("drawers:visual", {
 			-- Restore yaw saved at serialize time
 			if data.yaw then
 				self.object:set_yaw(data.yaw)
+			end
+			-- Restore rotation saved at serialize time
+			if data.rotation then
+				self.object:set_rotation(data.rotation)
 			end
 
 			-- backwards compatibility
