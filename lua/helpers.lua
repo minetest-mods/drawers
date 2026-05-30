@@ -138,7 +138,7 @@ function drawers.get_inv_image(name)
 
 	-- Full cubes and nodeboxes: isometric cube preview from top/left/right tiles
 	local top   = tile_to_image(def.tiles[1])
-	local right = tile_to_image(def.tiles[3], def.tiles[2] or top)
+	local right = tile_to_image(def.tiles[3], def.tiles[2] and tile_to_image(def.tiles[2]) or top)
 	local left  = tile_to_image(def.tiles[6], right) -- fallback: right
 	return core.inventorycube(top, left, right)
 end
