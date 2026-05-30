@@ -396,7 +396,18 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 
 	-- prevent error if taken_stack ended up with a nil value
 	if taken_stack then
-		pipeworks.tube_inject_item(pos, pos, dir, taken_stack:to_string())
+		local tags = nil
+
+		-- Set item tags if provided in msg.tags or msg.tag
+		if pipeworks.enable_item_tags and type(msg) == "table" then
+			if type(msg.tags) == "table" or type(msg.tags) == "string" then
+				tags = pipeworks.sanitize_tags(msg.tags)
+			elseif type(msg.tag) == "string" then
+				tags = pipeworks.sanitize_tags({msg.tag})
+			end
+		end
+
+		pipeworks.tube_inject_item(pos, pos, dir, taken_stack, nil, tags)
 	end
 end
 
