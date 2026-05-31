@@ -122,7 +122,7 @@ function drawers.get_inv_image(name)
 	-- (tiles[1]) so the full appearance is shown, not just the bare base texture.
 	if def.drawtype == "connected" then
 		local base    = tile_to_image(def.tiles[1], texture)
-		local overlay = def.tiles[2] and tile_to_image(def.tiles[2]) or nil
+		local overlay = tile_to_image(def.tiles[2])
 		local face    = overlay and (base .. "^" .. overlay) or base
 		return core.inventorycube(face, face, face)
 	end
@@ -130,7 +130,7 @@ function drawers.get_inv_image(name)
 	-- glasslike_framed: tiles[2] is the inner fill, tiles[1] is the frame overlay.
 	-- Composite fill first, then frame on top.
 	if def.drawtype == "glasslike_framed" or def.drawtype == "glasslike_framed_optional" then
-		local fill  = def.tiles[2] and tile_to_image(def.tiles[2]) or nil
+		local fill  = tile_to_image(def.tiles[2])
 		local frame = tile_to_image(def.tiles[1], texture)
 		local face  = fill and (fill .. "^" .. frame) or frame
 		return core.inventorycube(face, face, face)
@@ -138,7 +138,7 @@ function drawers.get_inv_image(name)
 
 	-- Full cubes and nodeboxes: isometric cube preview from top/left/right tiles
 	local top   = tile_to_image(def.tiles[1])
-	local right = tile_to_image(def.tiles[3], def.tiles[2] or top)
+	local right = tile_to_image(def.tiles[3], tile_to_image(def.tiles[2]) or top)
 	local left  = tile_to_image(def.tiles[6], right) -- fallback: right
 	return core.inventorycube(top, left, right)
 end
