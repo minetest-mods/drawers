@@ -29,7 +29,7 @@ local facedir_to_objrot = {
 	vector.new(1, 3, 1) * halfpi,
 	vector.new(0, 3, 1) * halfpi,
 	vector.new(3, 3, 1) * halfpi,
-	vector.new(3, 3, 1) * halfpi,
+	vector.new(2, 3, 1) * halfpi,
 	vector.new(0, 0, 1) * halfpi,
 	vector.new(3, 0, 1) * halfpi,
 	vector.new(2, 0, 1) * halfpi,
