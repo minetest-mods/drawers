@@ -56,7 +56,7 @@ local facedir_to_up_table = {
 -- Compute rotation from facedir value so all 24 orientations are correct.
 -- facedir is the rotation component of the param2 of the drawer node.
 local facedir_rotation = function(facedir)
-	return facedir_to_objrot[facedir + 1]
+	return facedir_to_objrot[(facedir % 24) + 1]
 end
 
 -- Compute up direction from facedir value so all 24 orientations are correct.
