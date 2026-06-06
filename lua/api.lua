@@ -335,11 +335,6 @@ function drawers.register_drawer(name, def)
 
 	if core.get_modpath("screwdriver") and screwdriver then
 		def.on_rotate = function(pos, node, user, mode, new_param2)
-			-- Only allow y-axis rotation
-			if mode ~= screwdriver.ROTATE_FACE then
-				return false
-			end
-
 			node.param2 = new_param2
 			core.swap_node(pos, node)
 
