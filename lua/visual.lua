@@ -63,7 +63,7 @@ end
 -- Used like core.facedir_to_dir but for the relative up direction rather than the backward direction.
 -- facedir is the rotation component of the param2 of the drawer node.
 local facedir_to_up = function(facedir)
-	return facedir_to_up_table[math.floor(facedir/4) + 1]
+	return facedir_to_up_table[math.floor((facedir % 24) /4) + 1]
 end
 
 -- Strip color bits from param2 before comparing facedir values.
