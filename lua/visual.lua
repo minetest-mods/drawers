@@ -470,11 +470,7 @@ core.register_entity("drawers:visual", {
 	end,
 
 	updateInfotext = function(self)
-		local item_def = core.registered_items[self.itemName]
-		local itemDescription = ""
-		if item_def then
-			itemDescription = item_def.short_description or item_def.description
-		end
+		local itemDescription = ItemStack(self.itemName):get_short_description()
 
 		if self.count <= 0 then
 			self.itemName = ""
