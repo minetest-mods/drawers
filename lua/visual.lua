@@ -184,7 +184,7 @@ core.register_entity("drawers:visual", {
 		hp_max = 1,
 		physical = false,
 		collide_with_objects = false,
-		collisionbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0}, -- for param2 0, 2
+		selectionbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0, rotate = true}, -- for param2 0, 2
 		visual = "upright_sprite", -- "wielditem" for items without inv img?
 		visual_size = {x = 0.6, y = 0.6},
 		textures = {"blank.png"},
