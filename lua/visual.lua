@@ -184,7 +184,7 @@ core.register_entity("drawers:visual", {
 		hp_max = 1,
 		physical = false,
 		collide_with_objects = false,
-		selectionbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0, rotate = true}, -- for param2 0, 2
+		selectionbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0, rotate = true},
 		visual = "upright_sprite", -- "wielditem" for items without inv img?
 		visual_size = {x = 0.6, y = 0.6},
 		textures = {"blank.png"},
@@ -260,28 +260,18 @@ core.register_entity("drawers:visual", {
 		-- get meta
 		self.meta = core.get_meta(self.drawer_pos)
 
-		-- collisionbox
-		-- Fix: use facedir() to strip color bits before comparing param2
-		node = core.get_node(self.drawer_pos)
-		local colbox
+		-- selectionbox
+		local selbox
 		if self.drawerType ~= 2 then
-			if facedir(node.param2) == 1 or facedir(node.param2) == 3 then
-				colbox = {0, -0.4374, -0.4374,  0, 0.4374, 0.4374}
-			else
-				colbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0} -- for param2 = 0 or 2
-			end
+			selbox = {-0.4374, -0.4374, 0,  0.4374, 0.4374, 0, rotate = true}
 			-- only half the size if it's a small drawer
 			if self.drawerType > 1 then
-				for i,j in pairs(colbox) do
-					colbox[i] = j * 0.5
+				for i,j in ipairs(selbox) do
+					selbox[i] = j * 0.5
 				end
 			end
 		else
-			if facedir(node.param2) == 1 or facedir(node.param2) == 3 then
-				colbox = {0, -0.2187, -0.4374,  0, 0.2187, 0.4374}
-			else
-				colbox = {-0.4374, -0.2187, 0,  0.4374, 0.2187, 0} -- for param2 = 0 or 2
-			end
+			selbox = {-0.4374, -0.2187, 0,  0.4374, 0.2187, 0, rotate = true}
 		end
 
 		-- drawer values
@@ -296,7 +286,7 @@ core.register_entity("drawers:visual", {
 		local infotext = self.meta:get_string("entity_infotext"..vid) .. "\n\n\n\n\n"
 
 		self.object:set_properties({
-			collisionbox = colbox,
+			selectionbox = selbox,
 			infotext = infotext,
 		})
 
