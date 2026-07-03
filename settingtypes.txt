@@ -1,0 +1,2 @@
+# Enable drawer locking.
+drawers_enable_drawer_locking (Enable Drawer Locking) bool true
