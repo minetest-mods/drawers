@@ -488,7 +488,9 @@ core.register_entity("drawers:visual", {
 	updateInfotext = function(self)
 		local itemDescription = ItemStack(self.itemName):get_short_description()
 
-		if self.count <= 0 and not self.locked then
+		local is_locked = drawers.enable_drawer_locking and self.locked
+
+		if self.count <= 0 and not is_locked then
 			self.itemName = ""
 			self.meta:set_string("name"..self.visualId, self.itemName)
 			self.texture = "blank.png"
@@ -500,7 +502,7 @@ core.register_entity("drawers:visual", {
 		end
 
 		local infotext = drawers.gen_info_text(itemDescription,
-			self.count, self.stackMaxFactor, self.itemStackMax, self.locked, self.itemName == "")
+			self.count, self.stackMaxFactor, self.itemStackMax, is_locked, self.itemName == "")
 		self.meta:set_string("entity_infotext"..self.visualId, infotext)
 
 		self.object:set_properties({
@@ -520,7 +522,8 @@ core.register_entity("drawers:visual", {
 				visual_size = _visual_size,
 			})
 		else
-			self.texture = drawers.get_inv_image(self.itemName) .. (self.locked and "^drawers_locked.png" or "")
+			local is_locked = drawers.enable_drawer_locking and self.locked
+			self.texture = drawers.get_inv_image(self.itemName) .. (is_locked and "^drawers_locked.png" or "")
 			local _visual_size = (self.drawerType >= 2)
 				and small_sprite_vs or large_sprite_vs
 			self.object:set_properties({
