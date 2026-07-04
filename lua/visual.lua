@@ -357,7 +357,7 @@ core.register_entity("drawers:visual", {
 
 		local control = puncher:get_player_control()
 
-		if control.aux1 then
+		if drawers.enable_drawer_locking and control.aux1 then
 			self.locked = not self.locked
 			self:updateInfotext()
 			self:updateTexture()
