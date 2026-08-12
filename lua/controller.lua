@@ -29,15 +29,18 @@ local techage_loaded = core.get_modpath("techage") and techage
 
 local max_matches = tonumber(core.settings:get("drawers.controller_max_matches")) or 50
 
--- Cache content IDS of all registered drawer items
 local controller_content_id
 local trim_content_id = core.get_content_id("drawers:trim")
 local drawer_content_ids = {}
-for name, _ in pairs(core.registered_items) do
-	if core.get_item_group(name, "drawer") > 0 or core.get_item_group(name, "drawer_connector") > 0 then
-		drawer_content_ids[core.get_content_id(name)] = true
+
+-- Cache content IDS of all registered drawer items
+core.register_on_mods_loaded(function()
+	for name, _ in pairs(core.registered_items) do
+		if core.get_item_group(name, "drawer") > 0 or core.get_item_group(name, "drawer_connector") > 0 then
+			drawer_content_ids[core.get_content_id(name)] = true
+		end
 	end
-end
+end)
 
 -- Cache position offsets to find connected drawers
 local offsets = {}
