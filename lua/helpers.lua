@@ -1,31 +1,12 @@
 --[[
-Minetest Mod Storage Drawers - A Mod adding storage drawers
+Luanti Mod Storage Drawers - A Mod adding storage drawers
 
+SPDX-License-Identifier: MIT
 Copyright (C) 2017-2019 Linus Jahn <lnj@kaidan.im>
 Copyright (C) 2016 Mango Tango <mtango688@gmail.com>
-
-MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 ]]
 
-local S = minetest.get_translator('drawers')
+local S = core.get_translator('drawers')
 
 -- GUI
 function drawers.get_upgrade_slots_bg(x,y)
@@ -36,16 +17,24 @@ function drawers.get_upgrade_slots_bg(x,y)
 	return out
 end
 
-function drawers.gen_info_text(basename, count, factor, stack_max)
+function drawers.gen_info_text(basename, count, factor, stack_max, is_locked, is_empty)
 	local maxCount = stack_max * factor
 	local percent = count / maxCount * 100
 	-- round the number (float -> int)
 	percent = math.floor(percent + 0.5)
 
-	if count == 0 then
-		return S("@1 (@2% full)", basename, tostring(percent))
+	if is_empty then
+		if is_locked then
+			return S("@1 (@2% full) (Locked)", basename, tostring(percent))
+		else
+			return S("@1 (@2% full)", basename, tostring(percent))
+		end
 	else
-		return S("@1 @2 (@3% full)", tostring(count), basename, tostring(percent))
+		if is_locked then
+			return S("@1 @2 (@3% full) (Locked)", tostring(count), basename, tostring(percent))
+		else
+			return S("@1 @2 (@3% full)", tostring(count), basename, tostring(percent))
+		end
 	end
 end
 
@@ -70,170 +59,77 @@ local function tile_to_image(tile, fallback_image)
 	return image
 end
 
+-- Drawtypes where even inventorycube() is meaningless — use a single flat tile.
+local flat_sprite_drawtypes = {
+	torchlike        = true,
+	signlike         = true,
+	plantlike        = true,
+	plantlike_rooted = true,
+	firelike         = true,
+	raillike         = true,
+}
+
+-- Drawtypes that are cubic but use the same texture on all faces
+local all_same_face_drawtypes = {
+	allfaces          = true,
+	allfaces_optional = true,
+	glasslike         = true,
+	liquid            = true,
+	flowingliquid     = true,
+}
+
 function drawers.get_inv_image(name)
 	local texture = "blank.png"
+	if not name or name == "" then return texture end
 	local def = core.registered_items[name]
-	if not def then return end
+	if not def then return texture end
 
+	-- Best case: an explicit 2D inventory image is defined
 	if def.inventory_image and #def.inventory_image > 0 then
-		texture = def.inventory_image
-	else
-		if not def.tiles then return texture end
-		local tiles = table.copy(def.tiles)
-		local top = tile_to_image(tiles[1])
-		local left = tile_to_image(tiles[3], top)
-		local right = tile_to_image(tiles[5], left)
-		texture = core.inventorycube(top, left, right)
+		return def.inventory_image
 	end
 
-	return texture
-end
-
-function drawers.spawn_visuals(pos)
-	local node = core.get_node(pos)
-	local ndef = core.registered_nodes[node.name]
-	local drawerType = ndef.groups.drawer
-
-	-- data for the new visual
-	drawers.last_drawer_pos = pos
-	drawers.last_drawer_type = drawerType
-
-	if drawerType == 1 then -- 1x1 drawer
-		drawers.last_visual_id = ""
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name"))
-
-		local bdir = core.facedir_to_dir(node.param2)
-		local fdir = vector.new(-bdir.x, 0, -bdir.z)
-		local pos2 = vector.add(pos, vector.multiply(fdir, 0.45))
-
-		local obj = core.add_entity(pos2, "drawers:visual")
-		if not obj then return end
-
-		if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
-		if bdir.z < 0 then obj:set_yaw(math.pi) end
-		if bdir.x > 0 then obj:set_yaw(1.5 * math.pi) end
-
-		drawers.last_texture = nil
-	elseif drawerType == 2 then
-		local bdir = core.facedir_to_dir(node.param2)
-
-		local fdir1
-		local fdir2
-		if node.param2 == 2 or node.param2 == 0 then
-			fdir1 = vector.new(-bdir.x, 0.5, -bdir.z)
-			fdir2 = vector.new(-bdir.x, -0.5, -bdir.z)
-		else
-			fdir1 = vector.new(-bdir.x, 0.5, -bdir.z)
-			fdir2 = vector.new(-bdir.x, -0.5, -bdir.z)
-		end
-
-		local objs = {}
-
-		drawers.last_visual_id = 1
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name1"))
-		local pos1 = vector.add(pos, vector.multiply(fdir1, 0.45))
-		objs[1] = core.add_entity(pos1, "drawers:visual")
-
-		drawers.last_visual_id = 2
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name2"))
-		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.45))
-		objs[2] = core.add_entity(pos2, "drawers:visual")
-
-		for i,obj in pairs(objs) do
-			if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
-			if bdir.z < 0 then obj:set_yaw(math.pi) end
-			if bdir.x > 0 then obj:set_yaw(1.5 * math.pi) end
-		end
-	else -- 2x2 drawer
-		local bdir = core.facedir_to_dir(node.param2)
-
-		local fdir1
-		local fdir2
-		local fdir3
-		local fdir4
-		if node.param2 == 2 then
-			fdir1 = vector.new(-bdir.x + 0.5, 0.5, -bdir.z)
-			fdir2 = vector.new(-bdir.x - 0.5, 0.5, -bdir.z)
-			fdir3 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
-			fdir4 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
-		elseif node.param2 == 0 then
-			fdir1 = vector.new(-bdir.x - 0.5, 0.5, -bdir.z)
-			fdir2 = vector.new(-bdir.x + 0.5, 0.5, -bdir.z)
-			fdir3 = vector.new(-bdir.x - 0.5, -0.5, -bdir.z)
-			fdir4 = vector.new(-bdir.x + 0.5, -0.5, -bdir.z)
-		elseif node.param2 == 1 then
-			fdir1 = vector.new(-bdir.x, 0.5, -bdir.z + 0.5)
-			fdir2 = vector.new(-bdir.x, 0.5, -bdir.z - 0.5)
-			fdir3 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
-			fdir4 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
-		else
-			fdir1 = vector.new(-bdir.x, 0.5, -bdir.z - 0.5)
-			fdir2 = vector.new(-bdir.x, 0.5, -bdir.z + 0.5)
-			fdir3 = vector.new(-bdir.x, -0.5, -bdir.z - 0.5)
-			fdir4 = vector.new(-bdir.x, -0.5, -bdir.z + 0.5)
-		end
-
-		local objs = {}
-
-		drawers.last_visual_id = 1
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name1"))
-		local pos1 = vector.add(pos, vector.multiply(fdir1, 0.45))
-		objs[1] = core.add_entity(pos1, "drawers:visual")
-
-		drawers.last_visual_id = 2
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name2"))
-		local pos2 = vector.add(pos, vector.multiply(fdir2, 0.45))
-		objs[2] = core.add_entity(pos2, "drawers:visual")
-
-		drawers.last_visual_id = 3
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name3"))
-		local pos3 = vector.add(pos, vector.multiply(fdir3, 0.45))
-		objs[3] = core.add_entity(pos3, "drawers:visual")
-
-		drawers.last_visual_id = 4
-		drawers.last_texture = drawers.get_inv_image(core.get_meta(pos):get_string("name4"))
-		local pos4 = vector.add(pos, vector.multiply(fdir4, 0.45))
-		objs[4] = core.add_entity(pos4, "drawers:visual")
-
-
-		for i,obj in pairs(objs) do
-			if bdir.x < 0 then obj:set_yaw(0.5 * math.pi) end
-			if bdir.z < 0 then obj:set_yaw(math.pi) end
-			if bdir.x > 0 then obj:set_yaw(1.5 * math.pi) end
-		end
-	end
-end
-
-function drawers.remove_visuals(pos)
-	local objs = core.get_objects_inside_radius(pos, 0.56)
-	if not objs then return end
-
-	for _, obj in pairs(objs) do
-		if obj and obj:get_luaentity() and
-				obj:get_luaentity().name == "drawers:visual" then
-			obj:remove()
-		end
-	end
-end
-
---[[
-	Returns the visual object for the visualid of the drawer at pos.
-
-	visualid can be: "", "1", "2", ... or 1, 2, ...
-]]
-function drawers.get_visual(pos, visualid)
-	local drawer_visuals = drawers.drawer_visuals[core.hash_node_position(pos)]
-	if not drawer_visuals then
-		return nil
+	-- Second best: an explicit 2D wield image
+	if def.wield_image and #def.wield_image > 0 then
+		return def.wield_image
 	end
 
-	-- not a real index (starts with 1)
-	local index = tonumber(visualid)
-	if visualid == "" then
-		index = 1
+	if not def.tiles then return texture end
+
+	-- Drawtypes with no meaningful cube faces: single flat tile
+	if def.drawtype and flat_sprite_drawtypes[def.drawtype] then
+		return tile_to_image(def.tiles[1]) or texture
 	end
 
-	return drawer_visuals[index]
+	-- Drawtypes that are cubic but use the same texture on all faces
+	if def.drawtype and all_same_face_drawtypes[def.drawtype] then
+		local face = tile_to_image(def.tiles[1]) or texture
+		return core.inventorycube(face, face, face)
+	end
+
+	-- Connected texture nodes: composite the overlay (tiles[2]) over the base
+	-- (tiles[1]) so the full appearance is shown, not just the bare base texture.
+	if def.drawtype == "connected" then
+		local base    = tile_to_image(def.tiles[1], texture)
+		local overlay = tile_to_image(def.tiles[2])
+		local face    = overlay and (base .. "^" .. overlay) or base
+		return core.inventorycube(face, face, face)
+	end
+
+	-- glasslike_framed: tiles[2] is the inner fill, tiles[1] is the frame overlay.
+	-- Composite fill first, then frame on top.
+	if def.drawtype == "glasslike_framed" or def.drawtype == "glasslike_framed_optional" then
+		local fill  = tile_to_image(def.tiles[2])
+		local frame = tile_to_image(def.tiles[1], texture)
+		local face  = fill and (fill .. "^" .. frame) or frame
+		return core.inventorycube(face, face, face)
+	end
+
+	-- Full cubes and nodeboxes: isometric cube preview from top/left/right tiles
+	local top   = tile_to_image(def.tiles[1])
+	local right = tile_to_image(def.tiles[3], tile_to_image(def.tiles[2]) or top)
+	local left  = tile_to_image(def.tiles[6], right) -- fallback: right
+	return core.inventorycube(top, left, right)
 end
 
 function drawers.update_drawer_upgrades(pos)
