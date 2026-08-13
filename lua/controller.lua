@@ -1,28 +1,9 @@
 --[[
-Minetest Mod Storage Drawers - A Mod adding storage drawers
+Luanti Mod Storage Drawers - A Mod adding storage drawers
 
+SPDX-License-Identifier: MIT
 Copyright (C) 2017-2020 Linus Jahn <lnj@kaidan.im>
 Copyright (C) 2018 isaiah658
-
-MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 ]]--
 
 --[[ The gist of how the drawers mod stores data is that there are entities
@@ -39,7 +20,7 @@ deposit an item in certain situations. The table is only updated on an as needed
 basis, not by a specific time/interval. Controllers that have no items will not
 continue scanning drawers. ]]--
 
-local S = minetest.get_translator('drawers')
+local S = core.get_translator('drawers')
 
 local default_loaded = core.get_modpath("default") and default
 local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
@@ -425,10 +406,20 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 		end
 	end
 
-	-- prevent crash if taken_stack ended up with a nil value
-	if taken_stack and not taken_stack:is_empty() then
-		local dir = core.facedir_to_dir(core.get_node(pos).param2)
-		pipeworks.tube_inject_item(pos, pos, dir, taken_stack:to_string())
+	-- prevent error if taken_stack ended up with a nil value
+	if taken_stack then
+		local tags = nil
+
+		-- Set item tags if provided in msg.tags or msg.tag
+		if pipeworks.enable_item_tags and type(msg) == "table" then
+			if type(msg.tags) == "table" or type(msg.tags) == "string" then
+				tags = pipeworks.sanitize_tags(msg.tags)
+			elseif type(msg.tag) == "string" then
+				tags = pipeworks.sanitize_tags({msg.tag})
+			end
+		end
+
+		pipeworks.tube_inject_item(pos, pos, dir, taken_stack, nil, tags)
 	end
 end
 
@@ -543,7 +534,23 @@ local function register_controller()
 		techage.register_node({"drawers:controller"}, {
 			on_push_item = function(pos, in_dir, stack)
 				return controller_insert_to_drawers(pos, stack)
-			end
+			end,
+			on_pull_item = function(pos, in_dir, num, item_name)
+				if not item_name then
+					return
+				end
+
+				local item = ItemStack(item_name)
+				local drawers_index = controller_get_drawer_index(pos, item:get_name())
+
+				if not drawers_index[item:get_name()] then
+					-- we can't do anything: the requested item doesn't exist
+					return
+				end
+
+				item:set_count(num)
+				return drawers.drawer_take_item(drawers_index[item:get_name()]["drawer_pos"], item)
+			end,
 		})
 	end
 end

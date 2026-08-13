@@ -1,39 +1,35 @@
 --[[
-Minetest Mod Storage Drawers - A Mod adding storage drawers
+Luanti Mod Storage Drawers - A Mod adding storage drawers
 
+SPDX-License-Identifier: MIT
 Copyright (C) 2017-2020 Linus Jahn <lnj@kaidan.im>
 Copyright (C) 2016 Mango Tango <mtango688@gmail.com>
-
-MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 ]]
 
-local S = minetest.get_translator('drawers')
+local S = core.get_translator('drawers')
 
-drawers.node_box_simple = {
-	{-0.5, -0.5, -0.4375, 0.5, 0.5, 0.5},
-	{-0.5, -0.5, -0.5, -0.4375, 0.5, -0.4375},
-	{0.4375, -0.5, -0.5, 0.5, 0.5, -0.4375},
-	{-0.4375, 0.4375, -0.5, 0.4375, 0.5, -0.4375},
-	{-0.4375, -0.5, -0.5, 0.4375, -0.4375, -0.4375},
-}
+do -- Drawer node box scope
+
+    -- Full node = 1.0, center = (0,0,0), edges = ±0.5
+    -- Coordinates specified as {x1, y1, z1, x2, y2, z2}
+    -- A cuboid is created from the diagonal corners you specified with each x,y,z set.
+    -- x: -left +right    y: -down +up    z: -front +back
+
+    local frame_thickness = 1 / 16 -- frame thickness
+    local H = 0.5                  -- center to edge is half (8/16)
+	local F = H - frame_thickness  -- center to frame is 7/16 (0.4375)
+
+    drawers.node_box_simple = {
+    --  { x1, y1, z1, x2, y2, z2 }
+    --  --------------------------
+        { -H, -H, -F,  H,  H,  H }, -- main block, slightly inset block
+        { -H, -H, -H, -F,  H, -F }, -- left-side   16th-of-node sized bar
+        {  F, -H, -H,  H,  H, -F }, -- right-side  16th-of-node sized bar
+        { -F,  F, -H,  F,  H, -F }, -- top-side    16th-of-node sized bar
+        { -F, -H, -H,  F, -F, -F }, -- bottom-side 16th-of-node sized bar
+    }
+
+end
 
 drawers.drawer_formspec = "size[9,6.7]" ..
 	"list[context;upgrades;2,0.5;5,1;]" ..
@@ -67,7 +63,7 @@ function drawers.drawer_on_construct(pos)
 		meta:set_int("max_count"..vid, base_stack_max * stack_max_factor)
 		meta:set_int("base_stack_max"..vid, base_stack_max)
 		meta:set_string("entity_infotext"..vid, drawers.gen_info_text(S("Empty"), 0,
-			stack_max_factor, base_stack_max))
+			stack_max_factor, base_stack_max, false, true))
 		meta:set_int("stack_max_factor"..vid, stack_max_factor)
 
 		i = i + 1
@@ -99,44 +95,63 @@ function drawers.drawer_on_dig(pos, node, player)
 	if core.registered_nodes[node.name] then
 		drawerType = core.registered_nodes[node.name].groups.drawer
 	end
-	if core.is_protected(pos,player:get_player_name()) then
-	   core.record_protection_violation(pos,player:get_player_name())
-	   return 0
+
+	-- Handle player being nil (e.g., if called via core.dig_node with no digger)
+	local name = player and player:get_player_name() or ""
+	if core.is_protected(pos, name) then
+		core.record_protection_violation(pos, name)
+		return false
 	end
+
 	local meta = core.get_meta(pos)
+	local inv = player and player:get_inventory()
 
-	local k = 1
-	while k <= drawerType do
-		-- don't add a number in meta fields for 1x1 drawers
-		local vid = tostring(k)
-		if drawerType == 1 then vid = "" end
-		local count = meta:get_int("count"..vid)
-		local name = meta:get_string("name"..vid)
+	-- Helper to give to player OR drop on ground
+	local function give_or_drop(stack)
+		if stack:is_empty() then return end
 
-		-- drop the items
-		local stack_max = ItemStack(name):get_stack_max()
-
-		local j = math.floor(count / stack_max) + 1
-		local i = 1
-		while i <= j do
-			local rndpos = drawers.randomize_pos(pos)
-			if i ~= j then
-				core.add_item(rndpos, name .. " " .. stack_max)
-			else
-				core.add_item(rndpos, name .. " " .. count % stack_max)
-			end
-			i = i + 1
+		local leftover = stack
+		if inv then
+			leftover = inv:add_item("main", stack)
 		end
-		k = k + 1
+
+		if not leftover:is_empty() then
+			-- Use the player for item_drop if they exist, otherwise use the position
+			if player then
+				core.item_drop(leftover, player, drawers.randomize_pos(pos))
+			else
+				core.add_item(drawers.randomize_pos(pos), leftover)
+			end
+		end
 	end
 
-	-- drop all drawer upgrades
-	local upgrades = meta:get_inventory():get_list("upgrades")
+	-- Transfer drawer upgrades
+	local upgrade_inv = meta:get_inventory()
+	local upgrades = upgrade_inv:get_list("upgrades")
 	if upgrades then
-		for _,itemStack in pairs(upgrades) do
-			if itemStack:get_count() > 0 then
-				local rndpos = drawers.randomize_pos(pos)
-				core.add_item(rndpos, itemStack:get_name())
+		for _, stack in ipairs(upgrades) do
+			give_or_drop(stack)
+		end
+	end
+
+	-- Transfer drawer contents
+	for k = 1, drawerType do
+		local slot_suffix = tostring(k)
+		if drawerType == 1 then slot_suffix = "" end
+
+		local item_name = meta:get_string("name" .. slot_suffix)
+		local count = meta:get_int("count" .. slot_suffix)
+
+		if item_name ~= "" then
+			local stack_max = ItemStack(item_name):get_stack_max()
+
+			while count > 0 do
+				local batch = math.min(count, stack_max)
+				local stack = ItemStack(item_name)
+				stack:set_count(batch)
+
+				give_or_drop(stack)
+				count = count - batch
 			end
 		end
 	end
@@ -299,11 +314,20 @@ function drawers.register_drawer(name, def)
 	def.on_metadata_inventory_put = drawers.add_drawer_upgrade
 	def.on_metadata_inventory_take = drawers.remove_drawer_upgrade
 
-	if minetest.get_modpath("screwdriver") and screwdriver then
-		def.on_rotate = def.on_rotate or screwdriver.disallow
+	if core.get_modpath("screwdriver") and screwdriver then
+		def.on_rotate = function(pos, node, user, mode, new_param2)
+			node.param2 = new_param2
+			core.swap_node(pos, node)
+
+			-- Remove and re-spawn visuals so they align with the new rotation
+			drawers.remove_visuals(pos)
+			drawers.spawn_visuals(pos)
+
+			return true
+		end
 	end
 
-	if minetest.get_modpath("pipeworks") and pipeworks then
+	if core.get_modpath("pipeworks") and pipeworks then
 		def.groups.tubedevice = 1
 		def.groups.tubedevice_receiver = 1
 		def.tube = def.tube or {}
@@ -318,7 +342,7 @@ function drawers.register_drawer(name, def)
 		def.after_dig_node = pipeworks.after_dig
 	end
 
-	local has_mesecons_mvps = minetest.get_modpath("mesecons_mvps")
+	local has_mesecons_mvps = core.get_modpath("mesecons_mvps")
 
 	if drawers.enable_1x1 then
 		-- normal drawer 1x1 = 1
@@ -425,3 +449,36 @@ function drawers.register_drawer_upgrade(name, def)
 	end
 end
 
+core.register_chatcommand("drawers_fix", {
+	description = "Refreshes nearby drawer contents' visual indicators.\n" ..
+		"Should not be necessary except to update in bulk on an old save.",
+	privs = { interact = true },
+	func = function(name)
+		local player = core.get_player_by_name(name)
+		if not player then
+			return
+		end
+
+		local t1 = core.get_us_time()
+		local player_pos = player:get_pos()
+		local pos1 = vector.subtract(player_pos, 10)
+		local pos2 = vector.add(player_pos, 10)
+		local pos_list = core.find_nodes_in_area(pos1, pos2, { "group:drawer" })
+
+		for _, pos in ipairs(pos_list) do
+			local objects = core.get_objects_inside_radius(pos, 0.5)
+			for _, obj in pairs(objects) do
+				local ent = obj:get_luaentity()
+				if ent and ent.name == "drawers:visual" then
+					obj:remove()
+				end
+			end
+			drawers.spawn_visuals(pos)
+		end
+
+		local t2 = core.get_us_time()
+		local milliseconds = math.floor((t2 - t1) / 1000)
+
+		return true, "Restored " .. #pos_list .. " drawers in " .. milliseconds .. " ms"
+	end
+})

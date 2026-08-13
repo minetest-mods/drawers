@@ -1,10 +1,13 @@
-Minetest Mod Storage Drawers
+Luanti Mod Storage Drawers
 ============================
 
 License of source code:
 -----------------------
 Copyright (C) 2017-2020 Linus Jahn <lnj@kaidan.im>
 Copyright (C) 2016 Mango Tango <mtango688@gmail.com>
+`/drawers_fix` command copyright (C) 2021 Pandorabox. MIT.
+ - <https://github.com/pandorabox-io/pandorabox_custom/blob/9434e2cf7c64ea2a8d6070dda4b5eaf53812d750/chat/drawers_fix.lua>
+ - Slight modifications (C) 2026 AbbyRead. MIT.
 
 MIT License
 
@@ -32,7 +35,7 @@ License of translations:
 CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
 
 No Copyright
-Minetest Mod Storage Drawers Translators
+Luanti Mod Storage Drawers Translators
 
 The person who associated a work with this deed has dedicated the work to the public
 domain by waiving all of his or her rights to the work worldwide under copyright law,
@@ -59,8 +62,10 @@ https://creativecommons.org/publicdomain/zero/1.0/
 License of media:
 -----------------
 Copyright (C) 2012 ultradust (https://www.freesound.org/people/ultradust/) (CC BY 3.0):
-  sounds/drawers_interact.1.ogg (edited by tacotexmex)
-  sounds/drawers_interact.2.ogg (edited by tacotexmex)
+  sounds/drawers_interact.1.ogg (edited by tacotexmex and AbbyRead)
+  sounds/drawers_interact.2.ogg (edited by tacotexmex and AbbyRead)
+  sounds/drawers_interact.3.ogg (edited by tacotexmex and AbbyRead)
+  sounds/drawers_interact.4.ogg (edited by tacotexmex and AbbyRead)
 
 Copyright (C) 2014 Justin Aquadro (MIT):
   textures/drawers_acacia_wood_mcl_front_1.png
@@ -86,6 +91,7 @@ Copyright (C) 2014 Justin Aquadro (MIT):
   textures/drawers_junglewood_mcl_front_2.png
   textures/drawers_junglewood_mcl_front_4.png
   textures/drawers_junglewood_mcl.png
+  textures/drawers_locked.png (padded on left and bottom side by The4codeblocks)
   textures/drawers_oak_wood_front_1.png
   textures/drawers_oak_wood_front_2.png
   textures/drawers_oak_wood_front_4.png
