@@ -33,12 +33,27 @@ format:
 
 1. `command` (string) - `"get"`
 2. `offset` (integer) - Used to paginate the results if the amount of drawers in
-	the network exceeds `drawers.CONTROLLER_MAX_COUNT`. Defaults to 1.
-3. `max_count` (integer) - Must be between 1 and `CONTROLLER_MAX_COUNT`.
-	Defaults to `CONTROLLER_MAX_COUNT`. Maximum amount of drawers to return.
+	the network exceeds `drawers.controller_max_matches`. Defaults to 1.
+3. `max_count` (integer) - Must be between 1 and `drawers.controller_max_matches`.
+	Defaults to `drawers.controller_max_matches`. Maximum amount of drawers to return.
 
-A table will be sent back on the same channel containing each drawer's position
-and the contents of each of their slots.
+Example response:
+```lua
+{
+	drawers = {
+		{
+			position = {x = 0, y = 10, z = 0},
+			slots = {
+				{name = "default:stick", count = 321, max = 10000},
+				-- Next slot (if available, up to 4)
+			}
+		},
+		-- Next drawer (limited by max_count)
+	},
+	offset = 4,  -- Requested offset
+	total = 12  -- Total amount of drawers in the network
+}
+```
 
 ## Features
 * 1x1, 1x2 and 2x2 tiled drawers
