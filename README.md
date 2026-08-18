@@ -20,6 +20,41 @@ Do you have too many cobblestones for one drawer? No problem, just add some
 drawer upgrades to your drawer! They are available in different sizes and are
 crafted by steel, gold, obsidian, diamonds or mithril.
 
+## Digilines
+The drawer controller is digilines-compatible. To request an item from the
+surrounding drawers, send an itemstring to its channel:
+* `"default:dirt 15"`
+* `"default:cobble"`
+
+The items will be sent out the back of the drawer controller.
+
+To request the contents of a drawer network, send a table with the following
+format:
+
+1. `command` (string) - `"get"`
+2. `offset` (integer) - Used to paginate the results if the amount of drawers in
+	the network exceeds `drawers.controller_max_matches`. Defaults to 1.
+3. `max_count` (integer) - Must be between 1 and `drawers.controller_max_matches`.
+	Defaults to `drawers.controller_max_matches`. Maximum amount of drawers to return.
+
+Example response:
+```lua
+{
+	drawers = {
+		{
+			position = {x = 0, y = 10, z = 0},
+			slots = {
+				{name = "default:stick", count = 321, max = 10000},
+				-- Next slot (if available, up to 4)
+			}
+		},
+		-- Next drawer (limited by max_count)
+	},
+	offset = 4,  -- Requested offset
+	total = 12  -- Total amount of drawers in the network
+}
+```
+
 ## Features
 * 1x1, 1x2 and 2x2 tiled drawers
 * Content (item) type locking
