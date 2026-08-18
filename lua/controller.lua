@@ -29,18 +29,6 @@ local techage_loaded = core.get_modpath("techage") and techage
 
 local max_matches = tonumber(core.settings:get("drawers.controller_max_matches")) or 50
 
-local function controller_formspec(pos)
-	local formspec =
-		"size[9,8.5]"..
-		drawers.gui_bg..
-		drawers.gui_slots..
-		"label[0,0;" .. S("Drawer Controller") .. "]" ..
-		"list[current_name;src;4,1.75;1,1;]"..
-		drawers.inventory_list(4.25) ..
-		"listring[current_player;main]"..
-		"listring[current_name;src]"..
-		"listring[current_player;main]"
-
 local function is_valid_drawer_index_slot(net_index, item_name)
 	local item_index = net_index and net_index[item_name]
 	if not (item_index and item_index.drawer_positions and item_index.visualid) then
