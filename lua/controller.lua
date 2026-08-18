@@ -27,6 +27,8 @@ local pipeworks_loaded = core.get_modpath("pipeworks") and pipeworks
 local digilines_loaded = core.get_modpath("digilines") and digilines
 local techage_loaded = core.get_modpath("techage") and techage
 
+local max_matches = tonumber(core.settings:get("drawers.controller_max_matches")) or 50
+
 local function controller_formspec(pos)
 	local formspec =
 		"size[9,8.5]"..
@@ -166,8 +168,11 @@ local function find_connected_drawers(controller_pos, pos, foundPositions)
 		-- check that this node hasn't been scanned yet
 		if not compare_pos(pos, p) and not contains_pos(foundPositions, p)
 		   and pos_in_range(controller_pos, pos) then
-			-- add new position
-			table.insert(foundPositions, p)
+			-- check that this node is a drawer
+			if core.get_item_group(core.get_node(p).name, "drawer") > 0 then
+				-- add new position
+				table.insert(foundPositions, p)
+			end
 			-- search for other drawers from the new pos
 			find_connected_drawers(controller_pos, p, foundPositions)
 		end
@@ -278,6 +283,58 @@ local function controller_insert_to_drawers(pos, stack)
 	return stack
 end
 
+--[[
+	Returns an array of drawers in the drawer network with their positions and slot
+	data, as well as total drawers found. Slot data includes stored item,
+	item count, and max count.
+
+	Results can be paginated by specifying an `offset` and a `max_count`.
+]]
+local function controller_get_network_info(pos, offset, max_count)
+	local found_drawers = {}
+	local connected_drawers = find_connected_drawers(pos)
+
+	-- Sort drawers by their positions to keep order for pagination
+	table.sort(connected_drawers, function(a, b)
+		return core.hash_node_position(a) < core.hash_node_position(b)
+	end)
+
+	-- Offset must be an integer and >= 1
+	offset = math.max(1, math.floor(tonumber(offset) or 1))
+	-- Max count must be an integer, >= 1, and <= max_matches
+	max_count = math.floor(tonumber(max_count) or max_matches)
+	max_count = math.min(math.max(max_count, 1), max_matches)
+
+	for i = offset, offset + max_count - 1 do
+		local position = connected_drawers[i]
+		if not position then break end
+
+		local node = core.get_node(position)
+		local drawer_meta = core.get_meta(position)
+		local drawer_type = core.get_item_group(node.name, "drawer")
+
+		-- Record information of each slot
+		local slots = {}
+		for slot = 1, drawer_type do
+			-- 1x1 drawers don't have numbers in the meta fields
+			local slot_id = (drawer_type == 1 and "") or slot
+			local slot_name = drawer_meta:get_string("name" .. slot_id)
+			local slot_count = drawer_meta:get_int("count" .. slot_id)
+			local slot_max = drawer_meta:get_int("max_count" .. slot_id)
+
+			table.insert(slots, {
+				name = slot_name,
+				count = slot_count,
+				max = slot_max
+			})
+		end
+
+		table.insert(found_drawers, {position=position, slots=slots})
+	end
+
+	return found_drawers, #connected_drawers
+end
+
 local function controller_can_dig(pos, player)
 	local meta = core.get_meta(pos);
 	local inv = meta:get_inventory()
@@ -355,12 +412,26 @@ end
 local function controller_on_digiline_receive(pos, _, channel, msg)
 	local meta = core.get_meta(pos)
 
-	if channel ~= meta:get_string("digilineChannel") then
+	if not msg or channel ~= meta:get_string("digilineChannel") then
 		return
 	end
 
-	if msg and type(msg) ~= "string" and type(msg) ~= "table" then
-		return -- Protect against ItemStack(...) errors
+	if type(msg) == "table" then
+		if msg.command == "get" then
+			local offset = msg.offset or 1
+			local found_drawers, total = controller_get_network_info(pos, offset, msg.max_count)
+			digiline:receptor_send(pos, digilines.rules.default, channel, {
+				drawers = found_drawers,
+				offset = offset,
+				total = total
+			})
+
+			return
+		end
+
+	elseif type(msg) ~= "string" then
+		-- Protect against ItemStack(...) errors
+		return
 	end
 
 	local item = ItemStack(msg)
