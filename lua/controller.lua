@@ -346,58 +346,6 @@ local function controller_get_network_info(pos, offset, max_count)
 	return found_drawers, #connected_drawers
 end
 
---[[
-	Returns an array of drawers in the drawer network with their positions and slot
-	data, as well as total drawers found. Slot data includes stored item,
-	item count, and max count.
-
-	Results can be paginated by specifying an `offset` and a `max_count`.
-]]
-local function controller_get_network_info(pos, offset, max_count)
-	local found_drawers = {}
-	local connected_drawers = find_connected_drawers(pos)
-
-	-- Sort drawers by their positions to keep order for pagination
-	table.sort(connected_drawers, function(a, b)
-		return core.hash_node_position(a) < core.hash_node_position(b)
-	end)
-
-	-- Offset must be an integer and >= 1
-	offset = math.max(1, math.floor(tonumber(offset) or 1))
-	-- Max count must be an integer, >= 1, and <= max_matches
-	max_count = math.floor(tonumber(max_count) or max_matches)
-	max_count = math.min(math.max(max_count, 1), max_matches)
-
-	for i = offset, offset + max_count - 1 do
-		local position = connected_drawers[i]
-		if not position then break end
-
-		local node = core.get_node(position)
-		local drawer_meta = core.get_meta(position)
-		local drawer_type = core.get_item_group(node.name, "drawer")
-
-		-- Record information of each slot
-		local slots = {}
-		for slot = 1, drawer_type do
-			-- 1x1 drawers don't have numbers in the meta fields
-			local slot_id = (drawer_type == 1 and "") or slot
-			local slot_name = drawer_meta:get_string("name" .. slot_id)
-			local slot_count = drawer_meta:get_int("count" .. slot_id)
-			local slot_max = drawer_meta:get_int("max_count" .. slot_id)
-
-			table.insert(slots, {
-				name = slot_name,
-				count = slot_count,
-				max = slot_max
-			})
-		end
-
-		table.insert(found_drawers, {position=position, slots=slots})
-	end
-
-	return found_drawers, #connected_drawers
-end
-
 local function controller_can_dig(pos, player)
 	local meta = core.get_meta(pos);
 	local inv = meta:get_inventory()
