@@ -447,9 +447,10 @@ core.register_entity("drawers:visual", {
 			return 0
 		end
 
+		local count_left = self.maxCount - self.count
 		-- don't allow unstackable stacks
 		if self.itemName == "" and stack:get_stack_max() ~= 1 then
-			return stack:get_count()
+			return math.min(stack:get_count(), count_left)
 		end
 
 		if self.itemName ~= stack:get_name() then
@@ -459,7 +460,7 @@ core.register_entity("drawers:visual", {
 		if (self.count + stack:get_count()) <= self.maxCount then
 			return stack:get_count()
 		end
-		return self.maxCount - self.count
+		return count_left
 	end,
 
 	try_insert_stack = function(self, itemstack, insert_all)
