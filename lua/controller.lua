@@ -477,8 +477,8 @@ local function controller_on_digiline_receive(pos, _, channel, msg)
 		end
 	end
 
-	-- prevent error if taken_stack ended up with a nil value
-	if taken_stack and not taken_stack:is_empty() then
+	-- skip outputting taken_stack if it's empty
+	if not taken_stack:is_empty() then
 		local tags = nil
 
 		-- Set item tags if provided in msg.tags or msg.tag
