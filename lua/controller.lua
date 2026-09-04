@@ -132,8 +132,8 @@ local function find_connected_drawers(controller_pos)
 		head = head + 1
 
 		local new_positions = core.find_nodes_in_area(
-			{x = current_pos.x - 1, y = current_pos.y - 1, z = current_pos.z - 1},
-            {x = current_pos.x + 1, y = current_pos.y + 1, z = current_pos.z + 1},
+			vector.subtract(current_pos, 1),
+			vector.add(current_pos, 1),
             {"group:drawer", "group:drawer_connector"}
         )
 		for _, position in ipairs(new_positions) do
