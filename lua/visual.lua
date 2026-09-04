@@ -412,7 +412,7 @@ core.register_entity("drawers:visual", {
 		local meta = core.get_meta(self.drawer_pos)
 
 		if self.count <= 0 then
-			return
+			return ItemStack()
 		end
 
 		if removeCount > self.count then
