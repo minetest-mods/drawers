@@ -118,31 +118,40 @@ local function add_drawer_to_inventory(controllerInventory, pos)
 	end
 end
 
-local function find_connected_drawers(controller_pos, pos, foundPositions)
-	foundPositions = foundPositions or {}
-	pos = pos or controller_pos
+local function find_connected_drawers(controller_pos)
+	local found_drawers = {}
+	local queue = {controller_pos}
+	local visited = {}
 
-	local newPositions = core.find_nodes_in_area(
-		{x = pos.x - 1, y = pos.y - 1, z = pos.z - 1},
-		{x = pos.x + 1, y = pos.y + 1, z = pos.z + 1},
-		{"group:drawer", "group:drawer_connector"}
-	)
+	visited[core.hash_node_position(controller_pos)] = true
 
-	for _,p in ipairs(newPositions) do
-		-- check that this node hasn't been scanned yet
-		if not compare_pos(pos, p) and not contains_pos(foundPositions, p)
-		   and pos_in_range(controller_pos, pos) then
-			-- check that this node is a drawer
-			if core.get_item_group(core.get_node(p).name, "drawer") > 0 then
-				-- add new position
-				table.insert(foundPositions, p)
+	local head = 1
+	local tail = 1
+	while head <= tail do
+		local current_pos = queue[head]
+		head = head + 1
+
+		local new_positions = core.find_nodes_in_area(
+			{x = current_pos.x - 1, y = current_pos.y - 1, z = current_pos.z - 1},
+            {x = current_pos.x + 1, y = current_pos.y + 1, z = current_pos.z + 1},
+            {"group:drawer", "group:drawer_connector"}
+        )
+		for _, position in ipairs(new_positions) do
+			local hash = core.hash_node_position(position)
+			if not visited[hash] and pos_in_range(controller_pos, position) then
+				visited[hash] = true
+				tail = tail + 1
+				queue[tail] = position
+
+				-- Check that this node is a drawer and not trim
+				if core.get_item_group(core.get_node(position).name, "drawer") > 0 then
+					table.insert(found_drawers, position)
+				end
 			end
-			-- search for other drawers from the new pos
-			find_connected_drawers(controller_pos, p, foundPositions)
 		end
 	end
 
-	return foundPositions
+	return found_drawers
 end
 
 local function index_drawers(pos)
