@@ -215,7 +215,6 @@ end
 local function controller_insert_to_drawers(pos, stack)
 	-- Inizialize metadata
 	local meta = core.get_meta(pos)
-	local inv = meta:get_inventory()
 
 	local item_name = stack:get_name()
 	local drawer_net_index = controller_get_drawer_index(pos, item_name)
@@ -244,7 +243,8 @@ local function controller_insert_to_drawers(pos, stack)
 	end
 
 	-- Fill empty drawers if any leftover remains
-	if not leftover:is_empty() and drawer_net_index["empty"] then
+	local allow_empty = distribute or not drawer_net_index[item_name]
+	if not leftover:is_empty() and drawer_net_index["empty"] and allow_empty then
 		local i = 1
 		while i <= #drawer_net_index["empty"] do
 			local drawer = drawer_net_index["empty"][i]
@@ -405,7 +405,8 @@ local function controller_allow_metadata_inventory_put(pos, listname, _, stack, 
 		end
 	end
 
-	if not try_index(stack_name, stack_name) then
+	local allow_empty = distribute or not drawer_net_index[stack_name]
+	if not try_index(stack_name, stack_name) and allow_empty then
 		try_index("empty", "")
 	end
 
